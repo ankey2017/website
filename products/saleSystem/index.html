@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>货物销售管理系统 - 进销存单机台账工具</title>
+    <meta name="description" content="货物销售管理系统，面向水产、贸易商户的本地进销存工具，进货入库、销售出库、回款欠款、销售报表，买断制，数据本地SQLite存储。">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", system-ui, sans-serif;
+        }
+        body {
+            background-color: #f7f8fa;
+            color: #222;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background: #2563eb;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 34px;
+            margin-bottom:10px;
+        }
+        header p {
+            opacity: 0.9;
+            font-size:18px;
+        }
+        nav {
+            background: #1e40af;
+            padding:12px 0;
+        }
+        nav a {
+            color:#fff;
+            text-decoration:none;
+            margin:0 14px;
+            font-size:16px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .nav-center {
+            text-align:center;
+        }
+        section {
+            background: #fff;
+            margin: 24px 0;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px #0000000c;
+        }
+        h2 {
+            color:#1e40af;
+            margin-bottom:16px;
+            font-size:24px;
+        }
+        .btn {
+            display: inline-block;
+            padding:14px 32px;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:bold;
+            font-size:17px;
+            margin:8px 6px;
+        }
+        .btn-download {
+            background:#10b981;
+            color:white;
+        }
+        .btn-buy {
+            background:#ef4444;
+            color:white;
+        }
+        .btn:hover {
+            opacity:0.92;
+        }
+        .center {
+            text-align:center;
+            margin:20px 0;
+        }
+        .feature-list {
+            list-style:none;
+        }
+        .feature-list li {
+            padding:8px 0;
+            padding-left:24px;
+            position:relative;
+        }
+        .feature-list li::before {
+            content:"✓";
+            color:#10b981;
+            position:absolute;
+            left:0;
+            font-weight:bold;
+        }
+        .faq-item {
+            margin-bottom:16px;
+        }
+        .faq-item strong {
+            color:#2563eb;
+        }
+        .tip-box {
+            background:#fffbeb;
+            border-left:4px solid #f59e0b;
+            padding:16px;
+            border-radius:6px;
+            margin:16px 0;
+        }
+        footer {
+            text-align:center;
+            padding:30px 0;
+            color:#666;
+            font-size:14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>货物销售管理系统</h1>
+            <p>进销存一体化本地台账工具｜单机买断 · 数据本地存储</p>
+        </div>
+    </header>
+    <nav>
+        <div class="container nav-center">
+            <a href="/">首页</a>
+            <a href="/products/qidantong/">企档通</a>
+            <a href="/products/sale-system/">货物销售管理系统</a>
+            <a href="/about.html">售后与授权说明</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section>
+            <h2>产品介绍</h2>
+            <p>货物销售管理系统，专为水产商户、小型贸易商家打造的单机进销存台账软件。支持采购入库、销售出库、应收欠款、付款收款登记，自动生成各类销售、进货统计报表，适配虾塘收货、客户对账场景。</p>
+            <div class="tip-box">
+                ✅ 数据保存在本地 SQLite，不上传云端；<br>
+                ✅ 买断制，一次付费永久使用，无订阅费；<br>
+                ✅ Windows 桌面工具，Wails开发，轻量稳定；<br>
+                ✅ 适配水产行业：支持登记虾塘地址、客户信息管理。
+            </div>
+            <ul class="feature-list">
+                <li>基础资料管理：商品档案、客户信息、虾塘地址维护</li>
+                <li>进货管理：采购入库单录入、进货明细、缺货查询、入库汇总表</li>
+                <li>销售管理：销售出库单录入，支持现金等多种结算方式</li>
+                <li>资金台账：收款登记、付款登记、欠款对账</li>
+                <li>报表模块：销售汇总、进货汇总，方便对账核算</li>
+                <li>试用版限制：单据数量上限，解锁后无单据限制</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>免费试用</h2>
+            <p>先下载试用版，在本地录入单据体验完整流程，对账流程满意再购买授权。</p>
+            <div class="center">
+                <a class="btn btn-download" href="【替换成这个软件的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 试用版</a>
+            </div>
+            <div class="tip-box">
+                使用步骤：<br>
+                1. 安装打开货物销售管理系统；<br>
+                2. 进入【帮助 / 软件授权】页面，复制本机机器码；<br>
+                3. 下单时粘贴机器码，付款后获取激活码；<br>
+                4. 在授权窗口粘贴激活码，解除试用单据限制。
+            </div>
+        </section>
+
+        <section>
+            <h2>购买授权（买断）</h2>
+            <p>一次购买，永久使用，无后续年费。付款页面会让你填写机器码。</p>
+            <div class="center">
+                <a class="btn btn-buy" href="【替换成极速卖码这个商品的链接】" target="_blank">💰 前往购买授权</a>
+            </div>
+            <p style="text-align:center; color:#666; margin-top:8px;">付款成功后，系统自动发放激活码</p>
+        </section>
+
+        <section>
+            <h2>常见问题 FAQ</h2>
+            <div class="faq-item">
+                <strong>Q：单据数据会上传到外网服务器吗？</strong>
+                <p>A：不会。所有进货、销售、客户数据全部保存在电脑本地 SQLite 文件，软件运行不需要联网。</p>
+            </div>
+            <div class="faq-item">
+                <strong>Q：换电脑使用怎么办？</strong>
+                <p>A：激活码绑定本机机器码；更换电脑需要重新申请激活码，具体规则参考统一售后页面。</p>
+            </div>
+            <div class="faq-item">
+                <strong>Q：怎么备份我的销售和进货记录？</strong>
+                <p>A：可以在系统里找到数据库备份功能，直接备份sqlite文件，拷贝到U盘即可。</p>
+            </div>
+            <div class="faq-item">
+                <strong>Q：支持打印出库单、对账单吗？</strong>
+                <p>A：当前版本支持单据查看导出，后续版本持续迭代打印功能。</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 小周工具库 | 单机台账工具 | 货物销售管理系统 V1.0</p>
+        </div>
+    </footer>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->
