@@ -3,207 +3,666 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>林子软件工具库 - 单机买断桌面工具合集</title>
-    <meta name="description" content="面向小微企业、个体户的本地单机台账管理工具，买断制，数据保存在本地，不上云端。">
+    <title>林子软件工具库 - 小微生意人的单机买断软件</title>
+    <meta name="description" content="林子软件工具库：面向水产、贸易、工程服务等小微商户的 Windows 单机软件。企档通（客户项目台账）、货物销售管理系统（进销存），数据本地存储，一次买断永久使用。">
+    <meta name="keywords" content="单机软件,买断制软件,进销存软件,客户管理软件,小微企业软件,本地台账工具">
+    <meta property="og:title" content="林子软件工具库 - 买断制单机软件">
+    <meta property="og:description" content="给小微生意人做的本地单机软件：数据存在自己电脑里，一次买断，不用年年交年费。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/img/qidantong/dashboard.png">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft Yahei", system-ui, sans-serif;
+            font-family: "Microsoft Yahei", system-ui, -apple-system, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
         }
         body {
-            background-color: #f7f8fa;
-            color: #222;
-            line-height: 1.7;
+            background-color: #f8fafc;
+            color: #1f2937;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
         }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
+        img {
+            max-width: 100%;
+            display: block;
         }
+        a {
+            color: inherit;
+        }
+
+        /* ---------- 头部 ---------- */
         header {
-            background: #2563eb;
-            color: white;
-            padding: 36px 0;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: #fff;
+            padding: 56px 16px 64px;
             text-align: center;
         }
-        header h1 {
-            font-size: 32px;
-            margin-bottom:8px;
+        header .badge-top {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: .5px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
         }
-        header p {
-            opacity: 0.9;
-            font-size:17px;
+        header h1 {
+            font-size: 38px;
+            line-height: 1.35;
+            margin-bottom: 14px;
+            letter-spacing: 2px;
+            color: #ffffff;
+        }
+        header .sub {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: .3px;
+            text-shadow: 0 1px 3px rgba(15, 23, 42, .22);
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        header .kv {
+            display: flex;
+            justify-content: center;
+            gap: 10px 26px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+            font-size: 15px;
+            color: #e8efff;
+        }
+        header .kv span::before {
+            content: "✓";
+            color: #6ee7b7;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        .hero-cta {
+            margin-top: 32px;
         }
         nav {
-            background: #1e40af;
-            padding:12px 0;
+            background-color: #1e40af;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(30, 64, 175, .25);
         }
         nav a {
-            color:#fff;
-            text-decoration:none;
-            margin:0 14px;
-            font-size:16px;
+            color: #fff;
+            text-decoration: none;
+            margin: 0 14px;
+            font-size: 16px;
+            white-space: nowrap;
         }
         nav a:hover {
             text-decoration: underline;
         }
-        .nav-center {
-            text-align:center;
+
+        /* ---------- 布局 ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 16px;
         }
-        section {
-            margin: 32px 0;
+        .wrap {
+            padding-bottom: 40px;
+        }
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 36px 32px;
+            margin: 26px 0;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
         }
         h2 {
-            color:#1e40af;
-            margin-bottom:24px;
-            font-size:24px;
-            text-align:center;
+            color: #1e40af;
+            font-size: 25px;
+            margin-bottom: 10px;
+            line-height: 1.45;
         }
-        .card-wrap {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-            gap:24px;
+        .h2-sub {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 24px;
         }
-        .card {
-            background:#fff;
-            border-radius:12px;
-            box-shadow: 0 2px 10px #0000000c;
-            overflow:hidden;
+        p {
+            color: #374151;
         }
-        .card-img {
-            min-height:220px;
-            background:#eef2ff;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            color:#2563eb;
-            font-size:18px;
-        }
-        .card-body {
-            padding:24px;
-        }
-        .card-body h3 {
-            font-size:20px;
-            margin-bottom:8px;
-        }
-        .card-desc {
-            color:#555;
-            margin-bottom:14px;
-        }
-        .card-feature {
-            list-style:none;
-            margin-bottom:20px;
-        }
-        .card-feature li {
-            padding:4px 0;
-            padding-left:20px;
-            position:relative;
-            font-size:14px;
-        }
-        .card-feature li::before {
-            content:"✓";
-            color:#10b981;
-            position:absolute;
-            left:0;
-            font-weight:bold;
-        }
+
+        /* ---------- 按钮 ---------- */
         .btn {
             display: inline-block;
-            padding:11px 24px;
-            border-radius:8px;
-            text-decoration:none;
-            font-weight:bold;
-            font-size:16px;
-        }
-        .btn-detail {
-            background:#2563eb;
-            color:white;
+            padding: 14px 34px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+            margin: 8px 6px;
+            transition: transform .15s, box-shadow .15s;
+            border: none;
+            cursor: pointer;
         }
         .btn:hover {
-            opacity:0.92;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
         }
+        .btn-primary {
+            background: #10b981;
+            color: #fff;
+        }
+        .btn-ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .55);
+        }
+        .center {
+            text-align: center;
+        }
+
+        /* ---------- 价值卡片 ---------- */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+        .value-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 22px 20px;
+        }
+        .value-card .ico {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .value-card h4 {
+            font-size: 17px;
+            color: #1e3a8a;
+            margin-bottom: 6px;
+        }
+        .value-card p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- 产品卡片 ---------- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 6px;
+        }
+        .pcard {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform .18s, box-shadow .18s, border-color .18s;
+        }
+        .pcard:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 26px rgba(15, 23, 42, .1);
+            border-color: #c7d7fe;
+        }
+        .pcard .cover {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            background: #eff6ff;
+            overflow: hidden;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .pcard .cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top left;
+        }
+        .pcard .tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(37, 99, 235, .94);
+            color: #fff;
+            font-size: 12px;
+            line-height: 1.6;
+            padding: 2px 10px;
+            border-radius: 999px;
+            letter-spacing: .5px;
+        }
+        .pcard-body {
+            padding: 18px 18px 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .pcard-body h3 {
+            font-size: 17.5px;
+            color: #0f172a;
+            margin: 0 0 6px;
+            line-height: 1.5;
+        }
+        .pcard-body .desc {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 12px;
+        }
+        .pcard-body ul {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+        .pcard-body ul li {
+            position: relative;
+            padding: 2px 0 2px 18px;
+            font-size: 13.5px;
+            color: #4b5563;
+        }
+        .pcard-body ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+        .pcard-link {
+            margin-top: auto;
+            display: block;
+            text-align: center;
+            padding: 11px 0;
+            border-radius: 8px;
+            background: #2563eb;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background .15s;
+        }
+        .pcard-link:hover {
+            background: #1d4ed8;
+        }
+
+        /* 预留产品位 */
+        .pcard.soon {
+            border-style: dashed;
+            border-color: #cbd5e1;
+            background: #fbfcfe;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 32px 22px;
+            min-height: 240px;
+            cursor: default;
+        }
+        .pcard.soon:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #94a3b8;
+        }
+        .pcard.soon .plus {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px dashed #cbd5e1;
+            color: #94a3b8;
+            font-size: 24px;
+            line-height: 40px;
+            text-align: center;
+            margin: 0 auto 12px;
+        }
+        .pcard.soon h3 {
+            font-size: 15.5px;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .pcard.soon p {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.7;
+        }
+
+        /* ---------- 选购指南 ---------- */
+        .pick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .pick {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+        .pick .q {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 6px;
+        }
+        .pick .a {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+        .pick .a::before {
+            content: "→ ";
+            color: #2563eb;
+        }
+        .pick p {
+            font-size: 13.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- 提示框 ---------- */
         .tip-box {
-            background:#fffbeb;
-            border-left:4px solid #f59e0b;
-            padding:16px;
-            border-radius:6px;
-            margin:24px 0;
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0 0;
+            font-size: 15px;
+            color: #78350f;
+        }
+        .tip-box strong {
+            color: #92400e;
+        }
+        .note-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 22px 0 0;
+            font-size: 14.5px;
+            color: #1e3a8a;
+        }
+
+        /* ---------- 底部 CTA ---------- */
+        .final-cta {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 44px 32px;
+            text-align: center;
+            margin: 26px 0;
+        }
+        .final-cta h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .final-cta p {
+            color: #e8efff;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .final-cta .small {
+            font-size: 13px;
+            color: #cbd9ff;
+            margin-top: 14px;
         }
         footer {
-            text-align:center;
-            padding:30px 0;
-            color:#666;
-            font-size:14px;
+            text-align: center;
+            padding: 30px 16px 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        footer a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 40px 16px 44px;
+            }
+            header h1 {
+                font-size: 27px;
+            }
+            header .sub {
+                font-size: 15.5px;
+            }
+            .section {
+                padding: 24px 18px;
+                border-radius: 10px;
+            }
+            h2 {
+                font-size: 21px;
+            }
+            .btn {
+                display: block;
+                margin: 10px auto;
+                max-width: 320px;
+                font-size: 16px;
+            }
+            nav a {
+                margin: 0 9px;
+                font-size: 15px;
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>林子软件工具库</h1>
-            <p>本地单机桌面台账工具｜买断制 · 数据保存在本机，不上云</p>
-        </div>
-    </header>
-    <nav>
-        <div class="container nav-center">
-            <a href="index.html">首页</a>
-            <a href="products/qidantong/index.html">企档通</a>
-            <a href="products/saleSystem/index.html">货物销售管理系统</a>
-            <a href="about.html">售后与授权说明</a>
-        </div>
-    </nav>
+
+<header>
     <div class="container">
-        <div class="tip-box">
-            💡 全部工具为 Windows 本地单机版，一次买断永久使用；下载试用满意后再购买授权，激活码绑定本机机器码。
+        <div class="badge-top">Windows 单机软件 · 买断制</div>
+        <h1>林子软件工具库</h1>
+        <p class="sub">给小微生意人做的本地单机软件——账本、客户、进销存，数据存在自己电脑里，<br>一次买断，不用年年续费，断网也能照常用。</p>
+        <div class="kv">
+            <span>一次买断，无年费</span>
+            <span>数据本地存储</span>
+            <span>完全离线可用</span>
+            <span>先试用，满意再买</span>
         </div>
-        <section>
-            <h2>全部产品</h2>
-            <div class="card-wrap">
-                <!-- 产品1：企档通 -->
-                <div class="card">
-                    <div class="card-img">
-                        <img src="assets/img/qidantong/dashboard.png" alt="企档通预览" style="width:100%;height:auto;display:block;">
-                    </div>
-                    <div class="card-body">
-                        <h3>企档通｜客户项目一体化台账</h3>
-                        <p class="card-desc">适合工程服务商、自由职业、小微企业，统一管理客户档案与项目台账。</p>
-                        <ul class="card-feature">
-                            <li>客户档案、跟进记录管理</li>
-                            <li>项目进度、回款、欠款统计</li>
-                            <li>CSV导出、本地SQLite存储</li>
-                            <li>试用版限制：3客户+5项目</li>
-                        </ul>
-                        <a class="btn btn-detail" href="products/qidantong/index.html">查看详情 & 下载试用</a>
-                    </div>
-                </div>
-                <!-- 产品2：货物销售管理系统 -->
-                <div class="card">
-                    <div class="card-img">
-                        <img src="assets/img/seal.png" alt="货物销售系统预览" style="width:100%;height:auto;display:block;">
-                    </div>
-                    <div class="card-body">
-                        <h3>货物销售管理系统｜进销存台账</h3>
-                        <p class="card-desc">适合水产、贸易商户，进货入库、销售出库、收款欠款、报表统计一体化。</p>
-                        <ul class="card-feature">
-                            <li>采购入库、销售出库录入</li>
-                            <li>客户、虾塘地址信息管理</li>
-                            <li>收款付款登记、销售报表查询</li>
-                            <li>库存简易查询、缺货提醒</li>
-                        </ul>
-                        <a class="btn btn-detail" href="products/saleSystem/index.html">查看详情 & 下载试用</a>
-                    </div>
-                </div>
-                <!-- 以后新增软件直接复制上面整块card，改文字和链接 -->
-            </div>
-        </section>
+        <div class="hero-cta">
+            <a class="btn btn-primary" href="#products">浏览全部产品</a>
+            <a class="btn btn-ghost" href="about.html">售后与授权说明</a>
+        </div>
     </div>
-    <footer>
-        <div class="container">
-            <p>© 2026 林子软件工具库 | 单机工具均为买断授权模式</p>
+</header>
+
+<nav>
+    <a href="index.html">首页</a>
+    <a href="#products">全部产品</a>
+    <a href="#why">为什么买断</a>
+    <a href="#pick">怎么选</a>
+    <a href="about.html">售后与授权</a>
+</nav>
+
+<div class="container wrap">
+
+    <!-- 一、为什么选择 -->
+    <div class="section" id="why">
+        <h2>为什么是做单机买断，而不是做云端订阅</h2>
+        <p class="h2-sub">小生意的账，本来就该自己拿在手里。软件是工具，不该变成每年必须交的一笔"租金"。</p>
+
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="ico">🔑</div>
+                <h4>一次买断，永久使用</h4>
+                <p>没有年费、没有续费、不按人数收费。今天能用，三年后还能用，不用为涨价或被停服担心。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🔒</div>
+                <h4>数据在自己电脑里</h4>
+                <p>客户名单、进货价、回款记录都存在本地数据库文件，不上传任何服务器，别人拿不到。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">📴</div>
+                <h4>断网也能用</h4>
+                <p>塘口没信号、仓库没网、出差在车上，打开电脑就能开单查账，不依赖网络和验证码。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🧭</div>
+                <h4>先试用，再决定</h4>
+                <p>每款软件都能免费下载试用，用自己的真实数据跑一遍，觉得顺手再付费，不靠销售话术。</p>
+            </div>
         </div>
-    </footer>
+    </div>
+
+    <!-- 二、产品矩阵 -->
+    <div class="section" id="products">
+        <h2>全部产品</h2>
+        <p class="h2-sub">每款都解决一个具体问题，界面简单到不需要培训。下面 10 个产品位在陆续填满，已上线的可以直接下载试用。</p>
+
+        <div class="product-grid">
+
+            <!-- ============ 产品 1：企档通 ============ -->
+            <div class="pcard">
+                <div class="cover">
+                    <span class="tag">已上线</span>
+                    <img src="assets/img/qidantong/dashboard.png" alt="企档通首页仪表盘" loading="lazy">
+                </div>
+                <div class="pcard-body">
+                    <h3>企档通｜客户项目一体化台账</h3>
+                    <p class="desc">管客户跟进和工程回款：谁该回访、哪笔款逾期，打开首页就知道。</p>
+                    <ul>
+                        <li>客户档案分级，回访到期提醒</li>
+                        <li>项目合同额、已回款、欠款自动算</li>
+                        <li>多期回款计划 + 逾期预警</li>
+                        <li>多账号分权、加密备份</li>
+                    </ul>
+                    <a class="pcard-link" href="products/qidantong/index.html">查看详情 &amp; 下载试用</a>
+                </div>
+            </div>
+
+            <!-- ============ 产品 2：货物销售管理系统 ============ -->
+            <div class="pcard">
+                <div class="cover">
+                    <span class="tag">已上线</span>
+                    <img src="assets/img/saleSystem/xiaosck.png" alt="货物销售管理系统销售出库" loading="lazy">
+                </div>
+                <div class="pcard-body">
+                    <h3>货物销售管理系统｜进销存台账</h3>
+                    <p class="desc">管进货卖货和欠款：进了多少、卖了多少、库里剩多少、谁欠我多少，一本账算清。</p>
+                    <ul>
+                        <li>采购入库、销售出库逐单登记</li>
+                        <li>库存汇总、缺货查询</li>
+                        <li>应收应付自动累计冲减</li>
+                        <li>月报年报直接生成</li>
+                    </ul>
+                    <a class="pcard-link" href="products/saleSystem/index.html">查看详情 &amp; 下载试用</a>
+                </div>
+            </div>
+
+            <!-- ============ 以下为预留产品位（8 个，合计 10 个产品位） ============ -->
+            <!-- 新增产品时：把其中一个 .pcard.soon 整块替换成上面 .pcard 的结构，改图片、标题、简介、4 条卖点和详情链接 -->
+
+            <div class="pcard soon">
+                <div class="plus">+</div>
+                <h3>第 3 个产品位</h3>
+                <p>筹备中 · 欢迎告诉我们<br>你最需要的工具</p>
+            </div>
+
+            <div class="pcard soon">
+                <div class="plus">+</div>
+                <h3>第 4 个产品位</h3>
+                <p>筹备中 · 欢迎告诉我们<br>你最需要的工具</p>
+            </div>
+
+            <div class="pcard soon">
+                <div class="plus">+</div>
+                <h3>第 5 个产品位</h3>
+                <p>筹备中 · 欢迎告诉我们<br>你最需要的工具</p>
+            </div>
+
+            <div class="pcard soon">
+                <div class="plus">+</div>
+                <h3>第 6 个产品位</h3>
+                <p>筹备中 · 欢迎告诉我们<br>你最需要的工具</p>
+            </div>
+
+            <div class="pcard soon">
+                <div class="plus">+</div>
+                <h3>第 7 个产品位</h3>
+                <p>筹备中 · 欢迎告诉我们<br>你最需要的工具</p>
+            </div>
+
+            <div class="pcard soon">
+                <div class="plus">+</div>
+                <h3>第 8 个产品位</h3>
+                <p>筹备中 · 欢迎告诉我们<br>你最需要的工具</p>
+            </div>
+
+            <div class="pcard soon">
+                <div class="plus">+</div>
+                <h3>第 9 个产品位</h3>
+                <p>筹备中 · 欢迎告诉我们<br>你最需要的工具</p>
+            </div>
+
+            <div class="pcard soon">
+                <div class="plus">+</div>
+                <h3>第 10 个产品位</h3>
+                <p>筹备中 · 欢迎告诉我们<br>你最需要的工具</p>
+            </div>
+
+        </div>
+
+        <div class="note-box">
+            💡 <strong>还在做新工具。</strong>如果你手上有个活一直靠 Excel 或本子撑着，欢迎告诉我具体场景——说得清楚的痛点会优先排期做成软件。
+        </div>
+    </div>
+
+    <!-- 三、选购指南 -->
+    <div class="section" id="pick">
+        <h2>不知道选哪个？看这一句就够</h2>
+        <p class="h2-sub">两款软件的边界很清楚，按你现在最头疼的事选。</p>
+
+        <div class="pick-grid">
+            <div class="pick">
+                <div class="q">钱是一批一批收、客户要长期维护？</div>
+                <div class="a">选 企档通</div>
+                <p>工程款、服务费、分期回款、客户回访，属于"客户 + 项目"型生意。</p>
+            </div>
+            <div class="pick">
+                <div class="q">有货进来、有货出去、要看库存？</div>
+                <div class="a">选 货物销售管理系统</div>
+                <p>水产、生鲜、贸易批发，属于"进货 — 卖货 — 库存"型生意。</p>
+            </div>
+            <div class="pick">
+                <div class="q">两个都想要，怕买了用不上？</div>
+                <div class="a">先都下载试用</div>
+                <p>试用免费，用自己的数据各跑一遍，哪个省事买哪个，不需要勉强凑单。</p>
+            </div>
+        </div>
+
+        <div class="tip-box">
+            <strong>一句实话：</strong>这两款软件都不是功能最全的。它们的目标是——<strong>你今天装完，明天就能用起来，而且三年后还在用</strong>。功能堆得越多，小生意越用不下去。
+        </div>
+    </div>
+
+    <!-- 四、结尾 CTA -->
+    <div class="final-cta">
+        <h2>挑一款先试用，账目清楚从今天开始</h2>
+        <p>全部软件支持免费下载试用，数据本地存储，买断后永久使用。</p>
+        <a class="btn btn-primary" href="#products">浏览产品并下载</a>
+        <a class="btn btn-ghost" href="about.html">查看售后与授权</a>
+        <div class="small">Windows 10 / 11 ｜ 单机版，无需服务器 ｜ 一次买断，永久使用</div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="container">
+        <p>© 2026 林子软件工具库 ｜ 单机工具均为买断授权模式 ｜ <a href="about.html">售后与授权说明</a></p>
+        <p style="font-size:13px; margin-top:6px; color:#9ca3af;">站内截图为软件真实界面，演示数据仅作示例。</p>
+    </div>
+</footer>
+
 </body>
 </html>
 <!-- （注：内容由AI生成） -->

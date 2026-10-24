@@ -3,213 +3,958 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>货物销售管理系统 - 进销存单机台账工具</title>
-    <meta name="description" content="货物销售管理系统，面向水产、贸易商户的本地进销存工具，进货入库、销售出库、回款欠款、销售报表，买断制，数据本地SQLite存储。">
+    <title>货物销售管理系统 - 进销存单机台账工具｜林子软件工具库</title>
+    <meta name="description" content="货物销售管理系统，面向水产、贸易商户的本地进销存工具：采购入库、销售出库、库存汇总、应收应付、月报年报，单据留痕、欠款清晰。Windows 单机版，数据本地存储，一次买断永久使用。">
+    <meta name="keywords" content="货物销售管理系统,进销存软件,水产进销存,单机版进销存,销售台账,应收应付软件,买断进销存">
+    <meta property="og:title" content="货物销售管理系统 - 进多少、卖多少、谁欠我一屏看清">
+    <meta property="og:description" content="Windows 单机进销存台账工具：采购入库、销售出库、库存汇总、应收应付、月报年报。数据存本地，一次买断永久使用。">
+    <meta property="og:type" content="product">
+    <meta property="og:image" content="../../assets/img/saleSystem/xiaosck.png">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft Yahei", system-ui, sans-serif;
+            font-family: "Microsoft Yahei", system-ui, -apple-system, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
         }
         body {
-            background-color: #f7f8fa;
-            color: #222;
-            line-height: 1.7;
+            background-color: #f8fafc;
+            color: #1f2937;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
         }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
+        img {
+            max-width: 100%;
+            display: block;
         }
+        a {
+            color: inherit;
+        }
+
+        /* ---------- 头部 ---------- */
         header {
-            background: #2563eb;
-            color: white;
-            padding: 36px 0;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: #fff;
+            padding: 56px 16px 64px;
             text-align: center;
+            position: relative;
+        }
+        header .badge-top {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: .5px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
         }
         header h1 {
-            font-size: 32px;
-            margin-bottom:8px;
+            font-size: 36px;
+            line-height: 1.35;
+            margin-bottom: 14px;
+            letter-spacing: 1px;
         }
-        header p {
-            opacity: 0.9;
-            font-size:17px;
+        header .sub {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: .3px;
+            text-shadow: 0 1px 3px rgba(15, 23, 42, .22);
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        header .kv {
+            display: flex;
+            justify-content: center;
+            gap: 10px 26px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+            font-size: 15px;
+            opacity: .95;
+        }
+        header .kv span::before {
+            content: "✓";
+            color: #6ee7b7;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        .hero-cta {
+            margin-top: 32px;
         }
         nav {
-            background: #1e40af;
-            padding:12px 0;
+            background-color: #1e40af;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(30, 64, 175, .25);
         }
         nav a {
-            color:#fff;
-            text-decoration:none;
-            margin:0 14px;
-            font-size:16px;
+            color: #fff;
+            text-decoration: none;
+            margin: 0 14px;
+            font-size: 16px;
+            white-space: nowrap;
         }
         nav a:hover {
             text-decoration: underline;
         }
-        .nav-center {
-            text-align:center;
+
+        /* ---------- 布局 ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 16px;
         }
-        section {
+        .wrap {
+            padding-bottom: 40px;
+        }
+        .section {
             background: #fff;
-            margin: 24px 0;
-            padding: 32px;
             border-radius: 12px;
-            box-shadow: 0 2px 10px #0000000c;
+            padding: 36px 36px 32px;
+            margin: 26px 0;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
         }
         h2 {
-            color:#1e40af;
-            margin-bottom:16px;
-            font-size:24px;
+            color: #1e40af;
+            font-size: 25px;
+            margin-bottom: 10px;
+            line-height: 1.45;
         }
+        .h2-sub {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+        h3 {
+            color: #0f172a;
+            font-size: 20px;
+            margin: 36px 0 6px;
+            padding-left: 12px;
+            border-left: 4px solid #2563eb;
+        }
+        h3:first-of-type {
+            margin-top: 8px;
+        }
+        p {
+            color: #374151;
+        }
+        .desc-text {
+            color: #475569;
+            margin: 12px 0 0;
+            font-size: 15.5px;
+        }
+        .vlist {
+            list-style: none;
+            margin: 14px 0 0;
+        }
+        .vlist li {
+            position: relative;
+            padding: 6px 0 6px 26px;
+            font-size: 15.5px;
+            color: #374151;
+        }
+        .vlist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            color: #10b981;
+            font-weight: bold;
+        }
+        .vlist li b {
+            color: #0f172a;
+        }
+
+        /* ---------- 按钮 ---------- */
         .btn {
             display: inline-block;
-            padding:14px 32px;
-            border-radius:8px;
-            text-decoration:none;
-            font-weight:bold;
-            font-size:17px;
-            margin:8px 6px;
-        }
-        .btn-download {
-            background:#10b981;
-            color:white;
-        }
-        .btn-buy {
-            background:#ef4444;
-            color:white;
+            padding: 14px 34px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+            margin: 8px 6px;
+            transition: transform .15s, box-shadow .15s;
+            border: none;
+            cursor: pointer;
         }
         .btn:hover {
-            opacity:0.92;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+        }
+        .btn-download {
+            background: #10b981;
+            color: #fff;
+        }
+        .btn-buy {
+            background: #ef4444;
+            color: #fff;
+        }
+        .btn-ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .55);
         }
         .center {
-            text-align:center;
-            margin:20px 0;
+            text-align: center;
         }
-        .feature-list {
-            list-style:none;
+
+        /* ---------- 价值卡片 ---------- */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
         }
-        .feature-list li {
-            padding:8px 0;
-            padding-left:24px;
-            position:relative;
+        .value-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 22px 20px;
         }
-        .feature-list li::before {
-            content:"✓";
-            color:#10b981;
-            position:absolute;
-            left:0;
-            font-weight:bold;
+        .value-card .ico {
+            font-size: 24px;
+            margin-bottom: 8px;
         }
+        .value-card h4 {
+            font-size: 17px;
+            color: #1e3a8a;
+            margin-bottom: 6px;
+        }
+        .value-card p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- 截图 ---------- */
+        .shot {
+            margin: 18px 0 0;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 8px;
+            cursor: zoom-in;
+            transition: border-color .15s;
+        }
+        .shot:hover {
+            border-color: #93c5fd;
+        }
+        .shot img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+        .shot-cap {
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            padding: 8px 0 2px;
+        }
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .shot-grid .shot {
+            margin: 0;
+        }
+        .shot-note {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* ---------- 提示框 ---------- */
+        .tip-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #78350f;
+        }
+        .tip-box strong {
+            color: #92400e;
+        }
+
+        /* ---------- 对比表 ---------- */
+        .cmp-wrap {
+            overflow-x: auto;
+            margin-top: 22px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+        table.cmp {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+            font-size: 15px;
+        }
+        table.cmp th,
+        table.cmp td {
+            padding: 13px 14px;
+            text-align: center;
+            border-bottom: 1px solid #eef2f7;
+        }
+        table.cmp thead th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table.cmp tbody th {
+            text-align: left;
+            font-weight: 500;
+            color: #334155;
+            background: #fafbfc;
+            white-space: nowrap;
+        }
+        table.cmp td.self {
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+        table.cmp .no {
+            color: #94a3b8;
+        }
+
+        /* ---------- 适用行业 ---------- */
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .who {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px 20px;
+            background: #fff;
+        }
+        .who h4 {
+            font-size: 16px;
+            color: #1e3a8a;
+            margin-bottom: 4px;
+        }
+        .who p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        /* ---------- 授权步骤 ---------- */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 22px;
+        }
+        .step {
+            position: relative;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px 18px;
+        }
+        .step .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .step p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- FAQ ---------- */
         .faq-item {
-            margin-bottom:16px;
+            padding: 16px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
         }
         .faq-item strong {
-            color:#2563eb;
+            display: block;
+            color: #1e40af;
+            font-size: 16px;
+            margin-bottom: 4px;
         }
-        .tip-box {
-            background:#fffbeb;
-            border-left:4px solid #f59e0b;
-            padding:16px;
-            border-radius:6px;
-            margin:16px 0;
+        .faq-item p {
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        /* ---------- 底部 CTA ---------- */
+        .final-cta {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 44px 32px;
+            text-align: center;
+            margin: 26px 0;
+        }
+        .final-cta h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .final-cta p {
+            color: rgba(255, 255, 255, .9);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .final-cta .small {
+            font-size: 13px;
+            opacity: .8;
+            margin-top: 14px;
         }
         footer {
-            text-align:center;
-            padding:30px 0;
-            color:#666;
-            font-size:14px;
+            text-align: center;
+            padding: 30px 16px 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        footer a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        /* ---------- 图片放大 ---------- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .92);
+            z-index: 999;
+            padding: 28px;
+            overflow: auto;
+            cursor: zoom-out;
+        }
+        .lightbox.on {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .lightbox img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+        }
+        .lightbox .close {
+            position: fixed;
+            top: 14px;
+            right: 22px;
+            color: #fff;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: .8;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 40px 16px 44px;
+            }
+            header h1 {
+                font-size: 26px;
+            }
+            header .sub {
+                font-size: 15.5px;
+            }
+            .section {
+                padding: 24px 18px;
+                border-radius: 10px;
+            }
+            h2 {
+                font-size: 21px;
+            }
+            h3 {
+                font-size: 18px;
+                margin-top: 28px;
+            }
+            .btn {
+                display: block;
+                margin: 10px auto;
+                max-width: 320px;
+                font-size: 16px;
+            }
+            nav a {
+                margin: 0 9px;
+                font-size: 15px;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>货物销售管理系统</h1>
-            <p>进销存一体化本地台账工具｜单机买断 · 数据本地存储</p>
-        </div>
-    </header>
-    <nav>
-        <div class="container nav-center">
-            <a href="../../index.html">首页</a>
-            <a href="../qidantong/index.html">企档通</a>
-            <a href="index.html">货物销售管理系统</a>
-            <a href="../../about.html">售后与授权说明</a>
-        </div>
-    </nav>
 
+<header>
     <div class="container">
-        <section>
-            <h2>产品介绍</h2>
-            <p>货物销售管理系统，专为水产商户、小型贸易商家打造的单机进销存台账软件。支持采购入库、销售出库、应收欠款、付款收款登记，自动生成各类销售、进货统计报表，适配虾塘收货、客户对账场景。</p>
-            <div class="tip-box">
-                ✅ 数据保存在本地 SQLite，不上传云端；<br>
-                ✅ 买断制，一次付费永久使用，无订阅费；<br>
-                ✅ Windows 桌面工具，Wails开发，轻量稳定；<br>
-                ✅ 适配水产行业：支持登记虾塘地址、客户信息管理。
-            </div>
-            <ul class="feature-list">
-                <li>基础资料管理：商品档案、客户信息、虾塘地址维护</li>
-                <li>进货管理：采购入库单录入、进货明细、缺货查询、入库汇总表</li>
-                <li>销售管理：销售出库单录入，支持现金等多种结算方式</li>
-                <li>资金台账：收款登记、付款登记、欠款对账</li>
-                <li>报表模块：销售汇总、进货汇总，方便对账核算</li>
-                <li>试用版限制：单据数量上限，解锁后无单据限制</li>
-            </ul>
-        </section>
+        <div class="badge-top">Windows 单机版 · 买断制</div>
+        <h1>货物销售管理系统</h1>
+        <p class="sub">进了多少、卖了多少、库里还剩多少、谁欠我多少钱——<br>一本账算清楚，不用再翻手写本和十几个 Excel 表。</p>
+        <div class="kv">
+            <span>数据存本机，不上云</span>
+            <span>一次买断，无年费</span>
+            <span>断网照常用</span>
+            <span>先免费用，满意再买</span>
+        </div>
+        <div class="hero-cta">
+            <a class="btn btn-download" href="【替换成这个软件的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 试用版</a>
+            <a class="btn btn-ghost" href="#feature">先看看功能界面</a>
+        </div>
+    </div>
+</header>
 
-        <section>
-            <h2>免费试用</h2>
-            <p>先下载试用版，在本地录入单据体验完整流程，对账流程满意再购买授权。</p>
-            <div class="center">
-                <a class="btn btn-download" href="【替换成这个软件的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 试用版</a>
-            </div>
-            <div class="tip-box">
-                使用步骤：<br>
-                1. 安装打开货物销售管理系统；<br>
-                2. 进入【帮助 / 软件授权】页面，复制本机机器码；<br>
-                3. 下单时粘贴机器码，付款后获取激活码；<br>
-                4. 在授权窗口粘贴激活码，解除试用单据限制。
-            </div>
-        </section>
+<nav>
+    <a href="../../index.html">首页</a>
+    <a href="../qidantong/index.html">企档通</a>
+    <a href="index.html">货物销售管理系统</a>
+    <a href="../../about.html">售后与授权</a>
+</nav>
 
-        <section>
-            <h2>购买授权（买断）</h2>
-            <p>一次购买，永久使用，无后续年费。付款页面会让你填写机器码。</p>
-            <div class="center">
-                <a class="btn btn-buy" href="【替换成极速卖码这个商品的链接】" target="_blank">💰 前往购买授权</a>
-            </div>
-            <p style="text-align:center; color:#666; margin-top:8px;">付款成功后，系统自动发放激活码</p>
-        </section>
+<div class="container wrap">
 
-        <section>
-            <h2>常见问题 FAQ</h2>
-            <div class="faq-item">
-                <strong>Q：单据数据会上传到外网服务器吗？</strong>
-                <p>A：不会。所有进货、销售、客户数据全部保存在电脑本地 SQLite 文件，软件运行不需要联网。</p>
+    <!-- 一、痛点与价值 -->
+    <div class="section">
+        <h2>做小生意最难的不是卖货，是把账记明白</h2>
+        <p class="h2-sub">收货、送货、赊账、回款，全压在一个人脑子里，最后都变成三句话：这单到底赚了多少？库里还剩多少？谁还欠我钱？</p>
+
+        <p>货物销售管理系统就是为这件事做的：把每一次进货、出货、收钱、付钱都变成一张有编号的单据，库存和欠款跟着单据自动变动。你不用懂财务，也不用背 Excel 公式，按做生意本来的顺序点点鼠标，账就自己长出来了。</p>
+
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="ico">📄</div>
+                <h4>一笔不漏，全部留痕</h4>
+                <p>采购入库、销售出库逐单登记，单号、日期、客户、货品、单价、结算方式齐全。事后有争议，翻单据就行，不用靠回忆。</p>
             </div>
-            <div class="faq-item">
-                <strong>Q：换电脑使用怎么办？</strong>
-                <p>A：激活码绑定本机机器码；更换电脑需要重新申请激活码，具体规则参考统一售后页面。</p>
+            <div class="value-card">
+                <div class="ico">💰</div>
+                <h4>谁欠我多少，一眼看到</h4>
+                <p>应收、应付款按客户和供应商自动累计，收到一笔钱登记后自动冲减。月底不用挨个打电话问，打开列表就知道要催谁。</p>
             </div>
-            <div class="faq-item">
-                <strong>Q：怎么备份我的销售和进货记录？</strong>
-                <p>A：可以在系统里找到数据库备份功能，直接备份sqlite文件，拷贝到U盘即可。</p>
+            <div class="value-card">
+                <div class="ico">📦</div>
+                <h4>库存心里有数，不压货不断货</h4>
+                <p>出入库数量自动汇总成库存汇总表，配合缺货查询，哪种货该补、哪种货压着，清清楚楚，少压一分钱就是多赚一分钱。</p>
             </div>
-            <div class="faq-item">
-                <strong>Q：支持打印出库单、对账单吗？</strong>
-                <p>A：当前版本支持单据查看导出，后续版本持续迭代打印功能。</p>
+            <div class="value-card">
+                <div class="ico">📊</div>
+                <h4>月报年报自动出，对账不熬夜</h4>
+                <p>销售汇总、进货汇总、月报、年报直接由单据生成，客户要明细、家里要总账，导出来就能用，告别月底手算两小时。</p>
             </div>
-        </section>
+        </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <p>© 2026 林子软件工具库 | 单机台账工具 | 货物销售管理系统 V1.0</p>
+    <!-- 二、功能详解 -->
+    <div class="section" id="feature">
+        <h2>功能详解：按你做生意的一天来排</h2>
+        <p class="h2-sub">下面都是软件里的真实界面（数据为演示数据）。新建客户 → 收一批货 → 出一批货 → 收回货款 → 看报表，就是完整的一天。</p>
+
+        <h3>1. 先把自己的资料库建起来</h3>
+        <p class="desc-text">客户、供应商、商品、仓库四大基础资料，是整个系统的地基。建好一次，以后开单只需要下拉选择，不用每次重新打字，也不会出现同一个客户三个名字的情况。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/khgl.png" alt="客户管理界面" loading="lazy">
+                <div class="shot-cap">客户管理：名称、联系人、电话、地址统一维护</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/gongys.png" alt="供应商管理界面" loading="lazy">
+                <div class="shot-cap">供应商管理：收货对上家，付款有对象</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/yanpinda.png" alt="商品档案界面" loading="lazy">
+                <div class="shot-cap">商品档案：品名、规格、单位、常规价一次录好</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/cangkgl.png" alt="仓库管理界面" loading="lazy">
+                <div class="shot-cap">仓库管理：多个仓库/塘口分开管，库存不串</div>
+            </div>
         </div>
-    </footer>
+        <ul class="vlist">
+            <li><b>客户档案</b>可以记地址和联系电话，做水产的可以记清是哪个塘口、哪个老板，送货不跑错地方。</li>
+            <li><b>商品档案</b>按规格和单位建好（斤/件/箱），开单时选品即带出单位，不会出现"斤"和"公斤"混着算。</li>
+            <li>基础资料一次建好长期复用，新人接手也能照着填。</li>
+        </ul>
+
+        <h3>2. 采购入库：货一到就录，账不拖成糊账</h3>
+        <p class="desc-text">收货当天开一张采购入库单，供应商、货品、数量、单价、金额一次录完。单据保存后自动进入进货明细和入库汇总，库存同步增加——不用再另抄一遍本子。</p>
+        <div class="shot">
+            <img src="../../assets/img/saleSystem/caigourk.png" alt="采购入库单录入界面" loading="lazy">
+            <div class="shot-cap">采购入库单：一单多行，录完即入账、即进库存</div>
+        </div>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/jinhuomx.png" alt="进货明细界面" loading="lazy">
+                <div class="shot-cap">进货明细：每笔进货可查、可追溯</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/caigoucx.png" alt="采购查询界面" loading="lazy">
+                <div class="shot-cap">采购查询：按日期、供应商、货品快速筛</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/qiehcx.png" alt="缺货查询界面" loading="lazy">
+                <div class="shot-cap">缺货查询：哪种货不够卖，提前下单补货</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/ruikuhz.png" alt="入库汇总界面" loading="lazy">
+                <div class="shot-cap">入库汇总：一段时间进了多少，一表看全</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>不再手抄两遍：</b>开单即入账，进货明细、入库汇总自动生成，少一次抄写就少一次出错。</li>
+            <li><b>缺货有预警：</b>出货前先看一眼缺货查询，避免客户下单了才发现没货，丢单又丢面子。</li>
+            <li><b>月底好对账：</b>跟上家结账时按供应商筛出这段期间的进货，金额对得上，不怕对方多算。</li>
+        </ul>
+
+        <h3>3. 销售出库：开单快，卖了多少骗不了自己</h3>
+        <p class="desc-text">出货现场就能开单：选客户、选货品、填数量单价，支持现金等多种结算方式。系统自动扣减库存，并把这笔销售记进客户的应收台账——赊账也不会忘。</p>
+        <div class="shot">
+            <img src="../../assets/img/saleSystem/xiaosck.png" alt="销售出库单录入界面" loading="lazy">
+            <div class="shot-cap">销售出库单：选客户选货品，金额自动算</div>
+        </div>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/xiaosmx.png" alt="销售明细界面" loading="lazy">
+                <div class="shot-cap">销售明细：卖给了谁、什么价、哪天结</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/xiaoscx.png" alt="销售查询界面" loading="lazy">
+                <div class="shot-cap">销售查询：随时调出任意时间的销售记录</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>开单不卡手：</b>常用客户和货品都是下拉选，一张单几十秒录完，忙的时候也不耽误。</li>
+            <li><b>赊账自动挂账：</b>现金结清的直接了账，没结清的部分自动进应收，不会出现"当时说下次给"最后忘掉。</li>
+            <li><b>卖了多少可回查：</b>客户说"上次那批价不对"，把销售明细一拉，白纸黑字对清楚。</li>
+        </ul>
+
+        <h3>4. 库存管理：钱压在货上，得知道压在哪</h3>
+        <p class="desc-text">入库增加、出库减少，系统自动算出每种货的库存数量和金额。库存汇总表 + 库存出入库单，一眼看出哪些货周转快、哪些货躺在仓库里占钱。</p>
+        <div class="shot">
+            <img src="../../assets/img/saleSystem/cukuhz.png" alt="库存汇总界面" loading="lazy">
+            <div class="shot-cap">库存汇总：每种货剩多少、值多少钱</div>
+        </div>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/kucuirzd.png" alt="库存出入库单界面" loading="lazy">
+                <div class="shot-cap">库存出入库单：每一笔进出都能查到源头</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/ruikuhz2.png" alt="入库汇总明细界面" loading="lazy">
+                <div class="shot-cap">入库汇总明细：按货品看累计进货量</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>不用盘库猜数：</b>平时的进出都录了，库存就是实时结果，年底盘点只核对差异。</li>
+            <li><b>看清资金占用：</b>库存金额一目了然，压货太多时能及时清货回笼现金。</li>
+        </ul>
+
+        <h3>5. 应收收款：这是小生意最容易亏钱的地方</h3>
+        <p class="desc-text">赊出去的货就是借出去的钱。系统把每个客户的应收款自动累计，收款时登记一笔就自动冲减，欠款余额实时更新。谁欠、欠多久、欠多少，一张台账说清楚。</p>
+        <div class="shot">
+            <img src="../../assets/img/saleSystem/yingszk.png" alt="应收帐款界面" loading="lazy">
+            <div class="shot-cap">应收帐款：按客户看欠款余额，催款有依据</div>
+        </div>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/shoukcx.png" alt="收款查询界面" loading="lazy">
+                <div class="shot-cap">收款查询：哪天收了多少，笔笔有记录</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/yingskhz.png" alt="应收款汇总界面" loading="lazy">
+                <div class="shot-cap">应收款汇总：全部在外面的钱加起来多少</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/yingshouzktzd.png" alt="应收帐款台账单界面" loading="lazy">
+                <div class="shot-cap">应收帐款台账单：打印/导出给客户对账</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/yingshouzhz.png" alt="应收帐汇总界面" loading="lazy">
+                <div class="shot-cap">应收帐汇总：按月、按客户汇总结算</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>少收漏收的钱捡回来：</b>零散赊账最容易忘，台账摆在那，月底照着名单催一遍。</li>
+            <li><b>对账不再吵架：</b>把应收台账单导出来发客户，发货时间、金额、已收多少全在表上，一句话就能核对完。</li>
+            <li><b>心里有底才敢赊：</b>老客户欠款历史一查就知道，该不该再赊、赊多少，自己做判断。</li>
+        </ul>
+
+        <h3>6. 应付付款：跟上家结算也清清楚楚</h3>
+        <p class="desc-text">采购进来的货该付多少钱，同样自动记录。付款登记之后自动冲减应付，避免重复付款，也避免上家说"你还没结"时自己心里没底。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/yingfuzkcx.png" alt="应付帐款查询界面" loading="lazy">
+                <div class="shot-cap">应付帐款查询：欠上家多少，一查就明</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/fukandj.png" alt="付款登记界面" loading="lazy">
+                <div class="shot-cap">付款登记：付一笔记一笔，余额自动减</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/yingfudzd.png" alt="应付对账单界面" loading="lazy">
+                <div class="shot-cap">应付对账单：跟供应商对账有凭据</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/yingfuzkhzb.png" alt="应付帐款汇总表界面" loading="lazy">
+                <div class="shot-cap">应付帐款汇总表：全部欠款汇总成一张表</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>不会重复付款：</b>每笔付款都有登记，付过没过一目了然。</li>
+            <li><b>现金流提前安排：</b>应付应收一起看，什么时候该留多少钱心里有数。</li>
+        </ul>
+
+        <h3>7. 报表：月底不用再算一遍</h3>
+        <p class="desc-text">月报、年报直接由单据自动生成，销售多少、进货多少、毛利多少，按月按年看趋势。想给家里交代生意情况，打开报表截图就行。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/yuebao.png" alt="月报界面" loading="lazy">
+                <div class="shot-cap">月报：这个月卖了多少、进了多少</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/saleSystem/nianbao.png" alt="年报界面" loading="lazy">
+                <div class="shot-cap">年报：全年经营情况一页看完</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>看清趋势：</b>对比几个月的数据，知道哪个月是旺季、哪种货最走量。</li>
+            <li><b>决策有依据：</b>不靠感觉拍脑袋进货，用报表决定备多少货、主推什么。</li>
+        </ul>
+
+        <p class="shot-note">以上截图为软件实际界面，图中数据仅为演示用途。</p>
+    </div>
+
+    <!-- 三、适用人群 -->
+    <div class="section">
+        <h2>适合哪些人用</h2>
+        <p class="h2-sub">只要你的生意是"进货—卖货—赊账—回款"这个循环，并且不想为进销存付年费，就适合。</p>
+        <div class="who-grid">
+            <div class="who">
+                <h4>水产收购 / 批发</h4>
+                <p>虾塘收货、档口批发，客户多、赊账多、账期乱，最需要应收台账。</p>
+            </div>
+            <div class="who">
+                <h4>生鲜冻品 / 农贸批发</h4>
+                <p>每天进出频繁、规格单位多，靠本子记不住，靠 Excel 又容易算错。</p>
+            </div>
+            <div class="who">
+                <h4>粮油干货 / 食品贸易</h4>
+                <p>上家下家都要对账，应付应收两头管，一张汇总表省很多口水。</p>
+            </div>
+            <div class="who">
+                <h4>建材五金 / 农资</h4>
+                <p>按单走货、月结客户多，需要清楚记录每一笔出货和回款。</p>
+            </div>
+        </div>
+        <div class="tip-box">
+            <strong>不太适合的情况：</strong>需要多人同时在线协作、需要手机端给业务员下单、需要对接电商平台订单的，这类需求更适合云端 SaaS 系统。本软件定位是<strong>一个人/一台电脑管好自己的一摊账</strong>。
+        </div>
+    </div>
+
+    <!-- 四、对比 -->
+    <div class="section">
+        <h2>跟手写本、Excel、云端软件比，差在哪</h2>
+        <p class="h2-sub">不是功能最多的，但一定是小生意最容易坚持用下去的那一种。</p>
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>对比项</th>
+                        <th>手写账本</th>
+                        <th>自己搭 Excel</th>
+                        <th>云端 SaaS</th>
+                        <th>本软件</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>上手难度</th>
+                        <td>简单</td>
+                        <td>要会公式</td>
+                        <td>要培训</td>
+                        <td class="self">装完就能用</td>
+                    </tr>
+                    <tr>
+                        <th>漏单 / 算错</th>
+                        <td class="no">经常</td>
+                        <td class="no">改错一格全乱</td>
+                        <td>较少</td>
+                        <td class="self">单据驱动，自动汇总</td>
+                    </tr>
+                    <tr>
+                        <th>欠款跟踪</th>
+                        <td class="no">靠记性</td>
+                        <td class="no">要手工维护</td>
+                        <td>有</td>
+                        <td class="self">自动累计冲减</td>
+                    </tr>
+                    <tr>
+                        <th>费用</th>
+                        <td>便宜</td>
+                        <td>便宜</td>
+                        <td class="no">每年订阅</td>
+                        <td class="self">一次买断</td>
+                    </tr>
+                    <tr>
+                        <th>数据在哪</th>
+                        <td>纸本</td>
+                        <td>自己电脑</td>
+                        <td class="no">厂商服务器</td>
+                        <td class="self">自己电脑</td>
+                    </tr>
+                    <tr>
+                        <th>断网能用</th>
+                        <td>能</td>
+                        <td>能</td>
+                        <td class="no">不能</td>
+                        <td class="self">能，完全离线</td>
+                    </tr>
+                    <tr>
+                        <th>数据备份</th>
+                        <td>怕水火</td>
+                        <td>手动</td>
+                        <td>厂商负责</td>
+                        <td class="self">备份数据库文件到U盘</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 五、免费试用 -->
+    <div class="section">
+        <h2>先试用，觉得合适再买</h2>
+        <p>试用版功能完整，只对单据数量做了限制，可以先把自己的客户、货品录进去，真实开几张单，看看顺不顺手。</p>
+        <div class="center">
+            <a class="btn btn-download" href="【替换成这个软件的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 试用版</a>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
+                <p>下载并安装，双击打开软件</p>
+            </div>
+            <div class="step">
+                <div class="num">2</div>
+                <p>进入【帮助 / 软件授权】页面，复制本机机器码</p>
+            </div>
+            <div class="step">
+                <div class="num">3</div>
+                <p>下单时粘贴机器码，付款后获取激活码</p>
+            </div>
+            <div class="step">
+                <div class="num">4</div>
+                <p>在授权窗口粘贴激活码，解除单据数量限制</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 六、购买 -->
+    <div class="section">
+        <h2>购买授权：一次付费，永久使用</h2>
+        <p>没有年费、没有续费、没有账号数量限制。付款页面会让你填写机器码，付完系统自动发放激活码。</p>
+        <div class="center">
+            <a class="btn btn-buy" href="【替换成极速卖码这个商品的链接】" target="_blank">💰 前往购买授权</a>
+        </div>
+        <p class="center" style="color:#6b7280; font-size:14px; margin-top:6px;">付款成功后自动发放激活码 · 激活码绑定本机机器码</p>
+    </div>
+
+    <!-- 七、FAQ -->
+    <div class="section">
+        <h2>常见问题</h2>
+        <div class="faq-item">
+            <strong>Q：单据数据会上传到外网服务器吗？</strong>
+            <p>A：不会。所有进货、销售、客户数据全部保存在电脑本地的 SQLite 数据库文件里，软件运行不需要联网，也不依赖任何账号登录。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：换电脑了怎么办？</strong>
+            <p>A：激活码绑定本机机器码，换电脑需要重新申请激活码。具体规则和迁移方式请参考统一售后页面。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：数据怎么备份？电脑坏了会不会全丢？</strong>
+            <p>A：软件提供数据库备份功能，把 SQLite 文件复制到U盘或另一台电脑即可。建议每周备份一次，成本很低，但能救命。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：支持打印出库单、对账单吗？</strong>
+            <p>A：支持单据查看与导出（如应收台账单、付款单），当前版本打印功能以导出后打印为主，后续版本会持续完善。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：我完全不懂电脑，能学会吗？</strong>
+            <p>A：界面就是传统的表格加表单，录单流程跟手写账本顺序一致，正常半小时内可以上手。试用版免费，学不会不花钱。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：装不上 / 杀毒软件报毒怎么办？</strong>
+            <p>A：单机小工具可能被部分杀软误报，可先加入信任列表再运行。遇到无法解决的问题，请通过售后页面联系处理。</p>
+        </div>
+    </div>
+
+    <!-- 八、结尾 CTA -->
+    <div class="final-cta">
+        <h2>账清楚了，生意才做得安心</h2>
+        <p>下载试用版，把自己真实的客户和货品录进去开几张单，能不能帮你省事，用半小时就能判断。</p>
+        <a class="btn btn-download" href="【替换成这个软件的网盘/直链exe下载地址】" target="_blank">📥 免费下载试用</a>
+        <a class="btn btn-buy" href="【替换成极速卖码这个商品的链接】" target="_blank">💰 购买买断授权</a>
+        <div class="small">Windows 10 / 11 ｜ 单机版，无需服务器 ｜ 一次买断，永久使用</div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="container">
+        <p>© 2026 林子软件工具库 ｜ 货物销售管理系统 V1.0 ｜ <a href="../../about.html">售后与授权说明</a></p>
+        <p style="font-size:13px; margin-top:6px; color:#9ca3af;">本页截图为软件真实界面，演示数据仅作示例。</p>
+    </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+    <span class="close" id="lbClose">&times;</span>
+    <img src="" alt="放大查看" id="lbImg">
+</div>
+
+<script>
+    (function () {
+        var lb = document.getElementById('lightbox');
+        var lbImg = document.getElementById('lbImg');
+        var closeBtn = document.getElementById('lbClose');
+
+        document.querySelectorAll('.shot img').forEach(function (img) {
+            img.addEventListener('click', function () {
+                lbImg.src = img.currentSrc || img.src;
+                lbImg.alt = img.alt || '软件界面放大查看';
+                lb.classList.add('on');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLb() {
+            lb.classList.remove('on');
+            lbImg.src = '';
+            document.body.style.overflow = '';
+        }
+        lb.addEventListener('click', closeLb);
+        closeBtn.addEventListener('click', closeLb);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lb.classList.contains('on')) closeLb();
+        });
+    })();
+</script>
 </body>
 </html>
 <!-- （注：内容由AI生成） -->
