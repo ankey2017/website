@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>码小匠 CodeCraft - 条码二维码生成打印工具｜林子软件工具库</title>
+    <meta name="description" content="码小匠 CodeCraft，本地单机条码/二维码生成打印工具：支持 Code128、EAN-13、Code39 与 6 类二维码内容，模板库复用、CSV 批量出图、标签纸直连打印机。无水印、离线可用、数据存本机，一次买断永久使用。">
+    <meta name="keywords" content="条码生成器,二维码生成器,标签打印软件,条码打印工具,Code128,EAN-13,离线二维码,单机条码软件,买断制">
+    <meta property="og:title" content="码小匠 CodeCraft - 本地生成条码二维码，无水印直接打印">
+    <meta property="og:description" content="Windows 单机条码/二维码工具：模板库复用、批量出图、标签打印，断网可用，一次买断。">
+    <meta property="og:type" content="product">
+    <meta property="og:image" content="../../assets/img/codeCraft/kuaisewm.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", system-ui, -apple-system, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #f8fafc;
+            color: #1f2937;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        a {
+            color: inherit;
+        }
+
+        /* ---------- 头部 ---------- */
+        header {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: #fff;
+            padding: 56px 16px 64px;
+            text-align: center;
+            position: relative;
+        }
+        header .badge-top {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: .5px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+        header h1 {
+            font-size: 36px;
+            line-height: 1.35;
+            margin-bottom: 14px;
+            letter-spacing: 1px;
+        }
+        header .sub {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: .3px;
+            text-shadow: 0 1px 3px rgba(15, 23, 42, .22);
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        header .kv {
+            display: flex;
+            justify-content: center;
+            gap: 10px 26px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+            font-size: 15px;
+            opacity: .95;
+        }
+        header .kv span::before {
+            content: "✓";
+            color: #6ee7b7;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        .hero-cta {
+            margin-top: 32px;
+        }
+        nav {
+            background-color: #1e40af;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(30, 64, 175, .25);
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 14px;
+            font-size: 16px;
+            white-space: nowrap;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- 布局 ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .wrap {
+            padding-bottom: 40px;
+        }
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 36px 32px;
+            margin: 26px 0;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
+        }
+        h2 {
+            color: #1e40af;
+            font-size: 25px;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .h2-sub {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+        h3 {
+            color: #0f172a;
+            font-size: 20px;
+            margin: 36px 0 6px;
+            padding-left: 12px;
+            border-left: 4px solid #2563eb;
+        }
+        h3:first-of-type {
+            margin-top: 8px;
+        }
+        p {
+            color: #374151;
+        }
+        .desc-text {
+            color: #475569;
+            margin: 12px 0 0;
+            font-size: 15.5px;
+        }
+        .vlist {
+            list-style: none;
+            margin: 14px 0 0;
+        }
+        .vlist li {
+            position: relative;
+            padding: 6px 0 6px 26px;
+            font-size: 15.5px;
+            color: #374151;
+        }
+        .vlist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            color: #10b981;
+            font-weight: bold;
+        }
+        .vlist li b {
+            color: #0f172a;
+        }
+
+        /* ---------- 按钮 ---------- */
+        .btn {
+            display: inline-block;
+            padding: 14px 34px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+            margin: 8px 6px;
+            transition: transform .15s, box-shadow .15s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+        }
+        .btn-download {
+            background: #10b981;
+            color: #fff;
+        }
+        .btn-buy {
+            background: #ef4444;
+            color: #fff;
+        }
+        .btn-ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .55);
+        }
+        .center {
+            text-align: center;
+        }
+
+        /* ---------- 价值卡片 ---------- */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+        .value-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 22px 20px;
+        }
+        .value-card .ico {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .value-card h4 {
+            font-size: 17px;
+            color: #1e3a8a;
+            margin-bottom: 6px;
+        }
+        .value-card p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- 截图 ---------- */
+        .shot {
+            margin: 18px 0 0;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 8px;
+            cursor: zoom-in;
+            transition: border-color .15s;
+        }
+        .shot:hover {
+            border-color: #93c5fd;
+        }
+        .shot img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+        .shot-cap {
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            padding: 8px 0 2px;
+        }
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .shot-grid .shot {
+            margin: 0;
+        }
+        .shot-note {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* ---------- 提示框 ---------- */
+        .tip-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #78350f;
+        }
+        .tip-box strong {
+            color: #92400e;
+        }
+
+        /* ---------- 对比表 ---------- */
+        .cmp-wrap {
+            overflow-x: auto;
+            margin-top: 22px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+        table.cmp {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+            font-size: 15px;
+        }
+        table.cmp th,
+        table.cmp td {
+            padding: 13px 14px;
+            text-align: center;
+            border-bottom: 1px solid #eef2f7;
+        }
+        table.cmp thead th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table.cmp tbody th {
+            text-align: left;
+            font-weight: 500;
+            color: #334155;
+            background: #fafbfc;
+            white-space: nowrap;
+        }
+        table.cmp td.self {
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+        table.cmp .no {
+            color: #94a3b8;
+        }
+
+        /* ---------- 套餐表 ---------- */
+        .plan-wrap {
+            overflow-x: auto;
+            margin-top: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+        table.plan {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 560px;
+            font-size: 15px;
+        }
+        table.plan th,
+        table.plan td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eef2f7;
+        }
+        table.plan thead th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table.plan tbody tr:last-child th,
+        table.plan tbody tr:last-child td {
+            border-bottom: none;
+        }
+        table.plan tbody th {
+            font-weight: 600;
+            color: #1e3a8a;
+            white-space: nowrap;
+        }
+        table.plan td {
+            color: #4b5563;
+        }
+        .plan-note {
+            font-size: 13.5px;
+            color: #94a3b8;
+            margin-top: 12px;
+        }
+
+        /* ---------- 适用行业 ---------- */
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .who {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px 20px;
+            background: #fff;
+        }
+        .who h4 {
+            font-size: 16px;
+            color: #1e3a8a;
+            margin-bottom: 4px;
+        }
+        .who p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        /* ---------- 试用步骤 ---------- */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 22px;
+        }
+        .step {
+            position: relative;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px 18px;
+        }
+        .step .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .step p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- FAQ ---------- */
+        .faq-item {
+            padding: 16px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-item strong {
+            display: block;
+            color: #1e40af;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .faq-item p {
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        /* ---------- 底部 CTA ---------- */
+        .final-cta {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 44px 32px;
+            text-align: center;
+            margin: 26px 0;
+        }
+        .final-cta h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .final-cta p {
+            color: rgba(255, 255, 255, .9);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .final-cta .small {
+            font-size: 13px;
+            opacity: .8;
+            margin-top: 14px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 16px 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        footer a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        /* ---------- 图片放大 ---------- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .92);
+            z-index: 999;
+            padding: 28px;
+            overflow: auto;
+            cursor: zoom-out;
+        }
+        .lightbox.on {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .lightbox img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+        }
+        .lightbox .close {
+            position: fixed;
+            top: 14px;
+            right: 22px;
+            color: #fff;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: .8;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 40px 16px 44px;
+            }
+            header h1 {
+                font-size: 26px;
+            }
+            header .sub {
+                font-size: 15.5px;
+            }
+            .section {
+                padding: 24px 18px;
+                border-radius: 10px;
+            }
+            h2 {
+                font-size: 21px;
+            }
+            h3 {
+                font-size: 18px;
+                margin-top: 28px;
+            }
+            .btn {
+                display: block;
+                margin: 10px auto;
+                max-width: 320px;
+                font-size: 16px;
+            }
+            nav a {
+                margin: 0 9px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="badge-top">Windows 单机版 · 买断制</div>
+        <h1>码小匠 CodeCraft</h1>
+        <p class="sub">给商品贴个码，不用再上那些带水印、弹广告、导出还要充值的在线网站——<br>本机生成条码和二维码，不联网、无水印，直接连打印机出标签。</p>
+        <div class="kv">
+            <span>无水印，导出即用</span>
+            <span>断网也能生成</span>
+            <span>模板存本机，反复调用</span>
+            <span>一次买断，无年费</span>
+        </div>
+        <div class="hero-cta">
+            <a class="btn btn-download" href="【替换成码小匠的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 试用版</a>
+            <a class="btn btn-ghost" href="#feature">先看看功能界面</a>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <a href="../../index.html">首页</a>
+    <a href="../qidantong/index.html">企档通</a>
+    <a href="../saleSystem/index.html">货物销售管理系统</a>
+    <a href="../rentKeeper/index.html">租管通</a>
+    <a href="index.html">码小匠</a>
+    <a href="../../about.html">售后与授权</a>
+</nav>
+
+<div class="container wrap">
+
+    <!-- 一、痛点与价值 -->
+    <div class="section">
+        <h2>打一张标签，本来不该这么麻烦</h2>
+        <p class="h2-sub">在线生成器广告糊满屏、导出的图带水印、一天生成几十次就提示充值；手机 App 生成的图躺在相册里，传到电脑再排版打印，位置全乱。</p>
+
+        <p>码小匠只做四件事：生成码、存模板、批量出图、按标签纸打印。全部在本机完成，断网照用，图是干净的 PNG，你想贴包装盒、贴货架、贴摊位上，导出来就能用。</p>
+
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="ico">🖨</div>
+                <h4>生成完直接打印，不用来回倒图</h4>
+                <p>内置两套常用标签模板：条码价格标签、条码+二维码的双码标签。选纸、设边距和行列，预览没问题就出纸，热敏标签机和普通 A4 都能用。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🚫</div>
+                <h4>无水印，导出就是干净的图</h4>
+                <p>PNG（透明或白底）、JPG 都能导，也能一键复制到剪贴板，粘进 Word、微信、淘宝详情页都行，不用再抠水印、裁边框。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">📋</div>
+                <h4>模板存一次，以后一键出码</h4>
+                <p>商品名、规格、售价、条码、二维码存进模板库。下次搜一下名字打开，两种码同时渲染好，改个价就能重新打印。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🔒</div>
+                <h4>商品数据不出这台电脑</h4>
+                <p>模板和导出记录存在本地 SQLite 文件里，不注册、不登录、不上传。厂里、店里用，也不用担心商品信息跑到别人服务器上。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二、功能详解 -->
+    <div class="section" id="feature">
+        <h2>功能详解：四步走完一张标签</h2>
+        <p class="h2-sub">下面是软件里的真实界面（数据为演示数据）。生成码 → 存模板 → 批量出图 → 打印标签，一件商品三十秒。</p>
+
+        <h3>1. 首页：二维码和条码，两台"生成机"并排放</h3>
+        <p class="desc-text">打开就是快速生成页，左边二维码、右边条码，参数改一下预览立刻变，不用先点"生成"再看结果。常用的活儿都在这一屏，不用翻菜单。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/codeCraft/kuaisewm.png" alt="二维码快速生成界面" loading="lazy">
+                <div class="shot-cap">二维码快速生成：内容类型、尺寸、纠错等级、颜色、中心 LOGO</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/codeCraft/kuaistm.png" alt="条码快速生成界面" loading="lazy">
+                <div class="shot-cap">条码快速生成：类型、高度、是否显示数字与字号</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>二维码内容支持 6 种：</b>文本、网址链接、微信收款码、手机号、WiFi 信息（名称+密码）、自定义 JSON（溯源）。选好类型按提示填，不用背编码格式。</li>
+            <li><b>参数都能调：</b>尺寸 80~400px 拖动调节，纠错等级 L/M/Q/H 可选，前景色背景色自定义；要放自家 LOGO，就上传一张小图居中压上去。</li>
+            <li><b>条码三种主流制式：</b>Code128（最通用，默认）、EAN-13（13 位商品国标码）、Code39（老系统兼容），高度、数字显示、字号都可以改。</li>
+            <li>生成完可以<b>复制、导出图片、加入商品模板</b>，一步接一步，不用换页面。</li>
+        </ul>
+
+        <h3>2. 商品模板库：常卖的那几十个货，建一次就够</h3>
+        <p class="desc-text">把商品名、规格、售价、条码内容、二维码内容存成模板。下次不用重新抄一遍编码，搜一下打开，条码和二维码同时渲染好，直接打印或导出。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/codeCraft/shangpimb.png" alt="商品模板编辑界面" loading="lazy">
+                <div class="shot-cap">商品模板：字段一次填全，双码内容一起存</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/codeCraft/shangpilb.png" alt="商品模板库列表界面" loading="lazy">
+                <div class="shot-cap">商品模板库：搜索、编辑、一键打开直接渲染</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>字段就是做生意那几样：</b>模板名称、商品名称、规格、售价、条码内容、二维码内容、备注，没有多余的必填项。</li>
+            <li><b>改价只改模板：</b>调价时改模板里的售价，不用重新生成码，重新打印一张就是新价签。</li>
+            <li><b>支持搜索与一键打开：</b>货多了也能两秒找到那一个。</li>
+            <li>试用版最多存 <b>5 个模板</b>，买断后不限条数。</li>
+        </ul>
+
+        <h3>3. 批量生成：一百个 SKU，一次出图</h3>
+        <p class="desc-text">手动多行输入，或者直接导入 CSV（用 Excel 整理好再导）。一次生成整批条码/二维码，一键把全部图片导出到指定文件夹，不用一个个右键另存。</p>
+        <div class="shot">
+            <img src="../../assets/img/codeCraft/piliansc.png" alt="批量生成界面" loading="lazy">
+            <div class="shot-cap">批量生成：多行录入或导入 CSV，一次出整批图</div>
+        </div>
+        <ul class="vlist">
+            <li><b>CSV 导入：</b>已经有商品表的，从 Excel 另存为 csv 直接喂进来，不用重录。</li>
+            <li><b>整批导出：</b>一次把图片全部存到文件夹，打包发给印刷厂、美工也能直接用。</li>
+            <li>试用版单次最多生成 <b>10 个码</b>，正式版无上限。</li>
+        </ul>
+
+        <h3>4. 标签打印：选好纸，直接出纸</h3>
+        <p class="desc-text">内置两套标签模板——A 款条码价格标签、B 款双码标签（条码 + 二维码 + 商品信息）。这一版刻意没做拖拽编辑器：模板固定、参数可调，反而更省事，不会调一晚对不齐。</p>
+        <div class="shot">
+            <img src="../../assets/img/codeCraft/dayunbq.png" alt="标签打印界面" loading="lazy">
+            <div class="shot-cap">标签打印：选模板、设纸张与行列、预览后直接调用打印机</div>
+        </div>
+        <ul class="vlist">
+            <li><b>常见热敏纸尺寸内置：</b>40×30、50×30 等预设，边距可微调，对不齐就一点点挪，不用去算毫米。</li>
+            <li><b>两级预览：</b>先看效果再出纸，省纸也省标签。</li>
+            <li><b>直接调用系统打印机：</b>热敏标签机和普通 A4 打印机都能打。</li>
+        </ul>
+
+        <h3>5. 授权与数据：离线激活，数据留在本机</h3>
+        <p class="desc-text">授权采用 Ed25519 离线签名验签——不用连服务器校验授权，断网的车间、仓库、摊位照样能用。数据备份是把本地数据库和模板图片加密打包，换电脑恢复即可。</p>
+        <div class="shot">
+            <img src="../../assets/img/codeCraft/xitongsz.png" alt="系统设置与授权信息界面" loading="lazy">
+            <div class="shot-cap">系统：授权信息、数据备份与恢复、关于</div>
+        </div>
+        <ul class="vlist">
+            <li><b>激活只要两样东西：</b>本机机器码 + 授权串，粘贴进去点激活，全程不联网。</li>
+            <li><b>授权信息页</b>能看机器码、激活时间、剩余换绑次数；换设备找我们重新签发授权串，每年最多 3 次换绑。</li>
+            <li><b>数据备份 / 恢复</b>、导出历史记录、EULA 与版本信息，都收在"系统"里，不占主界面。</li>
+        </ul>
+
+        <p class="shot-note">以上截图为软件实际界面，图中数据仅为演示用途。</p>
+    </div>
+
+    <!-- 三、适用人群 -->
+    <div class="section">
+        <h2>适合哪些人用</h2>
+        <p class="h2-sub">只要你的活儿是"给商品贴个码"，而且不想把商品信息传到别人的服务器上，就适合。</p>
+        <div class="who-grid">
+            <div class="who">
+                <h4>小商品加工厂</h4>
+                <p>出货要贴条码，一个规格一个码，几十上百个 SKU，批量出图最省事。</p>
+            </div>
+            <div class="who">
+                <h4>摆摊 / 夜市商贩</h4>
+                <p>摊位收款码、价格标签，打一张贴上就体面，比手写价签干净得多。</p>
+            </div>
+            <div class="who">
+                <h4>电商小卖家</h4>
+                <p>包装盒、详情页上的二维码，导出的干净 PNG 直接能上传，不用再处理水印。</p>
+            </div>
+            <div class="who">
+                <h4>手工作坊 / 农资小店</h4>
+                <p>品名规格多、每次量不大，模板存着，来货就打印几张，不用开电脑重做。</p>
+            </div>
+        </div>
+        <div class="tip-box">
+            <strong>不太适合的情况：</strong>需要云端同步、多人协作、或者扫码要跳到服务器看动态记录的（动态溯源），这套做不了——码小匠只做<strong>静态码</strong>。一码多包、流水号自动递增、连接称重设备，这一版也没做，留给后续版本。
+        </div>
+    </div>
+
+    <!-- 四、对比 -->
+    <div class="section">
+        <h2>跟在线生成器、手机 App 比，差在哪</h2>
+        <p class="h2-sub">不是功能最多的，但一定是"下次还要用"的那一种。</p>
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>对比项</th>
+                        <th>在线生成网站</th>
+                        <th>手机扫码 App</th>
+                        <th>本软件</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>水印</th>
+                        <td class="no">免费版常见</td>
+                        <td class="no">部分带</td>
+                        <td class="self">没有</td>
+                    </tr>
+                    <tr>
+                        <th>生成次数</th>
+                        <td class="no">免费额度很少，之后要充值</td>
+                        <td class="no">看广告换次数</td>
+                        <td class="self">不限次数</td>
+                    </tr>
+                    <tr>
+                        <th>要不要联网</th>
+                        <td class="no">必须联网</td>
+                        <td class="no">必须联网</td>
+                        <td class="self">断网可用</td>
+                    </tr>
+                    <tr>
+                        <th>批量出图</th>
+                        <td class="no">多数要收费</td>
+                        <td class="no">基本不行</td>
+                        <td class="self">CSV 导入，整批导出</td>
+                    </tr>
+                    <tr>
+                        <th>商品信息在哪</th>
+                        <td class="no">存在别人服务器</td>
+                        <td class="no">躺在相册里</td>
+                        <td class="self">本机数据库</td>
+                    </tr>
+                    <tr>
+                        <th>打印标签</th>
+                        <td class="no">自己截图再排版</td>
+                        <td class="no">难以对齐</td>
+                        <td class="self">内置标签模板，直连打印机</td>
+                    </tr>
+                    <tr>
+                        <th>费用</th>
+                        <td class="no">按次 / 按年充值</td>
+                        <td>免费但带广告</td>
+                        <td class="self">一次买断</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 五、免费试用 -->
+    <div class="section">
+        <h2>先试用，觉得合适再买</h2>
+        <p>试用版功能是完整的，只限了额度：最多存 <b>5 个商品模板</b>，单次批量最多生成 <b>10 个码</b>。拿自己真实的两三个商品打十来张标签，顺不顺手一试就知道。</p>
+        <div class="center">
+            <a class="btn btn-download" href="【替换成码小匠的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 试用版</a>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
+                <p>下载安装，双击打开（Windows 10 / 11）</p>
+            </div>
+            <div class="step">
+                <div class="num">2</div>
+                <p>建一个商品模板，生成条码和二维码，导出或打印一张</p>
+            </div>
+            <div class="step">
+                <div class="num">3</div>
+                <p>想买断时，到【系统 → 授权信息】复制本机机器码</p>
+            </div>
+            <div class="step">
+                <div class="num">4</div>
+                <p>下单填机器码，收到激活码 + 授权串，粘贴激活即解除额度</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 六、购买 -->
+    <div class="section">
+        <h2>购买授权：一次付费，永久使用</h2>
+        <p>买断制，没有年费、没有续费。按你要用几台电脑选套餐，付款时填机器码，拿到激活码和授权串离线激活就行。</p>
+        <div class="plan-wrap">
+            <table class="plan">
+                <thead>
+                    <tr>
+                        <th>套餐</th>
+                        <th>授权设备</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>个体户版</th>
+                        <td>1 台电脑</td>
+                        <td>买断永久，全部功能，适合小店老板自己用</td>
+                    </tr>
+                    <tr>
+                        <th>小店标准版</th>
+                        <td>2 台电脑</td>
+                        <td>老板 + 店员两台电脑使用</td>
+                    </tr>
+                    <tr>
+                        <th>扩容包</th>
+                        <td>每增加 1 台</td>
+                        <td>单独购买增加一台授权</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="plan-note">具体价格与活动以下单页面为准；同一台电脑重装系统不影响授权，只需重新粘贴原授权串。</p>
+        <div class="center" style="margin-top:18px;">
+            <a class="btn btn-buy" href="【替换成码小匠的购买链接】" target="_blank">💰 前往购买授权</a>
+        </div>
+        <p class="center" style="color:#6b7280; font-size:14px; margin-top:6px;">付款后自动发放激活码 · 激活信息绑定本机机器码</p>
+    </div>
+
+    <!-- 七、FAQ -->
+    <div class="section">
+        <h2>常见问题</h2>
+        <div class="faq-item">
+            <strong>Q：导出的图有水印吗？能商用吗？</strong>
+            <p>A：没有水印。导出的是干净 PNG / JPG，用在自家商品的包装、标签、详情页上没问题。图是你自己生成的，软件只是工具。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：会不会偷偷上传我的商品信息？</strong>
+            <p>A：不会。软件不联网也能完整使用——授权是离线验签，商品模板和导出记录都存在本机 SQLite 文件里，没有任何上报接口。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：换电脑了怎么办？</strong>
+            <p>A：授权绑定本机机器码，换电脑需要重新签发授权串，每年最多 3 次换绑。把机器码发给我们，走售后页面处理即可。同机重装系统不用重新买。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：支持哪些条码和二维码内容？</strong>
+            <p>A：条码支持 Code128、EAN-13、Code39；二维码支持文本、网址链接、微信收款码、手机号、WiFi 信息、自定义 JSON 六类。只做静态码，不做动态跳转。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：标签纸打印对不齐怎么办？</strong>
+            <p>A：内置 40×30、50×30 等常见热敏纸尺寸预设，边距可以微调。先看预览再出纸，调一次存下来，以后直接用。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：我完全不懂电脑，能学会吗？</strong>
+            <p>A：整个软件就五个页面：快速生成、商品模板库、批量生成、标签打印、系统。选类型、填内容、点导出，正常十分钟能上手。试用免费，学不会不花钱。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：杀毒软件报毒怎么办？</strong>
+            <p>A：单机小工具偶尔会被误报，加入信任列表再运行即可。遇到无法解决的问题，通过售后页面联系我们。</p>
+        </div>
+    </div>
+
+    <!-- 八、结尾 CTA -->
+    <div class="final-cta">
+        <h2>标签贴得清楚，货才卖得明白</h2>
+        <p>下载试用版，用自己真实的商品打几张标签，能不能替你省下那些来回折腾的时间，十分钟就能判断。</p>
+        <a class="btn btn-download" href="【替换成码小匠的网盘/直链exe下载地址】" target="_blank">📥 免费下载试用</a>
+        <a class="btn btn-buy" href="【替换成码小匠的购买链接】" target="_blank">💰 购买买断授权</a>
+        <div class="small">Windows 10 / 11 ｜ 单机版，无需联网 ｜ 一次买断，永久使用</div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="container">
+        <p>© 2026 林子软件工具库 ｜ 码小匠 CodeCraft V1.0 ｜ <a href="../../about.html">售后与授权说明</a></p>
+        <p style="font-size:13px; margin-top:6px; color:#9ca3af;">本页截图为软件真实界面，演示数据仅作示例。</p>
+    </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+    <span class="close" id="lbClose">&times;</span>
+    <img src="" alt="放大查看" id="lbImg">
+</div>
+
+<script>
+    (function () {
+        var lb = document.getElementById('lightbox');
+        var lbImg = document.getElementById('lbImg');
+        var closeBtn = document.getElementById('lbClose');
+
+        document.querySelectorAll('.shot img').forEach(function (img) {
+            img.addEventListener('click', function () {
+                lbImg.src = img.currentSrc || img.src;
+                lbImg.alt = img.alt || '软件界面放大查看';
+                lb.classList.add('on');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLb() {
+            lb.classList.remove('on');
+            lbImg.src = '';
+            document.body.style.overflow = '';
+        }
+        lb.addEventListener('click', closeLb);
+        closeBtn.addEventListener('click', closeLb);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lb.classList.contains('on')) closeLb();
+        });
+    })();
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->

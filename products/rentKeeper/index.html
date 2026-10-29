@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>租管通 RentKeeper - 城中村出租屋管理软件｜林子软件工具库</title>
+    <meta name="description" content="租管通 RentKeeper，城中村房东的本地出租屋管理工具：房源台账、租客合同、租金账单、欠费提醒、报修登记、收支汇总，管理员与子账号分权。数据存本机不上云，Windows 单机版，一次买断。">
+    <meta name="keywords" content="出租屋管理软件,城中村房东软件,收租提醒,租金台账,欠费管理,房源管理,单机版租房管理,买断制">
+    <meta property="og:title" content="租管通 RentKeeper - 谁该交租、谁欠了钱，一屏看清">
+    <meta property="og:description" content="Windows 单机出租屋台账：房租到期提前提醒、欠费自动汇总、收支月度结算，数据存自己电脑，一次买断。">
+    <meta property="og:type" content="product">
+    <meta property="og:image" content="../../assets/img/rentKeeper/home.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", system-ui, -apple-system, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #f8fafc;
+            color: #1f2937;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        a {
+            color: inherit;
+        }
+
+        /* ---------- 头部 ---------- */
+        header {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: #fff;
+            padding: 56px 16px 64px;
+            text-align: center;
+            position: relative;
+        }
+        header .badge-top {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: .5px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+        header h1 {
+            font-size: 36px;
+            line-height: 1.35;
+            margin-bottom: 14px;
+            letter-spacing: 1px;
+        }
+        header .sub {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: .3px;
+            text-shadow: 0 1px 3px rgba(15, 23, 42, .22);
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        header .kv {
+            display: flex;
+            justify-content: center;
+            gap: 10px 26px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+            font-size: 15px;
+            opacity: .95;
+        }
+        header .kv span::before {
+            content: "✓";
+            color: #6ee7b7;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        .hero-cta {
+            margin-top: 32px;
+        }
+        nav {
+            background-color: #1e40af;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(30, 64, 175, .25);
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 14px;
+            font-size: 16px;
+            white-space: nowrap;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- 布局 ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .wrap {
+            padding-bottom: 40px;
+        }
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 36px 32px;
+            margin: 26px 0;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
+        }
+        h2 {
+            color: #1e40af;
+            font-size: 25px;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .h2-sub {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+        h3 {
+            color: #0f172a;
+            font-size: 20px;
+            margin: 36px 0 6px;
+            padding-left: 12px;
+            border-left: 4px solid #2563eb;
+        }
+        h3:first-of-type {
+            margin-top: 8px;
+        }
+        p {
+            color: #374151;
+        }
+        .desc-text {
+            color: #475569;
+            margin: 12px 0 0;
+            font-size: 15.5px;
+        }
+        .vlist {
+            list-style: none;
+            margin: 14px 0 0;
+        }
+        .vlist li {
+            position: relative;
+            padding: 6px 0 6px 26px;
+            font-size: 15.5px;
+            color: #374151;
+        }
+        .vlist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            color: #10b981;
+            font-weight: bold;
+        }
+        .vlist li b {
+            color: #0f172a;
+        }
+
+        /* ---------- 按钮 ---------- */
+        .btn {
+            display: inline-block;
+            padding: 14px 34px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+            margin: 8px 6px;
+            transition: transform .15s, box-shadow .15s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+        }
+        .btn-download {
+            background: #10b981;
+            color: #fff;
+        }
+        .btn-buy {
+            background: #ef4444;
+            color: #fff;
+        }
+        .btn-ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .55);
+        }
+        .center {
+            text-align: center;
+        }
+
+        /* ---------- 价值卡片 ---------- */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+        .value-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 22px 20px;
+        }
+        .value-card .ico {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .value-card h4 {
+            font-size: 17px;
+            color: #1e3a8a;
+            margin-bottom: 6px;
+        }
+        .value-card p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- 截图 ---------- */
+        .shot {
+            margin: 18px 0 0;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 8px;
+            cursor: zoom-in;
+            transition: border-color .15s;
+        }
+        .shot:hover {
+            border-color: #93c5fd;
+        }
+        .shot img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+        .shot-cap {
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            padding: 8px 0 2px;
+        }
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .shot-grid .shot {
+            margin: 0;
+        }
+        .shot-note {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* ---------- 提示框 ---------- */
+        .tip-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #78350f;
+        }
+        .tip-box strong {
+            color: #92400e;
+        }
+
+        /* ---------- 对比表 ---------- */
+        .cmp-wrap {
+            overflow-x: auto;
+            margin-top: 22px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+        table.cmp {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+            font-size: 15px;
+        }
+        table.cmp th,
+        table.cmp td {
+            padding: 13px 14px;
+            text-align: center;
+            border-bottom: 1px solid #eef2f7;
+        }
+        table.cmp thead th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table.cmp tbody th {
+            text-align: left;
+            font-weight: 500;
+            color: #334155;
+            background: #fafbfc;
+            white-space: nowrap;
+        }
+        table.cmp td.self {
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+        table.cmp .no {
+            color: #94a3b8;
+        }
+
+        /* ---------- 套餐表 ---------- */
+        .plan-wrap {
+            overflow-x: auto;
+            margin-top: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+        table.plan {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 560px;
+            font-size: 15px;
+        }
+        table.plan th,
+        table.plan td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eef2f7;
+        }
+        table.plan thead th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table.plan tbody tr:last-child th,
+        table.plan tbody tr:last-child td {
+            border-bottom: none;
+        }
+        table.plan tbody th {
+            font-weight: 600;
+            color: #1e3a8a;
+            white-space: nowrap;
+        }
+        table.plan td {
+            color: #4b5563;
+        }
+        .plan-note {
+            font-size: 13.5px;
+            color: #94a3b8;
+            margin-top: 12px;
+        }
+
+        /* ---------- 适用行业 ---------- */
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .who {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px 20px;
+            background: #fff;
+        }
+        .who h4 {
+            font-size: 16px;
+            color: #1e3a8a;
+            margin-bottom: 4px;
+        }
+        .who p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        /* ---------- 试用步骤 ---------- */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 22px;
+        }
+        .step {
+            position: relative;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px 18px;
+        }
+        .step .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .step p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- FAQ ---------- */
+        .faq-item {
+            padding: 16px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-item strong {
+            display: block;
+            color: #1e40af;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .faq-item p {
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        /* ---------- 底部 CTA ---------- */
+        .final-cta {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 44px 32px;
+            text-align: center;
+            margin: 26px 0;
+        }
+        .final-cta h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .final-cta p {
+            color: rgba(255, 255, 255, .9);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .final-cta .small {
+            font-size: 13px;
+            opacity: .8;
+            margin-top: 14px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 16px 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        footer a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        /* ---------- 图片放大 ---------- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .92);
+            z-index: 999;
+            padding: 28px;
+            overflow: auto;
+            cursor: zoom-out;
+        }
+        .lightbox.on {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .lightbox img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+        }
+        .lightbox .close {
+            position: fixed;
+            top: 14px;
+            right: 22px;
+            color: #fff;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: .8;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 40px 16px 44px;
+            }
+            header h1 {
+                font-size: 26px;
+            }
+            header .sub {
+                font-size: 15.5px;
+            }
+            .section {
+                padding: 24px 18px;
+                border-radius: 10px;
+            }
+            h2 {
+                font-size: 21px;
+            }
+            h3 {
+                font-size: 18px;
+                margin-top: 28px;
+            }
+            .btn {
+                display: block;
+                margin: 10px auto;
+                max-width: 320px;
+                font-size: 16px;
+            }
+            nav a {
+                margin: 0 9px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="badge-top">Windows 单机版 · 买断制</div>
+        <h1>租管通 RentKeeper</h1>
+        <p class="sub">几十间房、几十个租客，谁该交租、谁欠了两个月、哪间还空着、这个月落到手里多少——<br>一本台账放在自己电脑里，不用再翻微信聊天记录和纸质本子。</p>
+        <div class="kv">
+            <span>房租到期提前提醒</span>
+            <span>欠费自动汇总</span>
+            <span>数据存本机，不上云</span>
+            <span>一次买断，无年费</span>
+        </div>
+        <div class="hero-cta">
+            <a class="btn btn-download" href="【替换成租管通的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 试用版</a>
+            <a class="btn btn-ghost" href="#feature">先看看功能界面</a>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <a href="../../index.html">首页</a>
+    <a href="../qidantong/index.html">企档通</a>
+    <a href="../saleSystem/index.html">货物销售管理系统</a>
+    <a href="index.html">租管通</a>
+    <a href="../codeCraft/index.html">码小匠</a>
+    <a href="../../about.html">售后与授权</a>
+</nav>
+
+<div class="container wrap">
+
+    <!-- 一、痛点与价值 -->
+    <div class="section">
+        <h2>房子多了，账就记不清了</h2>
+        <p class="h2-sub">一间房还好说，二十间房就是二十份租期、二十个付款日、再加上水电、押金、维修。<strong>最容易漏的不是活，是钱。</strong></p>
+
+        <p>租管通把这件事拆成四张表：房源、租客合同、租金账单、收支。房子录一次，租客签一次，之后每个月该收多少、谁没交、维修花了多少，系统自己算。你只需要每天看一眼首页。</p>
+
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="ico">🔔</div>
+                <h4>该收的钱，提前提醒你</h4>
+                <p>管理员可自定义提前提醒天数（0~30 天，默认 7 天）。首页黄色标出「即将到期待收租」，红色标出「已欠费」，一眼分得清是该提醒还是该催。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">📉</div>
+                <h4>谁欠了几个月，一屏看清</h4>
+                <p>逾期的账单自动汇总进欠费台账，按租客、房间、月份都能筛。收了一笔就点一下「已收」并记上收款时间，余额立刻更新。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🏠</div>
+                <h4>哪间空着、哪间租着，卡片上看</h4>
+                <p>房源按楼栋、房号、户型、面积、租金、押金录入，状态分空置 / 已出租 / 维修中，卡片视图和列表视图随时切换，空置房一键筛出来。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">💰</div>
+                <h4>这个月挣了多少，月底不用算</h4>
+                <p>租金、押金、其他收入记一边，维修材料、水电公摊、保洁记另一边，月度汇总直接给出总收入、总支出和净收益。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二、功能详解 -->
+    <div class="section" id="feature">
+        <h2>功能详解：按房东一年到头的活儿排</h2>
+        <p class="h2-sub">下面都是软件里的真实界面（数据为演示数据）。录房 → 签租 → 每月出账 → 收租催欠 → 记维修和收支，就是完整的一年。</p>
+
+        <h3>1. 首页仪表盘：今天该做什么，一屏说完</h3>
+        <p class="desc-text">打开软件先看首页：上面是统计卡片（房源数、已出租、空置、本月应收），下面三类提醒——即将到期待收租、已欠费、待处理报修。该催谁、该修哪间，不用自己想。</p>
+        <div class="shot">
+            <img src="../../assets/img/rentKeeper/home.png" alt="租管通首页仪表盘" loading="lazy">
+            <div class="shot-cap">首页仪表盘：统计卡片 + 三类待办提醒</div>
+        </div>
+        <ul class="vlist">
+            <li><b>黄色是提醒，红色是欠费：</b>还没到应收日但已进入提前提醒区间的，标黄；已经过了应收日还没交的，标红。</li>
+            <li><b>提醒天数自己定：</b>在系统设置里填 0~30 天，默认 7 天。习惯提前十天张罗的，就填 10。</li>
+            <li>试用模式下首页会一直提示未激活，房源录到 3 套就停下——先试再决定。</li>
+        </ul>
+
+        <h3>2. 房源管理：几十间房，一台电脑管明白</h3>
+        <p class="desc-text">按楼栋建房子：A 栋 201、B 栋 305，户型、面积、租金单价、押金、状态逐项填好。自建房常用的单间、一房一厅、铺面做成标签，筛的时候点一下就出来。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/rentKeeper/fangygl.png" alt="房源管理界面" loading="lazy">
+                <div class="shot-cap">房源管理：状态、租金、押金一表看清，可切卡片/列表</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/rentKeeper/zengjfy.png" alt="新增房源界面" loading="lazy">
+                <div class="shot-cap">新增房源：楼栋房号、户型面积、租金押金</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>空置房一键筛：</b>哪间到期没续、哪间刚退租，筛一下就知道，不用挨个翻。</li>
+            <li><b>Excel 批量导入导出：</b>房子多的，在 Excel 里整理好一次导进来，比一间间点快得多。</li>
+            <li><b>卡片视图</b>适合看整体，<b>列表视图</b>适合改数据，两种视图随时切。</li>
+        </ul>
+
+        <h3>3. 租客与合同：押一付一写清楚，附件塞在同一个地方</h3>
+        <p class="desc-text">一个租客一条记录：姓名、电话、身份证号、入住日期、到期日期、付款周期（月付 / 季付 / 半年付 / 年付）、押金，绑定到具体那间房。身份证照片和纸质合同也能直接传上来，跟记录挂在一起。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/rentKeeper/cukht.png" alt="租客合同管理界面" loading="lazy">
+                <div class="shot-cap">租客合同：租期、付款周期、押金与附件统一管理</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/rentKeeper/zengjht.png" alt="新增租客合同界面" loading="lazy">
+                <div class="shot-cap">新增合同：选房源、填租期，正反面身份证与合同都能传</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>附件可多选上传：</b>支持 jpg / png / pdf，一户能存正反面身份证和多份合同，单元格上有图标，点开就能查看，也能用系统默认程序打开。</li>
+            <li><b>文件不入库：</b>数据库只记文件路径，不把图片塞进数据库，软件不会越用越臃肿。</li>
+            <li><b>合同到期提醒：</b>快到期的人提前浮出来，续租、退租、调价都来得及安排。</li>
+        </ul>
+
+        <h3>4. 租金账单与欠费：每期自动出账，收了就点一下</h3>
+        <p class="desc-text">每一期账单包含租金、水电、物业、其他扣费，系统算出本期应收。收到钱就标「已收」并填收款时间；没收到就一直在欠费列表里挂着，跑不掉。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/rentKeeper/zujzd.png" alt="租金账单与欠费台账界面" loading="lazy">
+                <div class="shot-cap">租金账单：本期应收、已收未收、逾期一目了然</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/rentKeeper/zengjzd.png" alt="新增账单界面" loading="lazy">
+                <div class="shot-cap">新增账单：租金 + 水电物业 + 其他扣费，自动合计</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>欠费台账自动汇总：</b>所有逾期账单归到一处，谁欠、欠几个月、欠多少，一列排开。</li>
+            <li><b>历史收租可回查：</b>按租客、房间、月份筛，租客说"我上个月交过了"，拉出来看时间就行。</li>
+            <li><b>暂不接线上支付：</b>这版只做记账，微信、支付宝怎么收还是你原来的方式，软件只负责记清楚。</li>
+        </ul>
+
+        <h3>5. 报修登记：谁报的、修没修、花了多少</h3>
+        <p class="desc-text">租客发消息说水管漏了，就记一条报修：房号、内容、时间、状态（待处理 / 处理中 / 已完成）、维修费用。修完把费用填上，月底汇总时自动算进支出。</p>
+        <div class="shot">
+            <img src="../../assets/img/rentKeeper/baoxdj.png" alt="报修登记界面" loading="lazy">
+            <div class="shot-cap">报修登记：状态流转 + 维修费用留痕</div>
+        </div>
+        <ul class="vlist">
+            <li><b>普通用户也能报修：</b>家人或代管的亲戚登录后可以直接登记，但不能删别人的记录。</li>
+            <li><b>费用有去处：</b>维修费用填了之后进收支台账，年底算净收益时不会漏掉这笔。</li>
+        </ul>
+
+        <h3>6. 收支台账：一个月到底落了多少</h3>
+        <p class="desc-text">收入侧记租金、押金、其他收入，支出侧记维修材料、水电公摊、保洁、其他支出。月度汇总给出当月总收入、总支出、净收益，一张表说清这个月的账。</p>
+        <div class="shot">
+            <img src="../../assets/img/rentKeeper/shouzdz.png" alt="收支台账界面" loading="lazy">
+            <div class="shot-cap">收支台账：收入支出分类记录，按月出净收益</div>
+        </div>
+        <ul class="vlist">
+            <li><b>不追求财务软件那套：</b>只有收支和月度汇总，没有复杂报表，够房东自己看明白就行。</li>
+            <li><b>数据可导出：</b>房源表、租客表、收租记录表都能导 Excel，给家里人看或存档都方便。</li>
+        </ul>
+
+        <h3>7. 账号与系统设置：谁能改、谁只能看</h3>
+        <p class="desc-text">软件分两种账号。管理员是房东本人，什么都管；普通用户是家人或代管的亲戚，只能看基础信息、登记报修、看收租提醒，删房源、改租金、导出全部数据这些动作是锁住的。系统设置单独一页，只有管理员进得去。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/rentKeeper/zhanghgl.png" alt="账号管理界面" loading="lazy">
+                <div class="shot-cap">账号管理：新增子账号、改密码、禁用</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/rentKeeper/xitsz.png" alt="系统设置界面" loading="lazy">
+                <div class="shot-cap">系统设置：租金提醒天数、备份恢复、授权信息、关于</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>权限写在配置里：</b>普通用户改不了提醒天数，也不会误删房源，家里老人帮忙收租也放心。</li>
+            <li><b>密码本地加盐哈希：</b>bcrypt 存储，软件里看不到明文。</li>
+            <li><b>备份就一步：</b>把本地数据库另存到 U 盘或另一块硬盘，换电脑恢复即可。</li>
+        </ul>
+
+        <p class="shot-note">以上截图为软件实际界面，图中数据仅为演示用途。</p>
+    </div>
+
+    <!-- 三、适用人群 -->
+    <div class="section">
+        <h2>适合哪些人用</h2>
+        <p class="h2-sub">核心就一条：房子是自己的，数量在几十套以内，账想自己拿在手里。</p>
+        <div class="who-grid">
+            <div class="who">
+                <h4>城中村自建房房东</h4>
+                <p>5~50 间房，租客流动快、付款周期不统一，最需要"到期提醒 + 欠费台账"这两样。</p>
+            </div>
+            <div class="who">
+                <h4>有多套房的小业主</h4>
+                <p>几套住宅或铺面分开出租，租期、押金、水电各不一样，靠脑子记迟早出错。</p>
+            </div>
+            <div class="who">
+                <h4>家人 / 亲戚代管</h4>
+                <p>房东常不在本地，让家里人帮忙收租、登记报修，用普通用户账号就够了，改不了关键数据。</p>
+            </div>
+        </div>
+        <div class="tip-box">
+            <strong>不太适合的情况：</strong>需要微信自动代扣、短信催租、云端多设备同步、手机 App 的，这套做不到——租管通是<strong>单机本地台账</strong>，只负责把账记清楚。一房多租、合租拆账单这一版也没做，留给后续版本。
+        </div>
+    </div>
+
+    <!-- 四、对比 -->
+    <div class="section">
+        <h2>跟手写本、Excel、云端租房系统比，差在哪</h2>
+        <p class="h2-sub">不是功能最多的，但是"数据在自己电脑里、还不用年年交钱"的那一种。</p>
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>对比项</th>
+                        <th>手写本</th>
+                        <th>自己搭 Excel</th>
+                        <th>云端租房 SaaS</th>
+                        <th>本软件</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>收租到期提醒</th>
+                        <td class="no">靠自己记</td>
+                        <td class="no">要设公式和日期格式</td>
+                        <td>有</td>
+                        <td class="self">首页黄/红两级提醒</td>
+                    </tr>
+                    <tr>
+                        <th>欠费台账</th>
+                        <td class="no">翻本子对</td>
+                        <td class="no">手工维护</td>
+                        <td>有</td>
+                        <td class="self">逾期账单自动汇总</td>
+                    </tr>
+                    <tr>
+                        <th>房源状态</th>
+                        <td class="no">记在纸上</td>
+                        <td>要自己标色</td>
+                        <td>有</td>
+                        <td class="self">空置/已出租/维修中</td>
+                    </tr>
+                    <tr>
+                        <th>费用</th>
+                        <td>便宜</td>
+                        <td>便宜</td>
+                        <td class="no">按年/按套订阅</td>
+                        <td class="self">一次买断</td>
+                    </tr>
+                    <tr>
+                        <th>租客身份证、合同</th>
+                        <td class="no">纸质存档，怕丢</td>
+                        <td class="no">散在文件夹里</td>
+                        <td class="no">上传到厂商服务器</td>
+                        <td class="self">本机留存，记录里点开看</td>
+                    </tr>
+                    <tr>
+                        <th>数据在哪</th>
+                        <td>纸本</td>
+                        <td>自己电脑</td>
+                        <td class="no">厂商服务器</td>
+                        <td class="self">自己电脑</td>
+                    </tr>
+                    <tr>
+                        <th>断网能用</th>
+                        <td>能</td>
+                        <td>能</td>
+                        <td class="no">不能</td>
+                        <td class="self">能，完全离线</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 五、免费试用 -->
+    <div class="section">
+        <h2>先试用，觉得合适再买</h2>
+        <p>试用版功能是完整的，只限了房源数：最多录 <b>3 套房源</b>。拿自己两三间真实的房、一个真实的租客跑一遍，从录房到出账单，顺不顺手十分钟就知道。</p>
+        <div class="center">
+            <a class="btn btn-download" href="【替换成租管通的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 试用版</a>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
+                <p>下载安装，双击打开（Windows 10 / 11）</p>
+            </div>
+            <div class="step">
+                <div class="num">2</div>
+                <p>首次打开创建管理员账号和密码，登录进去</p>
+            </div>
+            <div class="step">
+                <div class="num">3</div>
+                <p>录 3 间房 + 1 个租客，生成一期账单试试收租和提醒</p>
+            </div>
+            <div class="step">
+                <div class="num">4</div>
+                <p>想买断时，到【系统设置 → 授权信息】复制机器码，下单激活</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 六、购买 -->
+    <div class="section">
+        <h2>购买授权：一次付费，永久使用</h2>
+        <p>买断制，没有年费、没有续费。按你要用几台电脑、需不需要给家里人开子账号来选。</p>
+        <div class="plan-wrap">
+            <table class="plan">
+                <thead>
+                    <tr>
+                        <th>套餐</th>
+                        <th>授权设备</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>房东版</th>
+                        <td>1 台电脑</td>
+                        <td>买断永久，全部功能，适合个人房东</td>
+                    </tr>
+                    <tr>
+                        <th>管家版</th>
+                        <td>1 台电脑 + 普通用户子账号</td>
+                        <td>房东 + 家人 / 代管，含账号管理</td>
+                    </tr>
+                    <tr>
+                        <th>扩容包</th>
+                        <td>每增加 1 台</td>
+                        <td>单独购买增加一台授权</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="plan-note">具体价格与活动以下单页面为准；激活码绑定本机机器码，同机重装系统只需重新粘贴原授权串。</p>
+        <div class="center" style="margin-top:18px;">
+            <a class="btn btn-buy" href="【替换成租管通的购买链接】" target="_blank">💰 前往购买授权</a>
+        </div>
+        <p class="center" style="color:#6b7280; font-size:14px; margin-top:6px;">付款后自动发放激活码 · 激活信息保存在本地</p>
+    </div>
+
+    <!-- 七、FAQ -->
+    <div class="section">
+        <h2>常见问题</h2>
+        <div class="faq-item">
+            <strong>Q：房源、租客、身份证这些数据会上传吗？</strong>
+            <p>A：不会。全部存在本机的 SQLite 数据库文件里，软件不联网也能完整使用。身份证和合同附件也只记录本地文件路径，不上传任何服务器。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：试用版有什么限制？</strong>
+            <p>A：只限房源数——最多录 3 套。功能不删减，收租、欠费、报修、收支都能正常用，买断后不限房源数。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：换电脑了怎么办？</strong>
+            <p>A：授权绑定机器码，换机需要重新签发授权串，走售后页面处理即可。换之前记得先在【系统设置】里做一次数据备份，到新电脑恢复。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：给家里人开的账号能看到什么？</strong>
+            <p>A：普通用户只能看基础信息、登记报修、查看待收租提醒；删除房源、修改租金、新增账号、批量导出、修改系统配置都是禁止的。房东不在家也不怕数据被改乱。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：能在软件里直接微信收租吗？</strong>
+            <p>A：不能，这一版不接线上支付和自动代扣。钱还是按你原来的方式收，软件负责记清楚谁交了、什么时候交的、谁还欠着。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：上传的身份证照片、合同会不会丢？</strong>
+            <p>A：软件只记录文件路径，<b>原文件要留在自己电脑上</b>。文件被移动或删除时，打开会提示找不到。建议把附件统一放在一个固定文件夹，跟数据库一起备份。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：我完全不懂电脑，能学会吗？</strong>
+            <p>A：左侧菜单八个入口，录房、签租、出账单的流程跟手写本子的顺序一致。正常半小时能上手。试用免费，学不会不花钱。</p>
+        </div>
+    </div>
+
+    <!-- 八、结尾 CTA -->
+    <div class="final-cta">
+        <h2>账清了，收租才不用靠记性</h2>
+        <p>下载试用版，把自己两三间房录进去，出一期账单、看一眼提醒，能不能替你省事，十分钟就有答案。</p>
+        <a class="btn btn-download" href="【替换成租管通的网盘/直链exe下载地址】" target="_blank">📥 免费下载试用</a>
+        <a class="btn btn-buy" href="【替换成租管通的购买链接】" target="_blank">💰 购买买断授权</a>
+        <div class="small">Windows 10 / 11 ｜ 单机版，无需联网 ｜ 一次买断，永久使用</div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="container">
+        <p>© 2026 林子软件工具库 ｜ 租管通 RentKeeper V1.2 ｜ <a href="../../about.html">售后与授权说明</a></p>
+        <p style="font-size:13px; margin-top:6px; color:#9ca3af;">本页截图为软件真实界面，演示数据仅作示例。</p>
+    </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+    <span class="close" id="lbClose">&times;</span>
+    <img src="" alt="放大查看" id="lbImg">
+</div>
+
+<script>
+    (function () {
+        var lb = document.getElementById('lightbox');
+        var lbImg = document.getElementById('lbImg');
+        var closeBtn = document.getElementById('lbClose');
+
+        document.querySelectorAll('.shot img').forEach(function (img) {
+            img.addEventListener('click', function () {
+                lbImg.src = img.currentSrc || img.src;
+                lbImg.alt = img.alt || '软件界面放大查看';
+                lb.classList.add('on');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLb() {
+            lb.classList.remove('on');
+            lbImg.src = '';
+            document.body.style.overflow = '';
+        }
+        lb.addEventListener('click', closeLb);
+        closeBtn.addEventListener('click', closeLb);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lb.classList.contains('on')) closeLb();
+        });
+    })();
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->
