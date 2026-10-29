@@ -34,9 +34,9 @@
             color: inherit;
         }
 
-        /* ---------- 头部 ---------- */
+        /* ---------- 头部（纯色蓝底，无渐变；高度节奏对齐产品页） ---------- */
         header {
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            background-color: #2563eb;
             color: #fff;
             padding: 56px 16px 64px;
             text-align: center;
@@ -51,12 +51,11 @@
             border-radius: 999px;
             margin-bottom: 18px;
         }
-        header h1 {
-            font-size: 38px;
-            line-height: 1.35;
-            margin-bottom: 14px;
-            letter-spacing: 2px;
-            color: #ffffff;
+        /* LOGO 顶替原 h1：高度取 h1 行盒（36px × 1.35 = 48.6px），下边距与 h1 的 14px 一致，页头总高与产品页完全相同 */
+        .hero-logo {
+            height: 48.6px;
+            width: auto;
+            margin: 0 auto 14px;
         }
         header .sub {
             font-size: 18px;
@@ -67,6 +66,9 @@
             max-width: 760px;
             margin: 0 auto;
         }
+        header .sub strong {
+            font-weight: 700;
+        }
         header .kv {
             display: flex;
             justify-content: center;
@@ -74,7 +76,7 @@
             flex-wrap: wrap;
             margin-top: 26px;
             font-size: 15px;
-            color: #e8efff;
+            opacity: .95;
         }
         header .kv span::before {
             content: "✓";
@@ -85,24 +87,49 @@
         .hero-cta {
             margin-top: 32px;
         }
+        /* 供读屏与 SEO 使用的隐藏标题（视觉上由 LOGO 承担） */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* ---------- 导航（吸顶条总高同样对齐产品页） ---------- */
         nav {
-            background-color: #1e40af;
-            padding: 12px 0;
-            text-align: center;
             position: sticky;
             top: 0;
             z-index: 50;
+            background-color: #1e40af;
             box-shadow: 0 2px 10px rgba(30, 64, 175, .25);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            padding: 6px 12px;
+            min-height: 52px;
+            box-sizing: border-box;
         }
         nav a {
-            color: #fff;
+            display: inline-block;
+            color: #e8efff;
             text-decoration: none;
-            margin: 0 14px;
+            padding: 6px 14px;
+            border-radius: 8px;
             font-size: 16px;
+            line-height: 1.75;
             white-space: nowrap;
+            transition: background .16s, color .16s;
         }
         nav a:hover {
-            text-decoration: underline;
+            color: #fff;
+            background: rgba(255, 255, 255, .14);
         }
 
         /* ---------- 布局 ---------- */
@@ -116,21 +143,35 @@
         }
         .section {
             background: #fff;
-            border-radius: 12px;
-            padding: 36px 36px 32px;
+            border: 1px solid #eef2f8;
+            border-radius: 14px;
+            padding: 40px 40px 36px;
             margin: 26px 0;
             box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
         }
         h2 {
-            color: #1e40af;
+            position: relative;
+            color: #1e3a8a;
             font-size: 25px;
-            margin-bottom: 10px;
             line-height: 1.45;
+            padding-left: 16px;
+            margin-bottom: 10px;
+        }
+        h2::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: .28em;
+            bottom: .28em;
+            width: 4px;
+            border-radius: 4px;
+            background: linear-gradient(180deg, #2563eb 0%, #10b981 100%);
         }
         .h2-sub {
             color: #64748b;
             font-size: 15px;
-            margin-bottom: 24px;
+            margin-bottom: 26px;
+            padding-left: 16px;
         }
         p {
             color: #374151;
@@ -176,8 +217,15 @@
         .value-card {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 22px 20px;
+            border-radius: 12px;
+            padding: 24px 22px;
+            transition: transform .2s, box-shadow .2s, border-color .2s, background .2s;
+        }
+        .value-card:hover {
+            background: #fff;
+            border-color: #bfd3fb;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 26px rgba(15, 23, 42, .08);
         }
         .value-card .ico {
             font-size: 24px;
@@ -390,16 +438,22 @@
 
         /* ---------- 底部 CTA ---------- */
         .final-cta {
+            position: relative;
             background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
             color: #fff;
-            border-radius: 12px;
-            padding: 44px 32px;
+            border-radius: 14px;
+            padding: 46px 32px;
             text-align: center;
             margin: 26px 0;
+            overflow: hidden;
         }
         .final-cta h2 {
             color: #fff;
             margin-bottom: 10px;
+            padding-left: 0;
+        }
+        .final-cta h2::before {
+            display: none;
         }
         .final-cta p {
             color: #e8efff;
@@ -421,13 +475,19 @@
             color: #2563eb;
             text-decoration: none;
         }
+        footer .footer-logo {
+            height: 46px;
+            width: auto;
+            margin: 0 auto 14px;
+            opacity: .92;
+        }
 
         @media (max-width: 640px) {
             header {
                 padding: 40px 16px 44px;
             }
-            header h1 {
-                font-size: 27px;
+            .hero-logo {
+                height: 35.1px;
             }
             header .sub {
                 font-size: 15.5px;
@@ -446,7 +506,7 @@
                 font-size: 16px;
             }
             nav a {
-                margin: 0 9px;
+                padding: 6px 9px;
                 font-size: 15px;
             }
             .product-grid {
@@ -459,9 +519,10 @@
 
 <header>
     <div class="container">
+        <h1 class="sr-only">林子软件工具库 - 面向小微生意人的 Windows 单机买断软件</h1>
         <div class="badge-top">Windows 单机软件 · 买断制</div>
-        <h1>林子软件工具库</h1>
-        <p class="sub">给小微生意人做的本地单机软件——账本、客户、进销存，数据存在自己电脑里，<br>一次买断，不用年年续费，断网也能照常用。</p>
+        <img class="hero-logo" src="assets/img/linzi-logo-white.png" alt="林子软件" width="143" height="49">
+        <p class="sub">给小微生意人做的本地单机软件——账本、客户、进销存，<strong>数据存在自己电脑里</strong>，<br>一次买断，不用年年续费，断网也能照常用。</p>
         <div class="kv">
             <span>一次买断，无年费</span>
             <span>数据本地存储</span>
@@ -559,14 +620,27 @@
                 </div>
             </div>
 
-            <!-- ============ 以下为预留产品位（8 个，合计 10 个产品位） ============ -->
-            <!-- 新增产品时：把其中一个 .pcard.soon 整块替换成上面 .pcard 的结构，改图片、标题、简介、4 条卖点和详情链接 -->
-
-            <div class="pcard soon">
-                <div class="plus">+</div>
-                <h3>第 3 个产品位</h3>
-                <p>筹备中 · 欢迎告诉我们<br>你最需要的工具</p>
+            <!-- ============ 产品 3：授权管家 ============ -->
+            <div class="pcard">
+                <div class="cover">
+                    <span class="tag">已上线</span>
+                    <img src="assets/img/license-keeper/shouyue.png" alt="授权管家授权列表界面" loading="lazy">
+                </div>
+                <div class="pcard-body">
+                    <h3>授权管家｜激活码授权管理</h3>
+                    <p class="desc">管自己软件的授权：生成激活码、绑机器码签授权串、注销拉黑，全程离线不连服务器。</p>
+                    <ul>
+                        <li>批量生成 16 位激活码</li>
+                        <li>绑定机器码，Ed25519 签发授权串</li>
+                        <li>一码一机，换绑限次、拉黑即失效</li>
+                        <li>私钥本地加密，操作全程留痕</li>
+                    </ul>
+                    <a class="pcard-link" href="products/license-keeper/index.html">查看详情 &amp; 下载试用</a>
+                </div>
             </div>
+
+            <!-- ============ 以下为预留产品位（7 个，合计 10 个产品位） ============ -->
+            <!-- 新增产品时：把其中一个 .pcard.soon 整块替换成上面 .pcard 的结构，改图片、标题、简介、4 条卖点和详情链接 -->
 
             <div class="pcard soon">
                 <div class="plus">+</div>
@@ -620,7 +694,7 @@
     <!-- 三、选购指南 -->
     <div class="section" id="pick">
         <h2>不知道选哪个？看这一句就够</h2>
-        <p class="h2-sub">两款软件的边界很清楚，按你现在最头疼的事选。</p>
+        <p class="h2-sub">几款软件的边界很清楚，按你现在最头疼的事选。</p>
 
         <div class="pick-grid">
             <div class="pick">
@@ -634,14 +708,19 @@
                 <p>水产、生鲜、贸易批发，属于"进货 — 卖货 — 库存"型生意。</p>
             </div>
             <div class="pick">
-                <div class="q">两个都想要，怕买了用不上？</div>
+                <div class="q">自己写的软件要卖授权码？</div>
+                <div class="a">选 授权管家</div>
+                <p>批量生成激活码、绑机器码签发授权串，纯离线，不用搭授权服务器。</p>
+            </div>
+            <div class="pick">
+                <div class="q">拿不准该买哪个，怕买了用不上？</div>
                 <div class="a">先都下载试用</div>
                 <p>试用免费，用自己的数据各跑一遍，哪个省事买哪个，不需要勉强凑单。</p>
             </div>
         </div>
 
         <div class="tip-box">
-            <strong>一句实话：</strong>这两款软件都不是功能最全的。它们的目标是——<strong>你今天装完，明天就能用起来，而且三年后还在用</strong>。功能堆得越多，小生意越用不下去。
+            <strong>一句实话：</strong>这几款软件都不是功能最全的。它们的目标是——<strong>你今天装完，明天就能用起来，而且三年后还在用</strong>。功能堆得越多，小生意越用不下去。
         </div>
     </div>
 
@@ -658,6 +737,7 @@
 
 <footer>
     <div class="container">
+        <img class="footer-logo" src="assets/img/linzi-logo-horizontal.png" alt="林子软件" width="134" height="46">
         <p>© 2026 林子软件工具库 ｜ 单机工具均为买断授权模式 ｜ <a href="about.html">售后与授权说明</a></p>
         <p style="font-size:13px; margin-top:6px; color:#9ca3af;">站内截图为软件真实界面，演示数据仅作示例。</p>
     </div>
