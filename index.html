@@ -87,6 +87,34 @@
         .hero-cta {
             margin-top: 32px;
         }
+        /* 爱发电入口（首屏胶囊按钮） */
+        .afdian {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 22px;
+            padding: 8px 20px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .14);
+            border: 1px solid rgba(255, 255, 255, .36);
+            color: #fff;
+            font-size: 14.5px;
+            line-height: 1.7;
+            text-decoration: none;
+            transition: background .16s, border-color .16s, transform .16s;
+        }
+        .afdian:hover {
+            background: rgba(255, 255, 255, .26);
+            border-color: rgba(255, 255, 255, .7);
+            transform: translateY(-1px);
+        }
+        .afdian .heart {
+            color: #fca5a5;
+            font-size: 15px;
+        }
+        .afdian .go {
+            opacity: .85;
+        }
         /* 供读屏与 SEO 使用的隐藏标题（视觉上由 LOGO 承担） */
         .sr-only {
             position: absolute;
@@ -481,6 +509,9 @@
             margin: 0 auto 14px;
             opacity: .92;
         }
+        footer .footer-afdian {
+            margin-bottom: 8px;
+        }
 
         @media (max-width: 640px) {
             header {
@@ -512,6 +543,12 @@
             .product-grid {
                 grid-template-columns: 1fr;
             }
+            .afdian {
+                font-size: 13px;
+                padding: 7px 14px;
+                gap: 6px;
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -533,6 +570,11 @@
             <a class="btn btn-primary" href="#products">浏览全部产品</a>
             <a class="btn btn-ghost" href="about.html">售后与授权说明</a>
         </div>
+        <a class="afdian" href="https://ifdian.net/a/lin1030" target="_blank" rel="noopener noreferrer">
+            <span class="heart">♥</span>
+            <span>林子软件已入驻爱发电：https://ifdian.net/a/lin1030</span>
+            <span class="go">→</span>
+        </a>
     </div>
 </header>
 
@@ -756,6 +798,7 @@
 <footer>
     <div class="container">
         <img class="footer-logo" src="assets/img/linzi-logo-horizontal.png" alt="林子软件" width="134" height="46">
+        <p class="footer-afdian">林子软件已入驻爱发电：<a href="https://ifdian.net/a/lin1030" target="_blank" rel="noopener noreferrer">https://ifdian.net/a/lin1030</a></p>
         <p>© 2026 林子软件工具库 ｜ 单机工具均为买断授权模式 ｜ <a href="about.html">售后与授权说明</a></p>
         <p style="font-size:13px; margin-top:6px; color:#9ca3af;">站内截图为软件真实界面，演示数据仅作示例。</p>
     </div>
