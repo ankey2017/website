@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仓管通 StockKeeper - 小生意进销存单机工具｜林子软件工具库</title>
+    <meta name="description" content="仓管通 StockKeeper，面向个体户、小店、小商品批发、微型加工厂的本地进销存工具：商品档案、采购入库、销售出库、库存查询与预警、供应商客户台账、账号权限、操作日志。Windows 单机版，数据本地 SQLite 存储，一次买断永久使用。">
+    <meta name="keywords" content="仓管通,StockKeeper,进销存软件,单机版进销存,库存管理软件,采购入库,销售出库,库存预警,买断进销存,小店库存软件">
+    <meta property="og:title" content="仓管通 StockKeeper - 小生意进销存单机工具">
+    <meta property="og:description" content="Windows 单机进销存工具：开单就动库存，低于预警值标红提醒，单据能打能查。数据存本地，一次买断永久使用。">
+    <meta property="og:type" content="product">
+    <meta property="og:image" content="../../assets/img/stockKeeper/kucgl.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", system-ui, -apple-system, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #f8fafc;
+            color: #1f2937;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        a {
+            color: inherit;
+        }
+
+        /* ---------- 头部 ---------- */
+        header {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: #fff;
+            padding: 56px 16px 64px;
+            text-align: center;
+            position: relative;
+        }
+        header .badge-top {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: .5px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+        header h1 {
+            font-size: 36px;
+            line-height: 1.35;
+            margin-bottom: 14px;
+            letter-spacing: 1px;
+        }
+        header .sub {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: .3px;
+            text-shadow: 0 1px 3px rgba(15, 23, 42, .22);
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        header .kv {
+            display: flex;
+            justify-content: center;
+            gap: 10px 26px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+            font-size: 15px;
+            opacity: .95;
+        }
+        header .kv span::before {
+            content: "✓";
+            color: #6ee7b7;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        .hero-cta {
+            margin-top: 32px;
+        }
+        nav {
+            background-color: #1e40af;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(30, 64, 175, .25);
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 14px;
+            font-size: 16px;
+            white-space: nowrap;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- 布局 ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .wrap {
+            padding-bottom: 40px;
+        }
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 36px 32px;
+            margin: 26px 0;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
+        }
+        h2 {
+            color: #1e40af;
+            font-size: 25px;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .h2-sub {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+        h3 {
+            color: #0f172a;
+            font-size: 20px;
+            margin: 36px 0 6px;
+            padding-left: 12px;
+            border-left: 4px solid #2563eb;
+        }
+        h3:first-of-type {
+            margin-top: 8px;
+        }
+        p {
+            color: #374151;
+        }
+        .desc-text {
+            color: #475569;
+            margin: 12px 0 0;
+            font-size: 15.5px;
+        }
+        .vlist {
+            list-style: none;
+            margin: 14px 0 0;
+        }
+        .vlist li {
+            position: relative;
+            padding: 6px 0 6px 26px;
+            font-size: 15.5px;
+            color: #374151;
+        }
+        .vlist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            color: #10b981;
+            font-weight: bold;
+        }
+        .vlist li b {
+            color: #0f172a;
+        }
+
+        /* ---------- 按钮 ---------- */
+        .btn {
+            display: inline-block;
+            padding: 14px 34px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+            margin: 8px 6px;
+            transition: transform .15s, box-shadow .15s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+        }
+        .btn-download {
+            background: #10b981;
+            color: #fff;
+        }
+        .btn-buy {
+            background: #ef4444;
+            color: #fff;
+        }
+        .btn-ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .55);
+        }
+        .center {
+            text-align: center;
+        }
+
+        /* ---------- 价值卡片 ---------- */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+        .value-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 22px 20px;
+        }
+        .value-card .ico {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .value-card h4 {
+            font-size: 17px;
+            color: #1e3a8a;
+            margin-bottom: 6px;
+        }
+        .value-card p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- 一天的流程 ---------- */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0 4px;
+            padding: 16px 18px;
+            background: #eff6ff;
+            border: 1px dashed #bfdbfe;
+            border-radius: 10px;
+        }
+        .flow span.node {
+            font-size: 14.5px;
+            color: #1e40af;
+            background: #fff;
+            border: 1px solid #bfdbfe;
+            border-radius: 999px;
+            padding: 4px 14px;
+            white-space: nowrap;
+        }
+        .flow span.arrow {
+            color: #93c5fd;
+            font-size: 14px;
+        }
+
+        /* ---------- 截图 ---------- */
+        .shot {
+            margin: 18px 0 0;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 8px;
+            cursor: zoom-in;
+            transition: border-color .15s;
+        }
+        .shot:hover {
+            border-color: #93c5fd;
+        }
+        .shot img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+        .shot-cap {
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            padding: 8px 0 2px;
+        }
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .shot-grid .shot {
+            margin: 0;
+        }
+        .shot-note {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* ---------- 提示框 ---------- */
+        .tip-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #78350f;
+        }
+        .tip-box strong {
+            color: #92400e;
+        }
+
+        /* ---------- 对比表 ---------- */
+        .cmp-wrap {
+            overflow-x: auto;
+            margin-top: 22px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+        table.cmp {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+            font-size: 15px;
+        }
+        table.cmp th,
+        table.cmp td {
+            padding: 13px 14px;
+            text-align: center;
+            border-bottom: 1px solid #eef2f7;
+        }
+        table.cmp thead th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table.cmp tbody th {
+            text-align: left;
+            font-weight: 500;
+            color: #334155;
+            background: #fafbfc;
+            white-space: nowrap;
+        }
+        table.cmp td.self {
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+        table.cmp .no {
+            color: #94a3b8;
+        }
+
+        /* ---------- 适用行业 ---------- */
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .who {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px 20px;
+            background: #fff;
+        }
+        .who h4 {
+            font-size: 16px;
+            color: #1e3a8a;
+            margin-bottom: 4px;
+        }
+        .who p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        /* ---------- 授权步骤 ---------- */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 22px;
+        }
+        .step {
+            position: relative;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px 18px;
+        }
+        .step .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .step p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- FAQ ---------- */
+        .faq-item {
+            padding: 16px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-item strong {
+            display: block;
+            color: #1e40af;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .faq-item p {
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        /* ---------- 底部 CTA ---------- */
+        .final-cta {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 44px 32px;
+            text-align: center;
+            margin: 26px 0;
+        }
+        .final-cta h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .final-cta p {
+            color: rgba(255, 255, 255, .9);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .final-cta .small {
+            font-size: 13px;
+            opacity: .8;
+            margin-top: 14px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 16px 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        footer a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        footer .footer-logo {
+            height: 46px;
+            width: auto;
+            margin: 0 auto 14px;
+            opacity: .92;
+        }
+        footer .footer-afdian {
+            margin-bottom: 8px;
+        }
+
+        /* ---------- 图片放大 ---------- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .92);
+            z-index: 999;
+            padding: 28px;
+            overflow: auto;
+            cursor: zoom-out;
+        }
+        .lightbox.on {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .lightbox img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+        }
+        .lightbox .close {
+            position: fixed;
+            top: 14px;
+            right: 22px;
+            color: #fff;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: .8;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 40px 16px 44px;
+            }
+            header h1 {
+                font-size: 26px;
+            }
+            header .sub {
+                font-size: 15.5px;
+            }
+            .section {
+                padding: 24px 18px;
+                border-radius: 10px;
+            }
+            h2 {
+                font-size: 21px;
+            }
+            h3 {
+                font-size: 18px;
+                margin-top: 28px;
+            }
+            .btn {
+                display: block;
+                margin: 10px auto;
+                max-width: 320px;
+                font-size: 16px;
+            }
+            nav a {
+                margin: 0 9px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="badge-top">Windows 单机版 · 买断制</div>
+        <h1>仓管通 StockKeeper</h1>
+        <p class="sub">进了多少、出了多少、库里还剩多少、哪样货快没了——<br>一个工具按顺序点几下，库存和单据自己就长出来了。</p>
+        <div class="kv">
+            <span>数据存本机，不上云</span>
+            <span>一次买断，无年费</span>
+            <span>断网照常用</span>
+            <span>先免费用，满意再买</span>
+        </div>
+        <div class="hero-cta">
+            <a class="btn btn-download" href="http://14.215.237.133:1030/stockkeeper.zip" target="_blank">📥 下载 Windows 试用版</a>
+            <a class="btn btn-ghost" href="#feature">先看看功能界面</a>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <a href="../../index.html">首页</a>
+    <a href="../qidantong/index.html">企档通</a>
+    <a href="../saleSystem/index.html">货物销售管理系统</a>
+    <a href="index.html">仓管通</a>
+    <a href="../rentKeeper/index.html">租管通</a>
+    <a href="../codeCraft/index.html">码小匠</a>
+    <a href="../../about.html">售后与授权</a>
+</nav>
+
+<div class="container wrap">
+
+    <!-- 一、痛点与价值 -->
+    <div class="section">
+        <h2>货压着钱，账对不上，全靠脑子记</h2>
+        <p class="h2-sub">小店最常发生的三件事：客户要的货没货了、仓库里还躺着一堆卖不动的、上个月到底进了多少谁也说不清。</p>
+
+        <p>仓管通就是为这三件事做的。它把每一次进货、每一次出货都记成一张有编号的单据，库存跟着单据自动加减，低于预警线自动标红。你不用懂财务，也不用维护 Excel 公式——按做生意本来的顺序点几下鼠标，账就清楚了。</p>
+
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="ico">📦</div>
+                <h4>开单就动库存</h4>
+                <p>采购入库自动加库存，销售出库自动减库存。不用先记本子再抄进电脑，一份数据管到底，也就不会出现两本账对不上。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🚨</div>
+                <h4>低于预警值，列表标红</h4>
+                <p>每个商品都能设一个预警库存。库存掉到线以下，列表直接标红，还有单独的预警视图——哪种货该补，一眼看完。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🧾</div>
+                <h4>单据能打、能查、能追溯</h4>
+                <p>入库单 RK 开头、出库单 CK 开头，日期加流水号自动生成。A4 单据和小票两种打印，抬头带自己的店名。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">👥</div>
+                <h4>谁改了什么，日志里都有</h4>
+                <p>管理员和普通用户两个角色，店员只能录单查库存，不能删单、进不了设置。所有操作留痕，出了问题查得到人。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二、功能详解 -->
+    <div class="section" id="feature">
+        <h2>功能详解：按你一天的活儿来排</h2>
+        <p class="h2-sub">下面都是软件里的真实界面（数据为演示数据）。货到了入库 → 客户要货出库 → 打开主页看库存 → 该补的补、该打单的打单，就是完整的一天。</p>
+
+        <div class="flow">
+            <span class="node">商品档案</span><span class="arrow">→</span>
+            <span class="node">采购入库</span><span class="arrow">→</span>
+            <span class="node">库存自动增加</span><span class="arrow">→</span>
+            <span class="node">销售出库</span><span class="arrow">→</span>
+            <span class="node">库存自动扣减</span><span class="arrow">→</span>
+            <span class="node">库存查询 / 预警</span>
+        </div>
+
+        <h3>1. 库存查询：打开软件第一眼，先看货还剩多少</h3>
+        <p class="desc-text">软件启动登录后直接进库存查询页——这是默认主页。商品、规格、单位、库存数量、成本总额、预估销售总额一张表看完：剩多少、压了多少钱、卖完能收多少钱，都在上面。</p>
+        <div class="shot">
+            <img src="../../assets/img/stockKeeper/kucgl.png" alt="库存查询主页界面" loading="lazy">
+            <div class="shot-cap">库存查询（默认主页）：每种货剩多少、值多少钱、卖完能收多少</div>
+        </div>
+        <ul class="vlist">
+            <li><b>按名称或编码搜：</b>货多的时候不用一行行翻，输两个字就筛出来了。</li>
+            <li><b>按分类看：</b>五金归五金、杂货归杂货，分类建好，想看哪一类就看哪一类。</li>
+            <li><b>预警单独一个视图：</b>只列已经掉到预警线以下的货，补货清单不用自己拼。</li>
+            <li><b>库存能导出 CSV：</b>要发给别人、要自己再算一遍，导出来就是一张表。</li>
+        </ul>
+
+        <h3>2. 商品档案：先把货建好，后面开单才快</h3>
+        <p class="desc-text">编码、名称、规格、单位、成本价、售价、当前库存、预警库存、分类、备注，一次录清楚。以后开单只需要选商品，单价自动带出来，不会出现同一个货三个名字、两种单位的事。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/stockKeeper/shangpda.png" alt="商品档案列表界面" loading="lazy">
+                <div class="shot-cap">商品档案：成本价、售价、当前库存与预警值一表维护</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/stockKeeper/shangpda2.png" alt="商品档案维护界面" loading="lazy">
+                <div class="shot-cap">商品档案：分类、单位、预警库存都在同一页设置</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>卖不动的可以停用：</b>不是删除，历史单据照样留得住，列表也不会再被老货占屏。</li>
+            <li><b>分类自己定：</b>按你店里的习惯分，不用迁就软件的固定类目。</li>
+            <li><b>支持 CSV 批量导入导出：</b>货有几百种的时候，用 Excel 整理好一次导进来，比一条条敲快得多。</li>
+        </ul>
+
+        <h3>3. 采购入库：货一到就录，库存立刻是对的</h3>
+        <p class="desc-text">收货当天开一张采购入库单：选供应商、选商品、填数量和成本单价，金额自动合计。保存之后，对应商品的库存马上增加，入库记录也同时生成——不用再另抄一遍本子。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/stockKeeper/caigrk.png" alt="采购入库列表界面" loading="lazy">
+                <div class="shot-cap">采购入库：入库记录按时间、供应商、商品筛选</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/stockKeeper/caigrk2.png" alt="采购入库开单界面" loading="lazy">
+                <div class="shot-cap">采购入库：选商品填数量与成本价，金额自动合计</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>单号不用自己编：</b>RK + 日期 + 流水号自动生成，纸质单和电脑里的记录对得上号。</li>
+            <li><b>入库即加库存：</b>省掉一次抄写，也就省掉一次抄错的机会。</li>
+            <li><b>能打单：</b>单据可预览、可打印，A4 和小票两种版式，收货当面就能签字。</li>
+            <li><b>回头能查：</b>跟上家结账时按供应商筛出这段时间的进货，金额对得上，不怕对方多算。</li>
+        </ul>
+
+        <h3>4. 销售出库：开单快，库存不够会当场拦住</h3>
+        <p class="desc-text">出货现场就能开单：选客户、选商品、填数量与销售单价，金额自动算。库存不够的时候软件直接提示拦截，不会出现"单子开了、货没有"的尴尬；保存之后库存同步扣减。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/stockKeeper/xiaosck.png" alt="销售出库列表界面" loading="lazy">
+                <div class="shot-cap">销售出库：每笔出库都留档，卖给了谁、什么价可回查</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/stockKeeper/xiaosck2.png" alt="销售出库开单界面" loading="lazy">
+                <div class="shot-cap">销售出库：开单即扣库存，库存不足会拦截提示</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>开单不卡手：</b>客户和商品都是下拉选，单价自动带出，一张单几十秒录完。</li>
+            <li><b>不会超卖：</b>库存不够直接拦住，比事后跟客户解释"这批没了"体面得多。</li>
+            <li><b>出库单能打印：</b>客户要凭据、司机要送货单，打一张就有。</li>
+            <li><b>卖了多少可回查：</b>客户说"上次那批价不对"，把出库记录一拉，白纸黑字对清楚。</li>
+        </ul>
+
+        <h3>5. 供应商与客户：上家下家都在一本册子里</h3>
+        <p class="desc-text">供应商和客户各自建档，名称、联系人、电话、地址统一维护。点开某一家，能看到跟这家有关的全部入库或出库记录——谁供的货、谁拿的货，一查就明白。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/stockKeeper/gongysgl.png" alt="供应商管理界面" loading="lazy">
+                <div class="shot-cap">供应商管理：名称、联系人、电话、地址统一维护</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/stockKeeper/gongysgl2.png" alt="供应商往来记录界面" loading="lazy">
+                <div class="shot-cap">供应商管理：点开即看这家供应商的全部入库记录</div>
+            </div>
+        </div>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/stockKeeper/kehgl.png" alt="客户管理界面" loading="lazy">
+                <div class="shot-cap">客户管理：客户档案统一维护，送货不跑错地方</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/stockKeeper/kehgl2.png" alt="客户往来记录界面" loading="lazy">
+                <div class="shot-cap">客户管理：点开即看这位客户的全部出库记录</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>开单只需选名字：</b>建档之后不用每次重新打字，电话地址也顺手能查到。</li>
+            <li><b>往来有据：</b>谁欠不欠货、上次是什么价，翻这家人的记录就行，不用靠回忆。</li>
+        </ul>
+
+        <h3>6. 账号权限：老板看全部，店员只录单</h3>
+        <p class="desc-text">两个角色分得很干脆。管理员什么都能做；普通用户只能录入库单、出库单、查商品库存、打印单据，进不了账号管理、系统设置、操作日志，也不能删单据。密码本地加密存储，第一次打开软件会引导你设置管理员密码。</p>
+        <ul class="vlist">
+            <li><b>普通用户删不了单：</b>单据就是账，删单权限只留在老板手里。</li>
+            <li><b>可以新增账号、重置密码、禁用账号：</b>店员离职，禁用一下就行，不用改一堆密码。</li>
+            <li><b>admin 账号删不掉：</b>避免误操作把自己锁在门外。</li>
+        </ul>
+
+        <h3>7. 操作日志与系统设置：出了事能查，数据能带走</h3>
+        <p class="desc-text">登录、新增单据、修改单据、删除单据、账号新增、授权激活、备份恢复，全部记进操作日志：时间、操作者、操作类型、目标、详情、结果。日志只留最近三个月，过期自动清理，不会越堆越大。系统设置里能改仓库名称和单据打印抬头，也能一键备份、恢复数据库。</p>
+        <div class="shot">
+            <img src="../../assets/img/stockKeeper/xitsz.png" alt="系统设置界面" loading="lazy">
+            <div class="shot-cap">系统设置：基础设置、数据管理、授权信息、关于软件</div>
+        </div>
+        <ul class="vlist">
+            <li><b>一键备份：</b>把数据库备份到自己选的目录，放到U盘或另一台电脑就完事。</li>
+            <li><b>恢复要二次确认：</b>防止手一抖把现有数据覆盖掉。</li>
+            <li><b>授权信息看得见：</b>机器码、授权状态、激活时间都在这页，换电脑重新激活不用到处找。</li>
+        </ul>
+
+        <p class="shot-note">以上截图为软件实际界面，图中数据仅为演示用途。</p>
+    </div>
+
+    <!-- 三、适用人群 -->
+    <div class="section">
+        <h2>适合哪些人用</h2>
+        <p class="h2-sub">只要你的生意是"进货—放库—卖货"这一套，并且货的种类多到记不住，就适合。</p>
+        <div class="who-grid">
+            <div class="who">
+                <h4>小商品批发 / 杂货店</h4>
+                <p>SKU 多、单价低、进出频繁，靠脑子记不住，靠 Excel 又容易改乱一格。</p>
+            </div>
+            <div class="who">
+                <h4>五金建材 / 农资</h4>
+                <p>规格型号杂、单位不统一，需要按编码查货，也需要知道哪种货快见底了。</p>
+            </div>
+            <div class="who">
+                <h4>微型加工厂 / 小作坊</h4>
+                <p>原料进、成品出，要能追溯每批料的进价，也要给客户打得出出库单。</p>
+            </div>
+            <div class="who">
+                <h4>夫妻店 / 个体户</h4>
+                <p>老板自己看全部数据，店员只管录单，权限分开，账不会被随手改掉。</p>
+            </div>
+        </div>
+        <div class="tip-box">
+            <strong>说清楚不合适的情况：</strong>目前是<strong>单仓库</strong>版本，多个仓库要分开算库存的暂时用不了；需要手机端开单、多人同时在线、电商平台对接、复杂财务凭证和税务申报的，更适合云端 SaaS 或专业 ERP。仓管通定位很明确——<strong>一台电脑，把一家小店的货管明白</strong>。
+        </div>
+    </div>
+
+    <!-- 四、对比 -->
+    <div class="section">
+        <h2>跟手写本、Excel、云端软件比，差在哪</h2>
+        <p class="h2-sub">不是功能最多的，但一定是小店最容易坚持用下去的那一种。</p>
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>对比项</th>
+                        <th>手写本 / 纸质单</th>
+                        <th>自己搭 Excel</th>
+                        <th>云端 SaaS</th>
+                        <th>仓管通</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>上手难度</th>
+                        <td>简单</td>
+                        <td>要会公式</td>
+                        <td>要培训</td>
+                        <td class="self">装完就能用</td>
+                    </tr>
+                    <tr>
+                        <th>库存是否自动算</th>
+                        <td class="no">靠人算</td>
+                        <td class="no">改错一格全乱</td>
+                        <td>是</td>
+                        <td class="self">开单即增减</td>
+                    </tr>
+                    <tr>
+                        <th>库存预警</th>
+                        <td class="no">靠印象</td>
+                        <td class="no">要自己设条件格式</td>
+                        <td>有</td>
+                        <td class="self">低于预警值自动标红</td>
+                    </tr>
+                    <tr>
+                        <th>单据打印</th>
+                        <td>手写</td>
+                        <td class="no">排版麻烦</td>
+                        <td>有</td>
+                        <td class="self">A4 / 小票，单号自动</td>
+                    </tr>
+                    <tr>
+                        <th>操作留痕</th>
+                        <td class="no">没有</td>
+                        <td class="no">没有</td>
+                        <td>有</td>
+                        <td class="self">日志记录到人，留三个月</td>
+                    </tr>
+                    <tr>
+                        <th>费用</th>
+                        <td>便宜</td>
+                        <td>便宜</td>
+                        <td class="no">每年订阅</td>
+                        <td class="self">一次买断</td>
+                    </tr>
+                    <tr>
+                        <th>数据在哪</th>
+                        <td>纸本</td>
+                        <td>自己电脑</td>
+                        <td class="no">厂商服务器</td>
+                        <td class="self">自己电脑</td>
+                    </tr>
+                    <tr>
+                        <th>断网能用</th>
+                        <td>能</td>
+                        <td>能</td>
+                        <td class="no">不能</td>
+                        <td class="self">能，完全离线</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 五、免费试用 -->
+    <div class="section">
+        <h2>先试用，觉得合适再买</h2>
+        <p>试用版功能是完整的，只限了商品数：<b>商品档案最多录 5 个商品</b>，首页会一直提示未激活。拿自己真实的几个货跑一遍——建档案、入一次库、出一次库、打一张单，顺不顺手十分钟就知道。</p>
+        <div class="center">
+            <a class="btn btn-download" href="http://14.215.237.133:1030/stockkeeper.zip" target="_blank">📥 下载 Windows 试用版</a>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
+                <p>下载并安装，双击打开软件</p>
+            </div>
+            <div class="step">
+                <div class="num">2</div>
+                <p>在激活页复制本机机器码（带横杠那串，别去掉横杠）</p>
+            </div>
+            <div class="step">
+                <div class="num">3</div>
+                <p>下单时粘贴机器码，付款后获取激活码</p>
+            </div>
+            <div class="step">
+                <div class="num">4</div>
+                <p>回激活页粘贴激活码，离线验签通过即解除限制</p>
+            </div>
+        </div>
+        <p style="color:#94a3b8; font-size:13.5px; margin-top:14px;">激活全程离线校验，不联网、不上传机器码到任何服务器。</p>
+    </div>
+
+    <!-- 六、购买 -->
+    <div class="section">
+        <h2>购买授权：一次付费，永久使用</h2>
+        <p>买断制，没有年费、没有续费、不限账号数量。付款页面会让你填写机器码，付完系统自动发放激活码，激活码绑定本机。</p>
+        <div class="center">
+            <a class="btn btn-buy" href="【替换成极速卖码这个商品的链接】" target="_blank">💰 前往购买授权</a>
+        </div>
+        <p class="center" style="color:#6b7280; font-size:14px; margin-top:6px;">付款成功后自动发放激活码 · 激活码绑定本机机器码</p>
+        <p class="center" style="color:#94a3b8; font-size:13.5px; margin-top:10px;">具体价格与活动以下单页面为准；同一台电脑重装系统不影响授权，重新粘贴原激活码即可。</p>
+    </div>
+
+    <!-- 七、FAQ -->
+    <div class="section">
+        <h2>常见问题</h2>
+        <div class="faq-item">
+            <strong>Q：商品和单据数据会上传到外网服务器吗？</strong>
+            <p>A：不会。所有商品、单据、往来记录都保存在电脑本地的 SQLite 数据库文件里，软件不联网也能完整使用，不需要注册账号，也没有云端同步。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：试用版有什么限制？</strong>
+            <p>A：只限商品数——商品档案最多 5 个商品。入库、出库、库存查询、打印、导出都能正常用，买断后不限商品数。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：我有两个仓库，能分开管吗？</strong>
+            <p>A：当前版本是单仓库。两个仓库要分开算库存的话，暂时不适合；可以先把主要那个仓库管起来，多仓库需求后续版本会评估。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：单据能打印吗？</strong>
+            <p>A：能。入库单、出库单都支持预览和打印，有 A4 单据和热敏小票两种版式，打印抬头可以在系统设置里改成自己的店名。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：店员用这个软件，会不会把账改乱？</strong>
+            <p>A：普通用户只能录入库单、出库单、查库存、打单据，进不了账号管理、系统设置、操作日志，也不能删除单据。改动会记进操作日志，谁在什么时候改了什么，查得到。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：数据怎么备份？电脑坏了会不会全丢？</strong>
+            <p>A：系统设置里有"一键备份"，把数据库备份到你指定的目录，复制到U盘或另一台电脑即可。建议每周备份一次，成本很低，但能救命。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：换电脑了怎么办？</strong>
+            <p>A：激活码绑定本机机器码，换电脑需要重新申请激活码。具体规则和迁移方式请参考统一售后页面。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：我完全不懂电脑，能学会吗？</strong>
+            <p>A：界面就是常见的表格加表单，左边一排菜单，右侧内容区。录单顺序跟手写账本完全一致：选对象、选货、填数量单价、保存。正常半小时内可以上手。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：装不上 / 杀毒软件报毒怎么办？</strong>
+            <p>A：单机小工具可能被部分杀软误报，可先加入信任列表再运行。遇到无法解决的问题，请通过售后页面联系处理。</p>
+        </div>
+    </div>
+
+    <!-- 八、结尾 CTA -->
+    <div class="final-cta">
+        <h2>货管明白了，钱才不会被压在仓库里</h2>
+        <p>下载试用版，把自己真实的几个货录进去，入一次库、出一次库、打一张单，能不能帮你省事，半小时就能判断。</p>
+        <a class="btn btn-download" href="http://14.215.237.133:1030/stockkeeper.zip" target="_blank">📥 免费下载试用</a>
+        <a class="btn btn-buy" href="【替换成极速卖码这个商品的链接】" target="_blank">💰 购买买断授权</a>
+        <div class="small">Windows 10 / 11 ｜ 单机版，无需服务器 ｜ 一次买断，永久使用</div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="container">
+        <img class="footer-logo" src="../../assets/img/linzi-logo-horizontal.png" alt="林子软件" width="134" height="46">
+        <p class="footer-afdian">林子软件已入驻爱发电：<a href="https://ifdian.net/a/lin1030" target="_blank" rel="noopener noreferrer">https://ifdian.net/a/lin1030</a></p>
+        <p>© 2026 林子软件工具库 ｜ 单机工具均为买断授权模式 ｜ <a href="../../about.html">售后与授权说明</a></p>
+        <p style="font-size:13px; margin-top:6px; color:#9ca3af;">站内截图为软件真实界面，演示数据仅作示例。</p>
+    </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+    <span class="close" id="lbClose">&times;</span>
+    <img src="" alt="放大查看" id="lbImg">
+</div>
+
+<script>
+    (function () {
+        var lb = document.getElementById('lightbox');
+        var lbImg = document.getElementById('lbImg');
+        var closeBtn = document.getElementById('lbClose');
+
+        document.querySelectorAll('.shot img').forEach(function (img) {
+            img.addEventListener('click', function () {
+                lbImg.src = img.currentSrc || img.src;
+                lbImg.alt = img.alt || '软件界面放大查看';
+                lb.classList.add('on');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLb() {
+            lb.classList.remove('on');
+            lbImg.src = '';
+            document.body.style.overflow = '';
+        }
+        lb.addEventListener('click', closeLb);
+        closeBtn.addEventListener('click', closeLb);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lb.classList.contains('on')) closeLb();
+        });
+    })();
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->
