@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广告工程管家 AdPro Manager - 广告牌制作安装单机管理软件｜林子软件工具库</title>
+    <meta name="description" content="广告工程管家 AdPro Manager，面向广告牌设计、制作、安装小微企业的本地单机管理软件：客户档案、订单立项、物料BOM成本核算、回款对账与欠款台账、收支与工资总账、操作日志。Windows 单机版，数据本地 SQLite 存储，1480 元起一次买断。">
+    <meta name="keywords" content="广告工程管家,AdProManager,广告工程管理软件,广告牌制作管理,发光字订单管理,门头工程管理,单机版工程管理软件,回款对账,物料BOM核算,买断制软件">
+    <meta property="og:title" content="广告工程管家 AdPro Manager - 一单一张总账，成本和回款都算得清">
+    <meta property="og:description" content="Windows 单机版广告工程管理软件：客户、订单、物料BOM、回款对账、收支工资，数据存本地，1480 元起一次买断。">
+    <meta property="og:type" content="product">
+    <meta property="og:image" content="../../assets/img/adProManager/gongzt.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", system-ui, -apple-system, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #f8fafc;
+            color: #1f2937;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        a {
+            color: inherit;
+        }
+
+        /* ---------- 头部 ---------- */
+        header {
+            background: linear-gradient(135deg, #165dff 0%, #1e40af 100%);
+            color: #fff;
+            padding: 56px 16px 64px;
+            text-align: center;
+            position: relative;
+        }
+        header .badge-top {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: .5px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+        header h1 {
+            font-size: 36px;
+            line-height: 1.35;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        header .en {
+            font-size: 15px;
+            letter-spacing: 3px;
+            color: #c7dbff;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        header .sub {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: .3px;
+            text-shadow: 0 1px 3px rgba(15, 23, 42, .22);
+            max-width: 780px;
+            margin: 0 auto;
+        }
+        header .kv {
+            display: flex;
+            justify-content: center;
+            gap: 10px 26px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+            font-size: 15px;
+            opacity: .95;
+        }
+        header .kv span::before {
+            content: "✓";
+            color: #6ee7b7;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        .hero-cta {
+            margin-top: 32px;
+        }
+        nav {
+            background-color: #1e40af;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(30, 64, 175, .25);
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 12px;
+            font-size: 16px;
+            white-space: nowrap;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- 布局 ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .wrap {
+            padding-bottom: 40px;
+        }
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 36px 32px;
+            margin: 26px 0;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
+        }
+        h2 {
+            color: #1e40af;
+            font-size: 25px;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .h2-sub {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+        h3 {
+            color: #0f172a;
+            font-size: 20px;
+            margin: 36px 0 6px;
+            padding-left: 12px;
+            border-left: 4px solid #165dff;
+        }
+        h3:first-of-type {
+            margin-top: 8px;
+        }
+        p {
+            color: #374151;
+        }
+        .desc-text {
+            color: #475569;
+            margin: 12px 0 0;
+            font-size: 15.5px;
+        }
+        .vlist {
+            list-style: none;
+            margin: 14px 0 0;
+        }
+        .vlist li {
+            position: relative;
+            padding: 6px 0 6px 26px;
+            font-size: 15.5px;
+            color: #374151;
+        }
+        .vlist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            color: #00b42a;
+            font-weight: bold;
+        }
+        .vlist li b {
+            color: #0f172a;
+        }
+
+        /* ---------- 按钮 ---------- */
+        .btn {
+            display: inline-block;
+            padding: 14px 34px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+            margin: 8px 6px;
+            transition: transform .15s, box-shadow .15s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+        }
+        .btn-download {
+            background: #00b42a;
+            color: #fff;
+        }
+        .btn-buy {
+            background: #f53f3f;
+            color: #fff;
+        }
+        .btn-ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .55);
+        }
+        .center {
+            text-align: center;
+        }
+
+        /* ---------- 价值卡片 ---------- */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+        .value-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 22px 20px;
+        }
+        .value-card .ico {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .value-card h4 {
+            font-size: 17px;
+            color: #1e3a8a;
+            margin-bottom: 6px;
+        }
+        .value-card p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- 一单的流程 ---------- */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0 4px;
+            padding: 16px 18px;
+            background: #eff6ff;
+            border: 1px dashed #bfdbfe;
+            border-radius: 10px;
+        }
+        .flow span.node {
+            font-size: 14.5px;
+            color: #1e40af;
+            background: #fff;
+            border: 1px solid #bfdbfe;
+            border-radius: 999px;
+            padding: 4px 14px;
+            white-space: nowrap;
+        }
+        .flow span.arrow {
+            color: #93c5fd;
+            font-size: 14px;
+        }
+
+        /* ---------- 截图 ---------- */
+        .shot {
+            margin: 18px 0 0;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 8px;
+            cursor: zoom-in;
+            transition: border-color .15s;
+        }
+        .shot:hover {
+            border-color: #93c5fd;
+        }
+        .shot img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+        .shot-cap {
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            padding: 8px 0 2px;
+        }
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .shot-grid .shot {
+            margin: 0;
+        }
+        .shot-note {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* ---------- 提示框 ---------- */
+        .tip-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #78350f;
+        }
+        .tip-box strong {
+            color: #92400e;
+        }
+        .pro-tag {
+            display: inline-block;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #7c3aed;
+            background: #f5f3ff;
+            border: 1px solid #ddd6fe;
+            border-radius: 999px;
+            padding: 1px 9px;
+            margin-left: 8px;
+            vertical-align: 3px;
+            font-weight: 600;
+            letter-spacing: .3px;
+        }
+
+        /* ---------- 对比表 ---------- */
+        .cmp-wrap {
+            overflow-x: auto;
+            margin-top: 22px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+        table.cmp {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+            font-size: 15px;
+        }
+        table.cmp th,
+        table.cmp td {
+            padding: 13px 14px;
+            text-align: center;
+            border-bottom: 1px solid #eef2f7;
+        }
+        table.cmp thead th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table.cmp tbody th {
+            text-align: left;
+            font-weight: 500;
+            color: #334155;
+            background: #fafbfc;
+            white-space: nowrap;
+        }
+        table.cmp td.self {
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+        table.cmp .no {
+            color: #94a3b8;
+        }
+        table.cmp .yes {
+            color: #00b42a;
+            font-weight: 600;
+        }
+
+        /* ---------- 版本定价 ---------- */
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+        .plan-card {
+            position: relative;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 26px 24px 22px;
+            background: #fff;
+        }
+        .plan-card.best {
+            border-color: #165dff;
+            box-shadow: 0 8px 24px rgba(22, 93, 255, .1);
+        }
+        .plan-card .rec {
+            position: absolute;
+            top: -11px;
+            right: 20px;
+            background: #165dff;
+            color: #fff;
+            font-size: 12px;
+            line-height: 1.7;
+            padding: 1px 12px;
+            border-radius: 999px;
+            letter-spacing: .5px;
+        }
+        .plan-card h4 {
+            font-size: 19px;
+            color: #0f172a;
+            margin-bottom: 2px;
+        }
+        .plan-card .who-for {
+            font-size: 13.5px;
+            color: #64748b;
+            margin-bottom: 14px;
+            min-height: 44px;
+        }
+        .plan-card .price {
+            font-size: 34px;
+            font-weight: 700;
+            color: #f53f3f;
+            line-height: 1.2;
+        }
+        .plan-card .price small {
+            font-size: 14px;
+            font-weight: 400;
+            color: #94a3b8;
+            margin-left: 6px;
+        }
+        .plan-card ul {
+            list-style: none;
+            margin: 16px 0 0;
+            border-top: 1px dashed #e5e7eb;
+            padding-top: 14px;
+        }
+        .plan-card ul li {
+            position: relative;
+            padding: 4px 0 4px 22px;
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+        .plan-card ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 4px;
+            color: #00b42a;
+            font-weight: bold;
+        }
+        .plan-card ul li.off {
+            color: #9ca3af;
+        }
+        .plan-card ul li.off::before {
+            content: "—";
+            color: #d1d5db;
+        }
+
+        /* ---------- 适用行业 ---------- */
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .who {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px 20px;
+            background: #fff;
+        }
+        .who h4 {
+            font-size: 16px;
+            color: #1e3a8a;
+            margin-bottom: 4px;
+        }
+        .who p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        /* ---------- 授权步骤 ---------- */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 22px;
+        }
+        .step {
+            position: relative;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px 18px;
+        }
+        .step .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #165dff;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .step p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- FAQ ---------- */
+        .faq-item {
+            padding: 16px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-item strong {
+            display: block;
+            color: #1e40af;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .faq-item p {
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        /* ---------- 底部 CTA ---------- */
+        .final-cta {
+            background: linear-gradient(135deg, #1e40af 0%, #165dff 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 44px 32px;
+            text-align: center;
+            margin: 26px 0;
+        }
+        .final-cta h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .final-cta p {
+            color: rgba(255, 255, 255, .9);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .final-cta .small {
+            font-size: 13px;
+            opacity: .8;
+            margin-top: 14px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 16px 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        footer a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        footer .footer-logo {
+            height: 46px;
+            width: auto;
+            margin: 0 auto 14px;
+            opacity: .92;
+        }
+        footer .footer-afdian {
+            margin-bottom: 8px;
+        }
+
+        /* ---------- 图片放大 ---------- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .92);
+            z-index: 999;
+            padding: 28px;
+            overflow: auto;
+            cursor: zoom-out;
+        }
+        .lightbox.on {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .lightbox img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+        }
+        .lightbox .close {
+            position: fixed;
+            top: 14px;
+            right: 22px;
+            color: #fff;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: .8;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 40px 16px 44px;
+            }
+            header h1 {
+                font-size: 26px;
+            }
+            header .sub {
+                font-size: 15.5px;
+            }
+            .section {
+                padding: 24px 18px;
+                border-radius: 10px;
+            }
+            h2 {
+                font-size: 21px;
+            }
+            h3 {
+                font-size: 18px;
+                margin-top: 28px;
+            }
+            .btn {
+                display: block;
+                margin: 10px auto;
+                max-width: 320px;
+                font-size: 16px;
+            }
+            nav a {
+                margin: 0 8px;
+                font-size: 14.5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="badge-top">Windows 单机版 · 买断制</div>
+        <h1>广告工程管家</h1>
+        <div class="en">AdPro Manager</div>
+        <p class="sub">一块牌从报价、备料、制作、安装到回款——<br>这单用了多少料、赚了多少、客户还欠多少，一张订单总账说清楚。</p>
+        <div class="kv">
+            <span>数据存本机，不上云</span>
+            <span>1480 元起，一次买断</span>
+            <span>断网照常用</span>
+            <span>先免费用，满意再买</span>
+        </div>
+        <div class="hero-cta">
+            <a class="btn btn-download" href="【替换成广告工程管家的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 试用版</a>
+            <a class="btn btn-ghost" href="#feature">先看看功能界面</a>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <a href="../../index.html">首页</a>
+    <a href="../qidantong/index.html">企档通</a>
+    <a href="../saleSystem/index.html">货物销售管理系统</a>
+    <a href="../stockKeeper/index.html">仓管通</a>
+    <a href="../rentKeeper/index.html">租管通</a>
+    <a href="../codeCraft/index.html">码小匠</a>
+    <a href="index.html">广告工程管家</a>
+    <a href="../../about.html">售后与授权</a>
+</nav>
+
+<div class="container wrap">
+
+    <!-- 一、痛点与价值 -->
+    <div class="section">
+        <h2>报价靠估、成本靠猜、欠款靠记性</h2>
+        <p class="h2-sub">广告工程最麻烦的不是做不出牌子，是一单做完说不清赚了多少：材料用了多少、外协付了多少、客户欠的那一半什么时候给。</p>
+
+        <p>广告工程管家把这件事按订单拆开：一个客户、一张订单、一份用料清单、几笔收款，全挂在一起。录完料价，成本自动算出，报价减成本就是毛利；收款登记一笔，欠款自动减一笔。你不用懂财务，也不用维护十几个 Excel 表。</p>
+
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="ico">🧾</div>
+                <h4>一单一张总账</h4>
+                <p>客户、订单、用料、收款、开票、附件都挂在同一张订单上。事后客户问"我这单什么情况"，打开订单就能答。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">📐</div>
+                <h4>料单一录，毛利当场出来</h4>
+                <p>按行录物料、规格、数量、单价，材料成本自动汇总，报价减成本自动算出毛利。报价前先知道能赚多少，不用等做完再算。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">💰</div>
+                <h4>欠款和开票分得清</h4>
+                <p>订单收款状态四档：未结款、部分回款、已开票未回款、已结清。可以设到期前提醒，也能一键导出客户对账单去催款。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">📊</div>
+                <h4>收支工资进总账，月利润不用自己算</h4>
+                <p>材料采购、房租水电、外协加工、员工工资全部记进来，月底纯利润自动出来，不用再拿计算器对一遍。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二、功能详解 -->
+    <div class="section" id="feature">
+        <h2>功能详解：跟着一单生意走一遍</h2>
+        <p class="h2-sub">下面都是软件里的真实界面（数据为演示数据）。客户建档 → 订单立项 → 录料核算 → 制作安装 → 收款开票 → 对账催款，就是完整的一单。</p>
+
+        <div class="flow">
+            <span class="node">客户建档</span><span class="arrow">→</span>
+            <span class="node">订单立项</span><span class="arrow">→</span>
+            <span class="node">录 BOM 算成本毛利</span><span class="arrow">→</span>
+            <span class="node">制作安装</span><span class="arrow">→</span>
+            <span class="node">收款 / 开票</span><span class="arrow">→</span>
+            <span class="node">回款对账</span><span class="arrow">→</span>
+            <span class="node">收支工资 · 月利润</span>
+        </div>
+
+        <h3>1. 工作台：打开软件先看六个数</h3>
+        <p class="desc-text">登录后第一屏就是工作台。今日订单、待回款总额、未开票订单、本月总收入、本月总支出、本月纯利润，六个卡片摆在一起，生意状况一眼看完。下面的快捷入口可以直接新建订单、新增客户、新增支出、录物料、登记收款。</p>
+        <div class="shot">
+            <img src="../../assets/img/adProManager/gongzt.png" alt="工作台首页界面" loading="lazy">
+            <div class="shot-cap">工作台：六个核心指标 + 快捷入口，右上角显示授权状态</div>
+        </div>
+        <ul class="vlist">
+            <li><b>待回款看板：</b>外面还有多少钱没回来，是每天最该关心的一个数，直接放在首页。</li>
+            <li><b>未开票订单单独统计：</b>该开票没开的单子不会漏掉，月底不用翻账找。</li>
+            <li><b>授权状态常驻右上角：</b>试用期显示剩余订单名额，正式版显示"已永久激活"。</li>
+        </ul>
+
+        <h3>2. 客户管理：客户的账都在他自己名下</h3>
+        <p class="desc-text">客户名称、联系人、电话、地址、客户分类（零售 / 工程 / 长期合作）、信用额度、身份证附件、备注，一次录清楚。列表直接带出总应收、已收款、未收款三个数——谁欠、欠多少，不用另开一张表算。</p>
+        <div class="shot">
+            <img src="../../assets/img/adProManager/kehugl.png" alt="客户管理列表界面" loading="lazy">
+            <div class="shot-cap">客户管理：总应收、已收款、未收款跟着客户一起显示</div>
+        </div>
+        <ul class="vlist">
+            <li><b>点开就是台账：</b>客户行点进去，这个客户的全部订单、历史回款、总欠款一屏看完。</li>
+            <li><b>信用额度：</b>长期合作的老客户可以设一个额度，赊到什么程度心里有数。</li>
+            <li><b>附件留档：</b>营业执照、身份证这类材料直接传上去，下次要用不用再让人发一遍。</li>
+            <li><b>导入导出 Excel：</b>老客户名单可以一次性导进来，客户资料也能导出去备份。</li>
+        </ul>
+
+        <h3>3. 订单与项目：一单从立项到结清都在这里</h3>
+        <p class="desc-text">订单是整个系统的中心。订单编号、下单日期、客户、项目名称、工程类型（广告牌 / 发光字 / 门头等）、尺寸、工艺、报价总金额、设计师、安装人员，一张单把这些都记全。收款状态固定四档，进度推进改一下状态就行，不用自己写备注。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/adProManager/dingdgl.png" alt="订单管理列表界面" loading="lazy">
+                <div class="shot-cap">订单管理：按客户、工程类型、收款状态筛选</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/adProManager/dingdgl2.png" alt="订单详情与BOM物料清单界面" loading="lazy">
+                <div class="shot-cap">订单详情：基础信息 + 物料清单 + 收款状态与开票</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>四档回款状态：</b>未结款 / 部分回款 / 已开票未回款 / 已结清，谁欠、欠在哪一步一目了然。</li>
+            <li><b>工程类型分开记：</b>广告牌、发光字、门头各是一类，做统计或者回看同类工程的报价，有参照。</li>
+            <li><b>开票记录与订单附件：</b>开没开票、图纸合同传在单子上，出问题翻单子就有依据。</li>
+        </ul>
+
+        <h3>4. 物料与 BOM：这单到底用了多少钱的料<span class="pro-tag">专业版</span></h3>
+        <p class="desc-text">订单里可以直接录物料清单：物料名称、规格、数量、单价，小计自动算，整单材料总成本自动汇总，报价减掉材料成本就是这单的毛利。物料本身先在物料基础库里建好档，录单时下拉选一下，单价自动带出来。</p>
+        <div class="shot">
+            <img src="../../assets/img/adProManager/wuliaozqk.png" alt="物料基础库界面" loading="lazy">
+            <div class="shot-cap">物料基础库：分类、规格、单位、采购单价与历史进价</div>
+        </div>
+        <ul class="vlist">
+            <li><b>常用料先建档：</b>钢材、铝板、亚克力、LED 灯、油漆、五金配件，按你的习惯分类。</li>
+            <li><b>历史进价留底：</b>同一种料以前什么价买的一直存着，涨价了能看出来，报价不会还按老价算。</li>
+            <li><b>毛利实时可见：</b>边录料边看毛利，报价压得太低当场就能发现，不用等做完再后悔。</li>
+            <li><b>标准版不开放这一块：</b>只做订单和回款的话，订单页会隐藏物料区，界面更干净。</li>
+        </ul>
+
+        <h3>5. 回款对账：欠的钱要看得见、催得动</h3>
+        <p class="desc-text">收款以收款单的形式登记，绑定到具体订单，记金额、日期、付款方式（微信 / 支付宝 / 对公 / 现金）。欠款台账可以把没结清、已开票未回款的分开筛出来，还能设到期前 N 天提醒。</p>
+        <div class="shot">
+            <img src="../../assets/img/adProManager/huikcz.png" alt="回款对账界面" loading="lazy">
+            <div class="shot-cap">回款对账：按客户、订单、收款状态筛选欠款明细</div>
+        </div>
+        <ul class="vlist">
+            <li><b>到期提醒：</b>快到约定回款日的时候提醒你，别等客户"忘了"才想起来催。</li>
+            <li><b>一键导出对账单：</b>把某个客户的全部欠款导成 Excel 发过去，发货时间、金额、已付多少全在表上，对账不吵架。</li>
+            <li><b>已开票未回款单独一档：</b>票开了钱没到，这部分最容易变成烂账，系统单独列出来盯。</li>
+        </ul>
+
+        <h3>6. 收支与工资：月底利润不用自己拿计算器算</h3>
+        <p class="desc-text">收入这边，订单收款自动同步成营业收入，零星收入也能另记；支出分两类——物料采购归到项目成本，房租水电运杂费外协加工算日常开销。工资单独一个页签，基本工资、提成、扣款、实发工资录进去，自动计入当月成本。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/adProManager/shouzygz.png" alt="收支费用管理界面" loading="lazy">
+                <div class="shot-cap">收支管理：营业收入、费用支出、工资支出三个页签</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/adProManager/shouzygz2.png" alt="工资支出管理界面" loading="lazy">
+                <div class="shot-cap">工资支出：基本工资、提成、扣款、实发一目了然</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>收入自动来：</b>订单那边登记收款，收支表里就有营业收入，不用录两遍。</li>
+            <li><b>支出能挂订单：</b>这笔钱是给哪个工程花的，挂上去，单项目成本就能单独算。</li>
+            <li><b>工资进成本：</b>工资不只是发钱记录，它也是月度成本的一部分，利润才算得准。</li>
+        </ul>
+
+        <h3>7. 系统设置与操作日志：数据归你自己管</h3>
+        <p class="desc-text">系统设置里管员工账号和权限、数据库备份与恢复、Excel 导出模板，软件激活也在这里。操作日志是独立菜单，登录、新增、修改、删除、导出、激活这些动作都会记下来，谁在什么时候动了什么，查得到。日志只留最近三个月，过期自动清理，不会把硬盘塞满。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/adProManager/xitongsz.png" alt="系统设置界面" loading="lazy">
+                <div class="shot-cap">系统设置：账号权限、备份恢复、导出模板、软件激活</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/adProManager/caozrz.png" alt="操作日志界面" loading="lazy">
+                <div class="shot-cap">操作日志<span class="pro-tag">专业版</span>：按时间、类型、操作人筛选</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>一键备份：</b>数据库拷到自己选的目录，丢到U盘或另一台电脑就行，建议每周来一次。</li>
+            <li><b>多账号分权<span class="pro-tag">专业版</span>：</b>管理员加多个普通账号，业务员录客户开单，但设置和日志进不去。</li>
+        </ul>
+
+        <p class="shot-note">以上截图为软件实际界面，图中数据仅为演示用途。</p>
+    </div>
+
+    <!-- 三、版本对比 -->
+    <div class="section" id="version">
+        <h2>标准版还是专业版，看你要不要算料</h2>
+        <p class="h2-sub">同一个安装包，两个版本靠激活码区分。差别只有一句话：需不需要按单核算材料成本和毛利。</p>
+
+        <div class="plan-grid">
+            <div class="plan-card">
+                <h4>标准版</h4>
+                <p class="who-for">小型广告门店、零散接单，以客户、订单、回款、收支管理为主</p>
+                <div class="price">¥1480<small>永久买断</small></div>
+                <ul>
+                    <li>工作台看板与快捷入口</li>
+                    <li>客户管理与客户订单台账</li>
+                    <li>订单与项目跟踪、四档回款状态</li>
+                    <li>回款登记、欠款台账、对账单导出</li>
+                    <li>收支与工资记录</li>
+                    <li class="off">物料基础库</li>
+                    <li class="off">订单 BOM 用料与毛利核算</li>
+                    <li class="off">多账号与操作日志</li>
+                </ul>
+            </div>
+            <div class="plan-card best">
+                <span class="rec">多数工程队选这个</span>
+                <h4>专业版</h4>
+                <p class="who-for">广告工程较多、备货物料、多名员工协作，需要全功能</p>
+                <div class="price">¥1980<small>永久买断</small></div>
+                <ul>
+                    <li>标准版全部功能</li>
+                    <li><b>物料基础库</b>：分类建档、采购单价、历史进价</li>
+                    <li><b>订单 BOM</b>：料单自动汇总成本、自动算毛利</li>
+                    <li><b>多账号权限</b>：管理员 + 多个普通用户</li>
+                    <li><b>操作日志</b>：留三个月，可查可追</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>功能</th>
+                        <th>标准版 ¥1480</th>
+                        <th>专业版 ¥1980</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>工作台数据看板</th>
+                        <td class="yes">✓</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>客户管理与客户台账</th>
+                        <td class="yes">✓</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>订单与项目管理</th>
+                        <td class="yes">✓</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>回款对账与对账单导出</th>
+                        <td class="yes">✓</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>收支与工资管理</th>
+                        <td class="yes">✓</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>物料基础库</th>
+                        <td class="no">—</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>订单 BOM 与毛利核算</th>
+                        <td class="no">—</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>多账号权限</th>
+                        <td class="no">单管理员</td>
+                        <td class="yes">管理员 + 普通用户</td>
+                    </tr>
+                    <tr>
+                        <th>操作日志</th>
+                        <td class="no">—</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>授权方式</th>
+                        <td>机器码离线激活</td>
+                        <td>机器码离线激活</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tip-box">
+            <strong>怎么判断要不要买专业版：</strong>如果你现在给客户报价时，材料钱是靠"大概差不多"估的，那 BOM 和物料库就值得——它把这单的料钱算成实数，报价多少、能赚多少，动手前就知道。如果你只接现成单子、材料让上游包干，标准版就够用。
+        </div>
+    </div>
+
+    <!-- 四、适用人群 -->
+    <div class="section">
+        <h2>适合哪些人用</h2>
+        <p class="h2-sub">只要你的生意是"接单—备料—制作—安装—收钱"这个循环，并且一单金额不小、账期不短，就适合。</p>
+        <div class="who-grid">
+            <div class="who">
+                <h4>广告牌 / 门头制作</h4>
+                <p>一单几千到几万，客户常分两三次付款，最需要按单记清成本、收款和欠款。</p>
+            </div>
+            <div class="who">
+                <h4>发光字 / 标识工厂</h4>
+                <p>材料和工艺种类多，同一类工程反复报价，需要历史料价和毛利做参照。</p>
+            </div>
+            <div class="who">
+                <h4>广告设计工作室</h4>
+                <p>设计、制作、安装拆开报价，外协加工费要归到单子上，否则利润算不准。</p>
+            </div>
+            <div class="who">
+                <h4>工程队 / 安装班组</h4>
+                <p>老板管账、师傅干活，多个账号分工录入，谁改了什么日志里查得到。</p>
+            </div>
+        </div>
+        <div class="tip-box">
+            <strong>说清楚不合适的情况：</strong>需要多人同时在线协作、手机上给现场开单、对接电商或财务系统的，这类更适合云端 SaaS。仓管通这类纯库存工具、或者通用进销存，也不适合管"按单核算"的工程生意——它们算的是货，不是单。广告工程管家定位就是<strong>一台电脑，把一家广告店的一单单生意算明白</strong>。
+        </div>
+    </div>
+
+    <!-- 五、对比 -->
+    <div class="section">
+        <h2>跟手写本、Excel、云端软件比，差在哪</h2>
+        <p class="h2-sub">不是功能最多的，但一定是广告店最容易坚持用下去的那一种。</p>
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>对比项</th>
+                        <th>手写本 / 微信记录</th>
+                        <th>自己搭 Excel</th>
+                        <th>云端 SaaS</th>
+                        <th>广告工程管家</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>一单成本能不能算清</th>
+                        <td class="no">靠估</td>
+                        <td class="no">要自己拉公式</td>
+                        <td>要配项目管理模块</td>
+                        <td class="self">BOM 自动汇总 + 算毛利</td>
+                    </tr>
+                    <tr>
+                        <th>欠款与开票</th>
+                        <td class="no">靠记性</td>
+                        <td class="no">手工维护易错</td>
+                        <td>有</td>
+                        <td class="self">四档状态 + 到期提醒</td>
+                    </tr>
+                    <tr>
+                        <th>收支与工资进总账</th>
+                        <td class="no">两本账</td>
+                        <td class="no">容易算漏</td>
+                        <td>有</td>
+                        <td class="self">自动汇总月利润</td>
+                    </tr>
+                    <tr>
+                        <th>上手难度</th>
+                        <td>简单</td>
+                        <td>要会函数</td>
+                        <td>要培训</td>
+                        <td class="self">装完就能用</td>
+                    </tr>
+                    <tr>
+                        <th>费用</th>
+                        <td>便宜</td>
+                        <td>便宜</td>
+                        <td class="no">每年订阅</td>
+                        <td class="self">1480 元起买断</td>
+                    </tr>
+                    <tr>
+                        <th>数据在哪</th>
+                        <td>纸本</td>
+                        <td>自己电脑</td>
+                        <td class="no">厂商服务器</td>
+                        <td class="self">自己电脑</td>
+                    </tr>
+                    <tr>
+                        <th>断网能用</th>
+                        <td>能</td>
+                        <td>能</td>
+                        <td class="no">不能</td>
+                        <td class="self">能，完全离线</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 六、免费试用 -->
+    <div class="section">
+        <h2>先试用，觉得合适再买</h2>
+        <p>两个版本是同一个安装包，试用期功能都能看能试，只限制了<strong>可录入的订单数量</strong>（剩余名额在右上角一直显示）。用自己真实的一单走完整流程——建客户、立订单、录料算毛利、登记一笔收款、看一眼对账，顺不顺手半天就知道。</p>
+        <div class="center">
+            <a class="btn btn-download" href="【替换成广告工程管家的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 试用版</a>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
+                <p>下载解压，绿色版双击即用；也可用安装包安装</p>
+            </div>
+            <div class="step">
+                <div class="num">2</div>
+                <p>首次打开创建管理员账号，进入激活页复制本机机器码</p>
+            </div>
+            <div class="step">
+                <div class="num">3</div>
+                <p>下单时选择版本（标准版 / 专业版）并粘贴机器码</p>
+            </div>
+            <div class="step">
+                <div class="num">4</div>
+                <p>付款后拿到授权串，粘贴激活，版本功能自动解锁</p>
+            </div>
+        </div>
+        <p style="color:#94a3b8; font-size:13.5px; margin-top:14px;">激活全程离线验签，不联网、不上传机器码到任何服务器。</p>
+    </div>
+
+    <!-- 七、购买 -->
+    <div class="section">
+        <h2>购买授权：两个版本，都是一次买断</h2>
+        <p>没有年费、没有续费、不按人数收费。标准版 ¥1480，专业版 ¥1980，付款时填写机器码并选择版本，付完自动发放授权串。</p>
+        <div class="center">
+            <a class="btn btn-buy" href="【替换成广告工程管家的购买链接】" target="_blank">💰 前往购买授权</a>
+        </div>
+        <p class="center" style="color:#6b7280; font-size:14px; margin-top:6px;">付款成功后自动发放授权串 · 授权串绑定本机机器码</p>
+        <p class="center" style="color:#94a3b8; font-size:13.5px; margin-top:10px;">具体价格与活动以下单页面为准；同一台电脑重装系统不影响授权，重新粘贴原授权串即可。标准版日后想升级专业版，补差价换授权串即可解锁，不用重新录数据。</p>
+    </div>
+
+    <!-- 八、FAQ -->
+    <div class="section">
+        <h2>常见问题</h2>
+        <div class="faq-item">
+            <strong>Q：客户资料、报价、欠款这些数据会上传吗？</strong>
+            <p>A：不会。所有数据保存在电脑本地的 SQLite 数据库文件里，软件不联网也能完整使用，不需要注册云端账号，也没有同步服务器。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：标准版和专业版是两个安装包吗？以后想升级怎么办？</strong>
+            <p>A：同一个安装包，差别只在授权串里的版本标识。先买标准版，日后补差价换成专业版授权串，粘进去就解锁物料库、BOM、多账号和操作日志，原有数据一条不用重录。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：试用版有什么限制？</strong>
+            <p>A：只限制可录入的订单数量，剩余名额在界面右上角一直显示。客户、订单、回款、收支功能都可以正常试用，达到上限后禁用新建订单，激活后解除。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：BOM 里的材料价，是采购价还是报价？</strong>
+            <p>A：算成本用的是采购单价，也就是你实际进料的钱。毛利＝订单报价总金额 − 材料总成本，所以看到的是这单的毛利润，不含人工和杂费——那些记在收支里的工资和日常费用中，月底一起算净利。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：一单分三次收款，能记清楚吗？</strong>
+            <p>A：可以。每笔收款都是一张收款单，绑到同一张订单上，金额、日期、付款方式（微信 / 支付宝 / 对公 / 现金）分别记。订单状态会跟着走：未结款 → 部分回款 → 已结清。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：能给员工开账号吗？会不会把账改乱？</strong>
+            <p>A：专业版支持管理员加多个普通账号（标准版只有单管理员）。普通账号看不到系统设置和操作日志，所有动作都会留痕，谁改了什么查得到。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：数据怎么备份？电脑坏了会不会全丢？</strong>
+            <p>A：系统设置里有备份功能，把数据库备份到你指定的目录，复制到U盘或另一台电脑即可，恢复时导入回来。建议每周备份一次。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：换电脑了怎么办？</strong>
+            <p>A：授权串绑定本机机器码，换电脑需要重新申请。具体规则和迁移方式请参考统一售后页面。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：我完全不懂电脑，能学会吗？</strong>
+            <p>A：界面是左侧菜单加右侧表格的常见管理软件样式，录单顺序跟做生意一样：选客户、填项目、录料、存单。常用的就四五个页面，正常半小时内可以上手。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：装不上 / 杀毒软件报毒怎么办？</strong>
+            <p>A：单机小工具可能被部分杀软误报，可先加入信任列表再运行。遇到无法解决的问题，请通过售后页面联系处理。</p>
+        </div>
+    </div>
+
+    <!-- 九、结尾 CTA -->
+    <div class="final-cta">
+        <h2>每单都算得清，生意才越做越稳</h2>
+        <p>下载试用版，把自己真实的一单录进去——建客户、立订单、录料看毛利、登记一笔收款，能不能帮你省事，半天就能判断。</p>
+        <a class="btn btn-download" href="【替换成广告工程管家的网盘/直链exe下载地址】" target="_blank">📥 免费下载试用</a>
+        <a class="btn btn-buy" href="【替换成广告工程管家的购买链接】" target="_blank">💰 购买买断授权</a>
+        <div class="small">Windows 10 / 11 ｜ 标准版 ¥1480 / 专业版 ¥1980，一次买断 ｜ 单机版，无需服务器</div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="container">
+        <img class="footer-logo" src="../../assets/img/linzi-logo-horizontal.png" alt="林子软件" width="134" height="46">
+        <p class="footer-afdian">林子软件已入驻爱发电：<a href="https://ifdian.net/a/lin1030" target="_blank" rel="noopener noreferrer">https://ifdian.net/a/lin1030</a></p>
+        <p>© 2026 林子软件工具库 ｜ 单机工具均为买断授权模式 ｜ <a href="../../about.html">售后与授权说明</a></p>
+        <p style="font-size:13px; margin-top:6px; color:#9ca3af;">站内截图为软件真实界面，演示数据仅作示例。</p>
+    </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+    <span class="close" id="lbClose">&times;</span>
+    <img src="" alt="放大查看" id="lbImg">
+</div>
+
+<script>
+    (function () {
+        var lb = document.getElementById('lightbox');
+        var lbImg = document.getElementById('lbImg');
+        var closeBtn = document.getElementById('lbClose');
+
+        document.querySelectorAll('.shot img').forEach(function (img) {
+            img.addEventListener('click', function () {
+                lbImg.src = img.currentSrc || img.src;
+                lbImg.alt = img.alt || '软件界面放大查看';
+                lb.classList.add('on');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLb() {
+            lb.classList.remove('on');
+            lbImg.src = '';
+            document.body.style.overflow = '';
+        }
+        lb.addEventListener('click', closeLb);
+        closeBtn.addEventListener('click', closeLb);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lb.classList.contains('on')) closeLb();
+        });
+    })();
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->
