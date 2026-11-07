@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物管通 EstatePilot - 小区物业管理单机软件｜林子软件工具库</title>
+    <meta name="description" content="物管通 EstatePilot，面向中小物业公司与单个住宅小区的物业管理单机软件：房屋与业主档案、物业费收缴、欠费分级催缴、停车管理、报修工单、访客登记、收支台账、公告通知、收缴率报表。Windows 单机版，数据本地 SQLite 存储，一次买断永久使用。">
+    <meta name="keywords" content="物管通,EstatePilot,物业管理系统,小区物业软件,物业费收缴,欠费催缴,报修工单,停车管理,访客登记,单机版物业软件,买断制软件">
+    <meta property="og:title" content="物管通 EstatePilot - 谁欠费、哪户报修，一屏看完">
+    <meta property="og:description" content="Windows 单机版小区物业管理系统：一房一号管收费、报修、停车、访客，数据留在自己电脑，离线可用。">
+    <meta property="og:type" content="product">
+    <meta property="og:image" content="../../assets/img/estatePilot/home.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", system-ui, -apple-system, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #f4f6f9;
+            color: #1b2330;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        a {
+            color: inherit;
+        }
+
+        /* ---------- 头部 ---------- */
+        header {
+            background: linear-gradient(135deg, #1e3fd8 0%, #16309e 100%);
+            color: #fff;
+            padding: 56px 16px 64px;
+            text-align: center;
+            position: relative;
+        }
+        header .badge-top {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: .5px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+        header h1 {
+            font-size: 36px;
+            line-height: 1.35;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        header .en {
+            font-size: 15px;
+            letter-spacing: 3px;
+            color: #c7d2ff;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        header .sub {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: .3px;
+            text-shadow: 0 1px 3px rgba(15, 23, 42, .22);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header .kv {
+            display: flex;
+            justify-content: center;
+            gap: 10px 26px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+            font-size: 15px;
+            opacity: .95;
+        }
+        header .kv span::before {
+            content: "✓";
+            color: #6ee7b7;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        .hero-cta {
+            margin-top: 32px;
+        }
+        nav {
+            background-color: #16309e;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(22, 48, 158, .25);
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 9px;
+            font-size: 14.5px;
+            white-space: nowrap;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- 布局 ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .wrap {
+            padding-bottom: 40px;
+        }
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 36px 32px;
+            margin: 26px 0;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
+        }
+        h2 {
+            color: #16309e;
+            font-size: 25px;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .h2-sub {
+            color: #5a6478;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+        h3 {
+            color: #0f172a;
+            font-size: 20px;
+            margin: 36px 0 6px;
+            padding-left: 12px;
+            border-left: 4px solid #1e3fd8;
+        }
+        h3:first-of-type {
+            margin-top: 8px;
+        }
+        p {
+            color: #374151;
+        }
+        .desc-text {
+            color: #475569;
+            margin: 12px 0 0;
+            font-size: 15.5px;
+        }
+        .vlist {
+            list-style: none;
+            margin: 14px 0 0;
+        }
+        .vlist li {
+            position: relative;
+            padding: 6px 0 6px 26px;
+            font-size: 15.5px;
+            color: #374151;
+        }
+        .vlist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            color: #0faf7d;
+            font-weight: bold;
+        }
+        .vlist li b {
+            color: #0f172a;
+        }
+
+        /* ---------- 按钮 ---------- */
+        .btn {
+            display: inline-block;
+            padding: 14px 34px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+            margin: 8px 6px;
+            transition: transform .15s, box-shadow .15s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+        }
+        .btn-download {
+            background: #0faf7d;
+            color: #fff;
+        }
+        .btn-buy {
+            background: #c9382f;
+            color: #fff;
+        }
+        .btn-ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .55);
+        }
+        .center {
+            text-align: center;
+        }
+
+        /* ---------- 价值卡片 ---------- */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+        .value-card {
+            background: #f7f9fc;
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 22px 20px;
+        }
+        .value-card .ico {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .value-card h4 {
+            font-size: 17px;
+            color: #16309e;
+            margin-bottom: 6px;
+        }
+        .value-card p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- 流程条 ---------- */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0 4px;
+            padding: 16px 18px;
+            background: #f2f5ff;
+            border: 1px dashed #c7d2fe;
+            border-radius: 10px;
+        }
+        .flow span.node {
+            font-size: 14.5px;
+            color: #16309e;
+            background: #fff;
+            border: 1px solid #c7d2fe;
+            border-radius: 999px;
+            padding: 4px 14px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        .flow span.arrow {
+            color: #a5b4fc;
+            font-size: 14px;
+        }
+
+        /* ---------- 截图 ---------- */
+        .shot {
+            margin: 18px 0 0;
+            background: #f1f5f9;
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 8px;
+            cursor: zoom-in;
+            transition: border-color .15s;
+        }
+        .shot:hover {
+            border-color: #a5b4fc;
+        }
+        .shot img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+        .shot-cap {
+            font-size: 13px;
+            color: #5a6478;
+            text-align: center;
+            padding: 8px 0 2px;
+        }
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .shot-grid .shot {
+            margin: 0;
+        }
+        .shot-grid.three {
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        }
+        .shot-note {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* ---------- 提示框 ---------- */
+        .tip-box {
+            background: #fffbeb;
+            border-left: 4px solid #c2760a;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #703f06;
+        }
+        .tip-box strong {
+            color: #8a4d06;
+        }
+
+        /* ---------- 对比表 ---------- */
+        .cmp-wrap {
+            overflow-x: auto;
+            margin-top: 22px;
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+        }
+        table.cmp {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+            font-size: 15px;
+        }
+        table.cmp th,
+        table.cmp td {
+            padding: 13px 14px;
+            text-align: center;
+            border-bottom: 1px solid #eef2f7;
+        }
+        table.cmp thead th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table.cmp tbody th {
+            text-align: left;
+            font-weight: 500;
+            color: #334155;
+            background: #fafbfc;
+            white-space: nowrap;
+        }
+        table.cmp td.self {
+            background: #eef2ff;
+            color: #1e3fd8;
+            font-weight: 600;
+        }
+        table.cmp .no {
+            color: #94a3b8;
+        }
+        table.cmp .yes {
+            color: #0faf7d;
+            font-weight: 600;
+        }
+        table.cmp td small {
+            display: block;
+            color: #94a3b8;
+            font-size: 12.5px;
+            font-weight: 400;
+        }
+
+        /* ---------- 角色卡片 ---------- */
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .role {
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 18px 20px;
+            background: #fff;
+        }
+        .role h4 {
+            font-size: 16px;
+            color: #16309e;
+            margin-bottom: 4px;
+        }
+        .role .who {
+            font-size: 12.5px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        .role p {
+            font-size: 14px;
+            color: #5a6478;
+        }
+
+        /* ---------- 适用行业 ---------- */
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .who-card {
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 18px 20px;
+            background: #fff;
+        }
+        .who-card h4 {
+            font-size: 16px;
+            color: #16309e;
+            margin-bottom: 4px;
+        }
+        .who-card p {
+            font-size: 14px;
+            color: #5a6478;
+        }
+
+        /* ---------- 步骤 ---------- */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 22px;
+        }
+        .step {
+            position: relative;
+            background: #f7f9fc;
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 20px 18px;
+        }
+        .step .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #1e3fd8;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .step p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- FAQ ---------- */
+        .faq-item {
+            padding: 16px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-item strong {
+            display: block;
+            color: #16309e;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .faq-item p {
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        /* ---------- 底部 CTA ---------- */
+        .final-cta {
+            background: linear-gradient(135deg, #16309e 0%, #1e3fd8 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 44px 32px;
+            text-align: center;
+            margin: 26px 0;
+        }
+        .final-cta h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .final-cta p {
+            color: rgba(255, 255, 255, .9);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .final-cta .small {
+            font-size: 13px;
+            opacity: .8;
+            margin-top: 14px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 16px 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        footer a {
+            color: #1e3fd8;
+            text-decoration: none;
+        }
+        footer .footer-logo {
+            height: 46px;
+            width: auto;
+            margin: 0 auto 14px;
+            opacity: .92;
+        }
+        footer .footer-afdian {
+            margin-bottom: 8px;
+        }
+
+        /* ---------- 图片放大 ---------- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .92);
+            z-index: 999;
+            padding: 28px;
+            overflow: auto;
+            cursor: zoom-out;
+        }
+        .lightbox.on {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .lightbox img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+        }
+        .lightbox .close {
+            position: fixed;
+            top: 14px;
+            right: 22px;
+            color: #fff;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: .8;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 40px 16px 44px;
+            }
+            header h1 {
+                font-size: 26px;
+            }
+            header .sub {
+                font-size: 15.5px;
+            }
+            .section {
+                padding: 24px 18px;
+                border-radius: 10px;
+            }
+            h2 {
+                font-size: 21px;
+            }
+            h3 {
+                font-size: 18px;
+                margin-top: 28px;
+            }
+            .btn {
+                display: block;
+                margin: 10px auto;
+                max-width: 320px;
+                font-size: 16px;
+            }
+            nav a {
+                margin: 0 5px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="badge-top">Windows 单机版 · 买断制</div>
+        <h1>物管通</h1>
+        <div class="en">EstatePilot</div>
+        <p class="sub">这个月收了多少、哪几户还欠着、哪张报修单还没人去——<br>一个房号串起收费、报修、停车、访客，不用再翻台账和微信群。</p>
+        <div class="kv">
+            <span>数据存本机，不上云</span>
+            <span>一次买断，无年费</span>
+            <span>断网照常用</span>
+            <span>一机一码，离线激活</span>
+        </div>
+        <div class="hero-cta">
+            <a class="btn btn-download" href="http://14.215.237.133:1030/EstatePilot.zip" target="_blank">📥 下载 Windows 版</a>
+            <a class="btn btn-ghost" href="#feature">先看看功能界面</a>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <a href="../../index.html">首页</a>
+    <a href="../qidantong/index.html">企档通</a>
+    <a href="../saleSystem/index.html">货物销售管理系统</a>
+    <a href="../stockKeeper/index.html">仓管通</a>
+    <a href="../rentKeeper/index.html">租管通</a>
+    <a href="../codeCraft/index.html">码小匠</a>
+    <a href="../adProManager/index.html">广告工程管家</a>
+    <a href="../autoCRM/index.html">客销管家</a>
+    <a href="../assetKeeper/index.html">资管易</a>
+    <a href="index.html">物管通</a>
+    <a href="../../about.html">售后与授权</a>
+</nav>
+
+<div class="container wrap">
+
+    <!-- 一、痛点与价值 -->
+    <div class="section">
+        <h2>物业的活不难，难在账和事对不上</h2>
+        <p class="h2-sub">收费员记一本、前台记一本、工程师傅记在手机备忘录里——月底主管想看一眼收缴率，得把三个人的记录凑到一起。</p>
+
+        <p>物管通把"房屋与业主档案"做成唯一的主数据，收费、报修、停车、访客四条线全部挂在房号上。收费员录一笔收款，欠费清单和收缴率报表同时变；前台登记一张报修单，工程的工单列表里立刻能看到；主管打开首页，应收、实收、未完成工单就在那儿摆着。</p>
+
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="ico">🏠</div>
+                <h4>一个房号，串起全部记录</h4>
+                <p>点开一套房，业主信息、历次缴费、欠费金额、报修工单、访客记录全在一页——业主来问"我家交到几月了"，当场能答。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">💰</div>
+                <h4>谁欠费、欠多久，分级标出来</h4>
+                <p>应收减实收自动算欠费，按 30 天 / 90 天分成轻、中、重三级。催缴记一笔是一条记录，只增不改，扯皮时有依据。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🔧</div>
+                <h4>报修不用电话转述</h4>
+                <p>房号、故障照片、报修人、处理结果、完工时间都在一张工单上。派给谁、修没修完，列表里一眼看到。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">📈</div>
+                <h4>收缴率和工单量，月报自动出</h4>
+                <p>按楼栋、按收费项目分组统计应收实收，收缴率保留一位小数。不用月底熬夜拼表，导出来就能交。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二、功能详解 -->
+    <div class="section" id="feature">
+        <h2>功能详解：按物业的一年走一遍</h2>
+        <p class="h2-sub">下面都是软件里的真实界面（数据为演示数据）。房屋建档 → 业主入住 → 按期计费 → 收钱或欠费 → 催缴，同时并行走报修、停车、访客，就是物业的日常。</p>
+
+        <div class="flow">
+            <span class="node">房屋建档</span><span class="arrow">→</span>
+            <span class="node">业主入住</span><span class="arrow">→</span>
+            <span class="node">按期计费</span><span class="arrow">→</span>
+            <span class="node">收缴 / 欠费</span><span class="arrow">→</span>
+            <span class="node">分级催缴</span><span class="arrow">→</span>
+            <span class="node">台账与报表</span>
+        </div>
+
+        <h3>1. 首页看板：六张卡回答两个问题</h3>
+        <p class="desc-text">登录第一屏就是看板。总户数、欠费户数、本月应收、本月实收、待处理工单、今日新增报修六个数字，加上本月收缴率——"这个月收得怎么样、还有哪些事没做完"，五秒能判断。下面两块清单直接可操作：左边待催缴业主，右边待处理工单。</p>
+        <div class="shot">
+            <img src="../../assets/img/estatePilot/home.png" alt="首页看板界面" loading="lazy">
+            <div class="shot-cap">首页看板：六张指标卡 + 待催缴清单 + 待处理工单清单</div>
+        </div>
+        <ul class="vlist">
+            <li><b>数字是真算的：</b>全部由数据库实时聚合，改一条收款，看板上的实收和收缴率立刻跟着变。</li>
+            <li><b>待催缴按金额倒序：</b>欠得最多的排最前，催收的先后顺序不用自己排。</li>
+            <li><b>两个入口直接干活：</b>"去催缴""去处理"点进去就是对应页面，不用先去菜单里找。</li>
+        </ul>
+
+        <h3>2. 房屋与业主档案：先有房，才有后面所有的账</h3>
+        <p class="desc-text">房屋按楼栋、单元、房号三级组织，记建筑面积、房屋性质（住宅 / 商铺 / 办公）、状态（空置 / 已入住 / 出租）、交付日期。同一楼栋单元内房号唯一，录重了会直接拦住。业主与房屋绑定，一套房一名主业主，可以再登记家庭成员或共有人。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/fangwuda.png" alt="房屋档案界面" loading="lazy">
+                <div class="shot-cap">房屋档案：楼栋 / 单元 / 房号三级，可按楼栋汇总户数与面积</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/xinzfw.png" alt="新增房屋界面" loading="lazy">
+                <div class="shot-cap">新增房屋：面积、性质、状态、交付日期一次录清</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>业主档案聚合视图：</b>一套房的缴费、欠费、报修、访客记录都归在这页，业主上门问事不用翻几处。</li>
+            <li><b>附件能传：</b>证件照、租赁合同传上去，单张不超过 5MB，可多张。</li>
+            <li><b>批量导入：</b>按模板导楼栋、单元、房号，导入结果会告诉你成功几条、失败几条、为什么失败。</li>
+        </ul>
+
+        <h3>3. 物业费收缴：用得最多的就是这一页</h3>
+        <p class="desc-text">收费按"房屋 + 收费项目 + 费用期间"算一笔应收。选房、选项目、选期间，应收金额自动带出（要改必须填调整原因）；录实收、收费方式、收费日期、收费员、票据号，收据直接打印。实收比应收少，系统自动生成欠费；一样多就置为已结清。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/wuyejf.png" alt="物业费收缴台账界面" loading="lazy">
+                <div class="shot-cap">收费台账：应收 / 实收 / 欠费三个口径并排</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/wuyejf2.png" alt="物业费收缴汇总界面" loading="lazy">
+                <div class="shot-cap">底部汇总栏：应收、实收、欠费合计随筛选实时刷新</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/xuanfecs.png" alt="收费录入界面" loading="lazy">
+                <div class="shot-cap">收费录入：选房带出应收，改价必须填原因</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>不会重复收：</b>同一房屋、同一项目、同一期间只允许一笔应收，重复录入会提示"该期间费用已登记"。</li>
+            <li><b>收费项目自己定：</b>物业服务费按面积、公共能耗按户、垃圾清运和电梯费按年、车位管理费按车位、装修管理费一次性——计费方式和周期都能设。</li>
+            <li><b>汇总口径不骗人：</b>底部合计按当前筛选结果实时算，不读全量数据，导出 Excel 的范围和汇总完全一致。</li>
+        </ul>
+
+        <h3>4. 欠费催缴：欠得久了，得有人管</h3>
+        <p class="desc-text">欠费由"应收减实收"自动识别，按天数分三级：1–30 天轻度、31–90 天中度、90 天以上重度。欠费清单按房号排，显示欠费总额、最长欠费天数和联系电话。催缴可以按项目设"到期前 N 天提醒"（默认提前 7 天），每次催缴登记方式（电话 / 上门 / 短信）、催缴人、业主答复。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/shoujtj.png" alt="欠费清单界面" loading="lazy">
+                <div class="shot-cap">欠费清单：总额、最长欠费天数、联系电话一屏看完</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/shoujtj2.png" alt="催缴记录界面" loading="lazy">
+                <div class="shot-cap">催缴记录：时间、方式、催缴人、业主答复，只增不改</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/djcs.png" alt="欠费分级统计界面" loading="lazy">
+                <div class="shot-cap">欠费分级：轻度 / 中度 / 重度三档，催收优先级清楚</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>催过就有记录：</b>谁在什么时候催的、业主怎么答复的，都留在系统里，业主再说"没人通知我"时有话说。</li>
+            <li><b>结清自动移出：</b>钱一收，这户自动从待催缴清单消失，不用手工勾。</li>
+            <li><b>催缴量能统计：</b>一个月打了多少电话、上门几次，看得到工作量。</li>
+        </ul>
+
+        <h3>5. 停车管理：车位、车辆、到期提醒</h3>
+        <p class="desc-text">车位档案记编号、类型（固定 / 临时 / 人防）、所属区域、绑定房号、月租金、状态。车辆记车牌号、车牌颜色、车辆类型、绑定业主、联系电话、停车费到期日。停车费按车位月租金生成应收，和物业费共用同一套收费录入与台账。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/tingcgl.png" alt="停车管理界面" loading="lazy">
+                <div class="shot-cap">停车管理：车位与车辆台账，到期前 7 天提示续费</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/xizcw.png" alt="新增车位界面" loading="lazy">
+                <div class="shot-cap">新增车位：类型、区域、绑定房号、月租金</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/dengjcl.png" alt="登记车辆界面" loading="lazy">
+                <div class="shot-cap">登记车辆：车牌校验并唯一，绑定业主与到期日</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>车牌不会录错：</b>格式校验 + 唯一约束，同一个车牌不会出现两辆车。</li>
+            <li><b>到期提醒双处显示：</b>首页和停车列表同时提示，避免业主进出被拦才发现过期。</li>
+            <li><b>临停只登记不收费：</b>临时车辆记进出时间按小时计费，不参与月度应收，不干扰月账。</li>
+        </ul>
+
+        <h3>6. 报修工单：从登记到完工，一张单到底</h3>
+        <p class="desc-text">前台登记时报房号（或公共区域）、报修类型、内容、紧急程度、联系电话，可以拍现场照片。工单号按年流水生成（WX-2026-0001）。派单时指定维修人员，修完填处理结果、使用材料、完工时间；修不了的填驳回原因（不少于 10 字），前台回访后再重新派单或转外委。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/baoxgd.png" alt="报修工单列表界面" loading="lazy">
+                <div class="shot-cap">报修工单：按状态、类型、楼栋、时间筛选，底部汇总各状态条数</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/baoxgd2.png" alt="报修工单登记界面" loading="lazy">
+                <div class="shot-cap">报修登记：房号、类型、内容、现场照片一次录完</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>四态流转清楚：</b>待派单 → 维修中 → 已完成，处理不了的转驳回，不会出现"单子不知道去哪了"。</li>
+            <li><b>照片就是证据：</b>漏水点、门禁故障拍下来挂在工单上，材料用了多少也记着，避免事后争议。</li>
+            <li><b>完工单删不掉：</b>已完成的工单不允许删除，要冲正得管理员操作并写日志。</li>
+        </ul>
+
+        <h3>7. 访客登记：值班室那一本，搬进电脑</h3>
+        <p class="desc-text">访客姓名、手机号、来访房号、被访业主、来访事由、来访时间、离开时间、登记人，一条条记下来。离开时间没填的，列表里标成"在场"——值班交接时一眼看出还有谁在小区里没走。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/fangkdj.png" alt="访客登记列表界面" loading="lazy">
+                <div class="shot-cap">访客登记：未离开的标"在场"，可按日期、房号、姓名检索</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/fangkdj2.png" alt="访客登记录入界面" loading="lazy">
+                <div class="shot-cap">访客录入：来访房号与被访业主关联到房屋档案</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>交接不断档：</b>换班时看一眼"在场"清单，不用口头交代"还有两个人在 3 号楼"。</li>
+            <li><b>能和业主对上：</b>访客记录挂在房号上，业主档案里也能看到谁来访问过。</li>
+        </ul>
+
+        <h3>8. 收支台账与公告：经营账和通知都在一套里</h3>
+        <p class="desc-text">收支台账记非收费类收入和全部支出：收入分物业费（由收费模块汇总并入，不重复录）、停车费、广告位、场地租赁、其他；支出分工资、保洁耗材、维修材料、公共能耗、办公费用、其他。月度汇总看收入合计、支出合计、结余，还能按类别展开占比。公告用来发布停水停电、电梯年检、缴费提醒这些通知。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/tongzgg.png" alt="公告通知列表界面" loading="lazy">
+                <div class="shot-cap">公告通知：生效 / 失效日期管理，过期自动失效但留档</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/tongzgg2.png" alt="发布公告界面" loading="lazy">
+                <div class="shot-cap">发布公告：标题、正文、类型、生效与失效日期</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>收入不重复算：</b>物业费只在汇总时并入，不逐笔再录一遍，不会把营收算成两倍。</li>
+            <li><b>凭证能留：</b>每笔收支都能挂凭证附件，查账时有据可依。</li>
+            <li><b>公告是内部存档：</b>发布、打印张贴、留档，不对外推送——想要业主端推送得上云端系统。</li>
+        </ul>
+
+        <h3>9. 统计报表：三类报表，口径和台账一致</h3>
+        <p class="desc-text">物业费收缴报表（应收、实收、欠费、收缴率，按楼栋与项目分组）、报修工单报表（工单总量、完成率、平均处理时长、类型占比）、收支汇总报表（收入、支出、结余、分类占比）。都能选统计区间、按楼栋或人员筛选、导出 Excel。</p>
+        <div class="shot">
+            <img src="../../assets/img/estatePilot/tongjbb.png" alt="统计报表界面" loading="lazy">
+            <div class="shot-cap">统计报表：收缴率、工单完成率、收支结余一张屏对比</div>
+        </div>
+        <ul class="vlist">
+            <li><b>两套数字的问题没有了：</b>报表直接读台账数据，不二次加工，台账改了报表就跟着变。</li>
+            <li><b>空数据也写清楚：</b>没数据的楼栋显示 0 和 0.0%，不会留白让你以为漏了。</li>
+            <li><b>月报十分钟出完：</b>以前要三个人凑数，现在选个区间导出就行。</li>
+        </ul>
+
+        <h3>10. 账号、设置与日志：谁能看什么，一次配好</h3>
+        <p class="desc-text">账号一人一号，按岗位分角色。系统设置是独立页面（不弹窗），四个页签：基础参数（小区名称、收费默认周期、催缴提前天数、收据抬头与编号规则）、字典维护（收费项目、报修类型、收支分类、车位类型）、账号与安全、关于。操作日志记录登录、收费冲正、工单派单完工、字典变更、激活等动作，留三个月。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/zanghaogl.png" alt="账号管理界面" loading="lazy">
+                <div class="shot-cap">账号管理：一人一号，角色可调，停用不影响历史数据</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/xitongsj.png" alt="系统设置界面" loading="lazy">
+                <div class="shot-cap">系统设置：基础参数、字典维护、账号与安全、关于</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/estatePilot/caozrj.png" alt="操作日志界面" loading="lazy">
+                <div class="shot-cap">操作日志：只增不改，留三个月，可查询可导出</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>字典项删不掉会有提示：</b>被业务数据引用的收费项目、报修类型禁止删除，并告诉你有多少条在用。</li>
+            <li><b>权限是双层的：</b>界面藏起入口只是第一道，后台每个接口还会再校验一次角色。</li>
+            <li><b>每天自动备份：</b>启动时自动备份到 backup 目录，保留最近 30 份，误删数据能找回最近的。</li>
+        </ul>
+
+        <p class="shot-note">以上截图为软件实际界面，图中数据仅为演示用途。</p>
+    </div>
+
+    <!-- 三、角色权限 -->
+    <div class="section">
+        <h2>四种角色，各看各的</h2>
+        <p class="h2-sub">同一台电脑上能切换账号，数据随角色可见。收费员看不到收支台账，工程看不到工单以外的东西，普通员工只能查。</p>
+        <div class="role-grid">
+            <div class="role">
+                <h4>管理员</h4>
+                <div class="who">物业主管 / 经理</div>
+                <p>全部权限：档案、收费、工单、报表、账号、系统设置、操作日志、授权激活。</p>
+            </div>
+            <div class="role">
+                <h4>收费员</h4>
+                <div class="who">前台 / 财务</div>
+                <p>收费录入与查询、欠费催缴、停车收费部分、访客登记；看收费相关报表，收支台账只读。</p>
+            </div>
+            <div class="role">
+                <h4>工程维修</h4>
+                <div class="who">维修师傅</div>
+                <p>接单与完工、填处理结果与材料；房屋与业主档案只读，看工单相关报表。</p>
+            </div>
+            <div class="role">
+                <h4>普通员工</h4>
+                <div class="who">值班 / 内勤</div>
+                <p>只拿查询权限：看档案、看欠费清单、看公告，不参与任何数据写入。</p>
+            </div>
+        </div>
+        <div class="tip-box">
+            <strong>权限可以随时调：</strong>角色在创建账号时指定，管理员随时改，改完立刻生效。人员离职把账号停用，历史收费记录和操作日志的归属关系都保留，查账不断线。
+        </div>
+    </div>
+
+    <!-- 四、适用人群 -->
+    <div class="section">
+        <h2>适合哪些小区和物业公司用</h2>
+        <p class="h2-sub">只要是"一个小区、一套人、按月收物业费"的场景，并且不想按年付订阅费，就适合。</p>
+        <div class="who-grid">
+            <div class="who-card">
+                <h4>中小物业公司</h4>
+                <p>管一两个小区，老板自己盯收缴率，几个人分工干活，不需要买一套几万块的系统。</p>
+            </div>
+            <div class="who-card">
+                <h4>单小区自管</h4>
+                <p>业委会自聘或开发商自持，收费员加一个维修师傅，Excel 管到几百户就开始出错。</p>
+            </div>
+            <div class="who-card">
+                <h4>安置房 / 老旧小区</h4>
+                <p>住户结构复杂、欠费多、催缴靠打电话，最需要欠费分级和催缴记录。</p>
+            </div>
+            <div class="who-card">
+                <h4>商住混合 / 公寓</h4>
+                <p>住宅、商铺、办公混在一起，不同性质单价不同，需要按面积和按户分别计费。</p>
+            </div>
+        </div>
+        <div class="tip-box">
+            <strong>说清楚不合适的情况：</strong>V1.0 不做业主端 App 和微信小程序（业主不能自助缴费）、不做在线支付与银行代扣、不做电子发票、不接门禁道闸硬件、不支持多小区集中管理（<strong>一个小区对应一个数据库文件</strong>，管多个小区就分别安装、各用各的库）。如果你要的是"业主手机上交钱、总部统一看数"，那得用云端物业系统；物管通的定位是<strong>一套人、一个小区、一台电脑，把日常账和事管清楚</strong>。
+        </div>
+    </div>
+
+    <!-- 五、对比 -->
+    <div class="section">
+        <h2>跟 Excel、纸质台账、云端物业系统比，差在哪</h2>
+        <p class="h2-sub">不是功能最多的，但一定是收费员每天愿意打开的那一种。</p>
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>对比项</th>
+                        <th>纸质 / Excel 台账</th>
+                        <th>云端物业系统</th>
+                        <th>物管通</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>台账是否唯一</th>
+                        <td class="no">收费、工单各一本</td>
+                        <td>是</td>
+                        <td class="self">一套库，房号串起全部</td>
+                    </tr>
+                    <tr>
+                        <th>欠费识别</th>
+                        <td class="no">手工算差额</td>
+                        <td>有</td>
+                        <td class="self">自动算 + 三档分级</td>
+                    </tr>
+                    <tr>
+                        <th>催缴留痕</th>
+                        <td class="no">打没打过没人知道</td>
+                        <td>有</td>
+                        <td class="self">每次催缴一条记录</td>
+                    </tr>
+                    <tr>
+                        <th>报修跟踪</th>
+                        <td class="no">电话转述</td>
+                        <td>有</td>
+                        <td class="self">四态工单 + 现场照片</td>
+                    </tr>
+                    <tr>
+                        <th>收缴率报表</th>
+                        <td class="no">月底手工拼表</td>
+                        <td>有</td>
+                        <td class="self">实时算，按楼栋分组</td>
+                    </tr>
+                    <tr>
+                        <th>数据在哪</th>
+                        <td>纸本</td>
+                        <td class="no">厂商服务器</td>
+                        <td class="self">自己电脑 + 每日自动备份</td>
+                    </tr>
+                    <tr>
+                        <th>费用</th>
+                        <td>便宜</td>
+                        <td class="no">每年订阅，按户数收费</td>
+                        <td class="self">一次买断</td>
+                    </tr>
+                    <tr>
+                        <th>断网能用</th>
+                        <td>能</td>
+                        <td class="no">不能</td>
+                        <td class="self">能，完全离线</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 六、安装与激活 -->
+    <div class="section">
+        <h2>安装与激活：四步就能开工</h2>
+        <p>软件是单个 exe，绿色版双击就能跑，也提供安装包。首次启动会引导创建管理员账号（不允许跳过），然后进激活页——把本机机器码发出来，拿到授权码粘贴进去，全程离线验签。</p>
+        <div class="center">
+            <a class="btn btn-download" href="http://14.215.237.133:1030/EstatePilot.zip" target="_blank">📥 下载 Windows 版</a>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
+                <p>下载解压，绿色版双击即用；或用安装包安装</p>
+            </div>
+            <div class="step">
+                <div class="num">2</div>
+                <p>首次启动创建管理员账号（密码不少于 6 位）</p>
+            </div>
+            <div class="step">
+                <div class="num">3</div>
+                <p>在激活页复制本机机器码（带横杠 8 段那串，别改格式）</p>
+            </div>
+            <div class="step">
+                <div class="num">4</div>
+                <p>回填授权码，验签通过即转入登录页开始使用</p>
+            </div>
+        </div>
+        <p style="color:#94a3b8; font-size:13.5px; margin-top:14px;">验签全程离线，不联网、不上报机器码；数据库在 %APPDATA% 下，每天启动自动备份，保留最近 30 份。</p>
+    </div>
+
+    <!-- 七、购买 -->
+    <div class="section">
+        <h2>购买授权：一次付费，永久使用</h2>
+        <p>买断制永久授权，一机一码，绑定本机机器码。一个授权对应一台电脑、一个小区的数据文件；同一家公司管多个小区，按小区分别授权。</p>
+        <div class="center">
+            <a class="btn btn-buy" href="【替换成物管通的购买链接】" target="_blank">💰 前往购买授权</a>
+        </div>
+        <p class="center" style="color:#6b7280; font-size:14px; margin-top:6px;">付款后按机器码发放授权码 · 不联网校验、不按年续费</p>
+        <p class="center" style="color:#94a3b8; font-size:13.5px; margin-top:10px;">具体价格、实施与售后条款以商务报价单为准；更换电脑需重新申请授权码。</p>
+    </div>
+
+    <!-- 八、FAQ -->
+    <div class="section">
+        <h2>常见问题</h2>
+        <div class="faq-item">
+            <strong>Q：收费和业主数据会上传吗？</strong>
+            <p>A：不会。数据全部保存在本机的 SQLite 数据库（estatepilot.db）里，默认放在 %APPDATA%\EstatePilot\ 目录，附件也在同目录的子文件夹。软件不联网、不上报任何信息。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：业主能在手机上交物业费吗？</strong>
+            <p>A：不能。V1.0 是收费员在系统里登记收款、打印收据，业主侧不操作系统，也不接微信支付和银行代扣。业主自助缴费属于云端系统的事，这一版不做。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：我有三个小区，能放一个系统里吗？</strong>
+            <p>A：不支持多小区集中管理，一个授权对应一个小区的数据文件。三个小区就分别安装、各用各的库，各自授权。好处是数据互不干扰，出问题也只影响一个小区。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：收费项目能自己改吗？比如住宅和商铺单价不一样。</strong>
+            <p>A：能。收费项目由管理员在系统设置里维护，计费方式支持按面积 / 按户 / 按车位，周期支持月 / 季 / 年，停用的项目不再出现在下拉里但历史记录照常显示。住宅和商铺可以建两个不同单价的物业服务费。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：应收金额算错了想改怎么办？</strong>
+            <p>A：可以手工调整，但必须填调整原因，改了什么、为什么改都留在记录里。这样既留了灵活性，也不至于事后说不清。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：同一户重复收了一次费怎么办？</strong>
+            <p>A：同一房屋、同一项目、同一期间系统只允许一笔应收，重复录入会直接提示"该期间费用已登记"。已经收错的，由管理员做冲正操作并写入日志。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：报修单流程是怎样的？师傅能自己接单吗？</strong>
+            <p>A：前台登记 → 管理员或主管派单给维修人员 → 维修中 → 填处理结果和完工时间 → 已完成，主管可补备注复核。修不了的转驳回（驳回原因不少于 10 字），前台回访后重新派单或转外委。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：数据会丢吗？</strong>
+            <p>A：每次启动自动备份一次到 backup 目录，保留最近 30 份并按日期命名。也可以手动"导出数据库"另存一份。真误删了，用最近一次备份恢复。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：一千户会不会卡？</strong>
+            <p>A：按单小区 1000 户、收费记录 5 万条的规模设计：列表首屏 1 秒内加载，筛选与汇总 0.5 秒内出，导出 1000 行 Excel 5 秒内完成。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：换电脑了怎么办？</strong>
+            <p>A：授权一机一码，换电脑需重新取机器码申请授权码，原授权失效。数据可以带着走：把数据库文件和 attachments 目录一起拷到新电脑对应位置即可。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：装不上 / 杀毒软件报毒怎么办？</strong>
+            <p>A：单机小工具可能被部分杀软误报，可先加入信任列表再运行。遇到无法解决的问题，请通过售后页面联系处理。</p>
+        </div>
+    </div>
+
+    <!-- 九、结尾 CTA -->
+    <div class="final-cta">
+        <h2>账和事都在一个地方，主管才敢放手</h2>
+        <p>把一栋楼的房屋和业主录进去，开一张收费单、登记一张报修单，看看对不对你们的干活习惯——半天就能判断。</p>
+        <a class="btn btn-download" href="http://14.215.237.133:1030/EstatePilot.zip" target="_blank">📥 下载 Windows 版</a>
+        <a class="btn btn-buy" href="【替换成物管通的购买链接】" target="_blank">💰 购买买断授权</a>
+        <div class="small">Windows 10 / 11（64 位）｜ 单机版，无需服务器 ｜ 一次买断，永久使用</div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="container">
+        <img class="footer-logo" src="../../assets/img/linzi-logo-horizontal.png" alt="林子软件" width="134" height="46">
+        <p class="footer-afdian">林子软件已入驻爱发电：<a href="https://ifdian.net/a/lin1030" target="_blank" rel="noopener noreferrer">https://ifdian.net/a/lin1030</a></p>
+        <p>© 2026 林子软件工具库 ｜ 单机工具均为买断授权模式 ｜ <a href="../../about.html">售后与授权说明</a></p>
+        <p style="font-size:13px; margin-top:6px; color:#9ca3af;">站内截图为软件真实界面，演示数据仅作示例。</p>
+    </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+    <span class="close" id="lbClose">&times;</span>
+    <img src="" alt="放大查看" id="lbImg">
+</div>
+
+<script>
+    (function () {
+        var lb = document.getElementById('lightbox');
+        var lbImg = document.getElementById('lbImg');
+        var closeBtn = document.getElementById('lbClose');
+
+        document.querySelectorAll('.shot img').forEach(function (img) {
+            img.addEventListener('click', function () {
+                lbImg.src = img.currentSrc || img.src;
+                lbImg.alt = img.alt || '软件界面放大查看';
+                lb.classList.add('on');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLb() {
+            lb.classList.remove('on');
+            lbImg.src = '';
+            document.body.style.overflow = '';
+        }
+        lb.addEventListener('click', closeLb);
+        closeBtn.addEventListener('click', closeLb);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lb.classList.contains('on')) closeLb();
+        });
+    })();
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->

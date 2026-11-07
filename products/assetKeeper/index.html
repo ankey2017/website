@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资管易 AssetKeeper - 固定资产管理单机软件｜林子软件工具库</title>
+    <meta name="description" content="资管易 AssetKeeper，面向企业与事业单位的固定资产管理单机软件：资产台账、条码标签、领用归还、资产盘点、报废调拨处置、平均年限法折旧、六类报表、多账号权限与操作日志。Windows 单机版，数据本地 SQLite 存储，一次买断永久使用。">
+    <meta name="keywords" content="资管易,AssetKeeper,固定资产管理软件,固定资产台账,资产盘点软件,折旧核算,条码标签打印,事业单位资产管理,单机版资产管理,买断制软件">
+    <meta property="og:title" content="资管易 AssetKeeper - 一套台账管到底">
+    <meta property="og:description" content="Windows 单机版固定资产管理：建档贴码、领用归还、盘点、报废调拨、折旧、报表，全在一套数据里，数据留在本机。">
+    <meta property="og:type" content="product">
+    <meta property="og:image" content="../../assets/img/assetKeeper/gongzt.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", system-ui, -apple-system, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #f4f6f9;
+            color: #1b2330;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        a {
+            color: inherit;
+        }
+
+        /* ---------- 头部 ---------- */
+        header {
+            background: linear-gradient(135deg, #1e3fd8 0%, #16309e 100%);
+            color: #fff;
+            padding: 56px 16px 64px;
+            text-align: center;
+            position: relative;
+        }
+        header .badge-top {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: .5px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+        header h1 {
+            font-size: 36px;
+            line-height: 1.35;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        header .en {
+            font-size: 15px;
+            letter-spacing: 3px;
+            color: #c7d2ff;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        header .sub {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: .3px;
+            text-shadow: 0 1px 3px rgba(15, 23, 42, .22);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header .kv {
+            display: flex;
+            justify-content: center;
+            gap: 10px 26px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+            font-size: 15px;
+            opacity: .95;
+        }
+        header .kv span::before {
+            content: "✓";
+            color: #6ee7b7;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        .hero-cta {
+            margin-top: 32px;
+        }
+        nav {
+            background-color: #16309e;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(22, 48, 158, .25);
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 15px;
+            white-space: nowrap;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- 布局 ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .wrap {
+            padding-bottom: 40px;
+        }
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 36px 32px;
+            margin: 26px 0;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
+        }
+        h2 {
+            color: #16309e;
+            font-size: 25px;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .h2-sub {
+            color: #5a6478;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+        h3 {
+            color: #0f172a;
+            font-size: 20px;
+            margin: 36px 0 6px;
+            padding-left: 12px;
+            border-left: 4px solid #1e3fd8;
+        }
+        h3:first-of-type {
+            margin-top: 8px;
+        }
+        p {
+            color: #374151;
+        }
+        .desc-text {
+            color: #475569;
+            margin: 12px 0 0;
+            font-size: 15.5px;
+        }
+        .vlist {
+            list-style: none;
+            margin: 14px 0 0;
+        }
+        .vlist li {
+            position: relative;
+            padding: 6px 0 6px 26px;
+            font-size: 15.5px;
+            color: #374151;
+        }
+        .vlist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            color: #0faf7d;
+            font-weight: bold;
+        }
+        .vlist li b {
+            color: #0f172a;
+        }
+
+        /* ---------- 按钮 ---------- */
+        .btn {
+            display: inline-block;
+            padding: 14px 34px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+            margin: 8px 6px;
+            transition: transform .15s, box-shadow .15s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+        }
+        .btn-download {
+            background: #0faf7d;
+            color: #fff;
+        }
+        .btn-buy {
+            background: #c9382f;
+            color: #fff;
+        }
+        .btn-ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .55);
+        }
+        .center {
+            text-align: center;
+        }
+
+        /* ---------- 价值卡片 ---------- */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+        .value-card {
+            background: #f7f9fc;
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 22px 20px;
+        }
+        .value-card .ico {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .value-card h4 {
+            font-size: 17px;
+            color: #16309e;
+            margin-bottom: 6px;
+        }
+        .value-card p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- 流程条 ---------- */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0 4px;
+            padding: 16px 18px;
+            background: #f2f5ff;
+            border: 1px dashed #c7d2fe;
+            border-radius: 10px;
+        }
+        .flow span.node {
+            font-size: 14.5px;
+            color: #16309e;
+            background: #fff;
+            border: 1px solid #c7d2fe;
+            border-radius: 999px;
+            padding: 4px 14px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        .flow span.arrow {
+            color: #a5b4fc;
+            font-size: 14px;
+        }
+
+        /* ---------- 截图 ---------- */
+        .shot {
+            margin: 18px 0 0;
+            background: #f1f5f9;
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 8px;
+            cursor: zoom-in;
+            transition: border-color .15s;
+        }
+        .shot:hover {
+            border-color: #a5b4fc;
+        }
+        .shot img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+        .shot-cap {
+            font-size: 13px;
+            color: #5a6478;
+            text-align: center;
+            padding: 8px 0 2px;
+        }
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .shot-grid .shot {
+            margin: 0;
+        }
+        .shot-grid.three {
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        }
+        .shot-note {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* ---------- 提示框 ---------- */
+        .tip-box {
+            background: #fffbeb;
+            border-left: 4px solid #c2760a;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #703f06;
+        }
+        .tip-box strong {
+            color: #8a4d06;
+        }
+        .formula {
+            background: #f2f5ff;
+            border-left: 4px solid #1e3fd8;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 16px 0 0;
+            font-size: 15px;
+            color: #16309e;
+            font-family: Consolas, "Microsoft Yahei", monospace;
+        }
+
+        /* ---------- 对比表 ---------- */
+        .cmp-wrap {
+            overflow-x: auto;
+            margin-top: 22px;
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+        }
+        table.cmp {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+            font-size: 15px;
+        }
+        table.cmp th,
+        table.cmp td {
+            padding: 13px 14px;
+            text-align: center;
+            border-bottom: 1px solid #eef2f7;
+        }
+        table.cmp thead th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table.cmp tbody th {
+            text-align: left;
+            font-weight: 500;
+            color: #334155;
+            background: #fafbfc;
+            white-space: nowrap;
+        }
+        table.cmp td.self {
+            background: #eef2ff;
+            color: #1e3fd8;
+            font-weight: 600;
+        }
+        table.cmp .no {
+            color: #94a3b8;
+        }
+        table.cmp .yes {
+            color: #0faf7d;
+            font-weight: 600;
+        }
+        table.cmp td small {
+            display: block;
+            color: #94a3b8;
+            font-size: 12.5px;
+            font-weight: 400;
+        }
+
+        /* ---------- 适用行业 ---------- */
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .who {
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 18px 20px;
+            background: #fff;
+        }
+        .who h4 {
+            font-size: 16px;
+            color: #16309e;
+            margin-bottom: 4px;
+        }
+        .who p {
+            font-size: 14px;
+            color: #5a6478;
+        }
+
+        /* ---------- 步骤 ---------- */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 22px;
+        }
+        .step {
+            position: relative;
+            background: #f7f9fc;
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 20px 18px;
+        }
+        .step .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #1e3fd8;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .step p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- FAQ ---------- */
+        .faq-item {
+            padding: 16px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-item strong {
+            display: block;
+            color: #16309e;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .faq-item p {
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        /* ---------- 底部 CTA ---------- */
+        .final-cta {
+            background: linear-gradient(135deg, #16309e 0%, #1e3fd8 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 44px 32px;
+            text-align: center;
+            margin: 26px 0;
+        }
+        .final-cta h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .final-cta p {
+            color: rgba(255, 255, 255, .9);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .final-cta .small {
+            font-size: 13px;
+            opacity: .8;
+            margin-top: 14px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 16px 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        footer a {
+            color: #1e3fd8;
+            text-decoration: none;
+        }
+        footer .footer-logo {
+            height: 46px;
+            width: auto;
+            margin: 0 auto 14px;
+            opacity: .92;
+        }
+        footer .footer-afdian {
+            margin-bottom: 8px;
+        }
+
+        /* ---------- 图片放大 ---------- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .92);
+            z-index: 999;
+            padding: 28px;
+            overflow: auto;
+            cursor: zoom-out;
+        }
+        .lightbox.on {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .lightbox img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+        }
+        .lightbox .close {
+            position: fixed;
+            top: 14px;
+            right: 22px;
+            color: #fff;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: .8;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 40px 16px 44px;
+            }
+            header h1 {
+                font-size: 26px;
+            }
+            header .sub {
+                font-size: 15.5px;
+            }
+            .section {
+                padding: 24px 18px;
+                border-radius: 10px;
+            }
+            h2 {
+                font-size: 21px;
+            }
+            h3 {
+                font-size: 18px;
+                margin-top: 28px;
+            }
+            .btn {
+                display: block;
+                margin: 10px auto;
+                max-width: 320px;
+                font-size: 16px;
+            }
+            nav a {
+                margin: 0 6px;
+                font-size: 13.5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="badge-top">Windows 单机版 · 买断制</div>
+        <h1>资管易</h1>
+        <div class="en">AssetKeeper</div>
+        <p class="sub">单位里有多少台电脑、几台打印机、谁领走的、还剩多少净值——<br>一套台账管到底，不用再行政、财务、各部门各拿一份 Excel 轮流对表。</p>
+        <div class="kv">
+            <span>数据存本机，不出内网</span>
+            <span>一次买断，无年费</span>
+            <span>断网照常用</span>
+            <span>先试用，能录 10 项资产</span>
+        </div>
+        <div class="hero-cta">
+            <a class="btn btn-download" href="http://14.215.237.133:1030/AssetKeeper.zip" target="_blank">📥 下载 Windows 试用版</a>
+            <a class="btn btn-ghost" href="#feature">先看看功能界面</a>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <a href="../../index.html">首页</a>
+    <a href="../qidantong/index.html">企档通</a>
+    <a href="../saleSystem/index.html">货物销售管理系统</a>
+    <a href="../stockKeeper/index.html">仓管通</a>
+    <a href="../rentKeeper/index.html">租管通</a>
+    <a href="../codeCraft/index.html">码小匠</a>
+    <a href="../adProManager/index.html">广告工程管家</a>
+    <a href="../autoCRM/index.html">客销管家</a>
+    <a href="index.html">资管易</a>
+    <a href="../estatePilot/index.html">物管通</a>
+    <a href="../../about.html">售后与授权</a>
+</nav>
+
+<div class="container wrap">
+
+    <!-- 一、痛点与价值 -->
+    <div class="section">
+        <h2>资产一多，账就成了一笔糊涂账</h2>
+        <p class="h2-sub">谁领走的说不清、放在哪找不到、年底盘点和财务对不上、折旧全靠手工算——这些事每家单位都有，只是没人愿意年年重来一遍。</p>
+
+        <p>资管易的做法很朴素：一套台账管到底。资产建档、领用归还、盘点、报废调拨、折旧、报表六件事，全部跑在同一个数据库上——台账一改，报表和资产卡立刻跟着变，不存在"表对不上"这回事。</p>
+
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="ico">📇</div>
+                <h4>一台一码，贴上去就不会混</h4>
+                <p>保存资产自动生成编号和条码/二维码，50×30mm 标签纸直接打。扫码就知道是哪个资产、谁在用、在哪。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🔁</div>
+                <h4>谁领走了、还没还，都有流水</h4>
+                <p>领用归还逐单登记，同一台资产不会出现两条未归还记录。归还要填资产状况，坏没坏当场记下来。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">📋</div>
+                <h4>盘点从"抄表"变成"录数"</h4>
+                <p>按部门或分类一键带出应盘清单，只录实盘数量，盘盈盘亏系统自动算。差异行必须写说明才能提交。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🧮</div>
+                <h4>折旧自动提，净值随时看</h4>
+                <p>平均年限法按月计提累计折旧和净值。提够了自动标"已提足"，不会出现提超的情况，也不用财务再算一遍。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二、功能详解 -->
+    <div class="section" id="feature">
+        <h2>功能详解：按资产的一生排下来</h2>
+        <p class="h2-sub">下面都是软件里的真实界面（数据为演示数据）。买回来建档贴码 → 交给谁领用 → 每年盘一次 → 报废或调拨 → 逐月折旧 → 出报表，就是一台资产完整的一生。</p>
+
+        <div class="flow">
+            <span class="node">建档贴码</span><span class="arrow">→</span>
+            <span class="node">领用 / 归还</span><span class="arrow">→</span>
+            <span class="node">盘点核对</span><span class="arrow">→</span>
+            <span class="node">报废 / 调拨</span><span class="arrow">→</span>
+            <span class="node">按月折旧</span><span class="arrow">→</span>
+            <span class="node">报表导出</span>
+        </div>
+
+        <h3>1. 工作台：五秒看清单位有多少家底</h3>
+        <p class="desc-text">登录后默认进工作台。四张指标卡是资产总数、资产原值、本月新增金额、盘点差异项数；下面左边是按原值排序的前六个部门条形图，右边是在用 / 闲置 / 维修 / 报废待处置的环形构成；底部待办把"该管没管"的事列出来，点一下直接跳到对应单据。</p>
+        <div class="shot">
+            <img src="../../assets/img/assetKeeper/gongzt.png" alt="工作台界面" loading="lazy">
+            <div class="shot-cap">工作台：四张指标卡 + 部门原值分布 + 状态构成 + 待办预警</div>
+        </div>
+        <ul class="vlist">
+            <li><b>待办四类自动提醒：</b>报废待审批、盘点差异未确认、超期未归还、本月未计提折旧——都是容易忘又必须做的事。</li>
+            <li><b>部门分布一眼看出偏重：</b>哪个部门占的资产价值最高，预算往哪儿切心里有数。</li>
+            <li><b>金额规范显示：</b>原值类数字保留两位小数、带千分位，报数字不用再自己数位数。</li>
+        </ul>
+
+        <h3>2. 资产台账：全部家底就在这一张表</h3>
+        <p class="desc-text">资产编号按 ZC-年份-序号自动生成，名称、分类、规格型号、品牌、使用部门、责任人、存放地点、采购日期、采购金额、资产状态、折旧年限（默认 5 年）、残值率（默认 5%）、备注、效果图，一次录全。列表底部固定一条合计栏，实时显示当前筛选结果的<b>原值合计</b>和条数。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/assetKeeper/zhictz.png" alt="资产台账列表界面" loading="lazy">
+                <div class="shot-cap">资产台账：多条件筛选 + 底部原值合计，跟着筛选实时刷新</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/assetKeeper/xinzzc.png" alt="新增资产界面" loading="lazy">
+                <div class="shot-cap">新增资产：三列表单，效果图可多张上传，条码当场预览</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>合计栏不会看错数：</b>筛选一变，合计和条数立刻跟着变，导出的 Excel 首行也写合计。</li>
+            <li><b>效果图存本地：</b>设备照片、验收单拍下来传上去，随时预览，单张可删。</li>
+            <li><b>批量导入先校验：</b>用固定模板导入，系统先查格式和重复编号，全部通过才入库，不会导一半卡住。</li>
+            <li><b>删错了能捡回来：</b>删除是逻辑删除，进回收站 30 天内可以恢复，超期才真删。</li>
+            <li><b>标签能自己调：</b>专业版可以改标签模板的字段组合和字号，50×30 / 60×40 两种规格，常见条码打印机都能用。</li>
+        </ul>
+
+        <h3>3. 领用归还：责任到人，就不怕找不到</h3>
+        <p class="desc-text">领用登记选资产、领用人、部门、领用日期、预计归还日期，生成 LY-年份-序号 的领用单。归还从"领用中"列表进去，填归还日期和资产状况（完好 / 轻微损坏 / 需维修）——选了损坏会问要不要转维修状态并记一笔维修备注。</p>
+        <div class="shot">
+            <img src="../../assets/img/assetKeeper/lingygh.png" alt="领用归还界面" loading="lazy">
+            <div class="shot-cap">领用归还：流水可查，归还时登记资产状况</div>
+        </div>
+        <ul class="vlist">
+            <li><b>一台资产只能有一条未归还记录：</b>重复领用直接拦住，并告诉你原来那张单子在哪。</li>
+            <li><b>超期未还会冒出来：</b>预计归还日期过了还没还，工作台待办里就会列出来。</li>
+            <li><b>流水能导：</b>按单号、资产编号、领用人、部门、日期、状态筛完导出，交接时最有用。</li>
+        </ul>
+
+        <h3>4. 资产盘点：发单、收单、核对、出报告，一次做完</h3>
+        <p class="desc-text">新建盘点单时只填名字、日期区间和范围（全部资产 / 按部门 / 按分类），系统自动带出应盘清单和应盘数量。接下来只需要逐条录实盘数量，盘盈盘亏系统实时算出来；差异行不填说明就提交不了。盘完导出报告，打印出来签字归档。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/assetKeeper/zhicpd.png" alt="资产盘点界面" loading="lazy">
+                <div class="shot-cap">资产盘点：应盘、实盘、盘盈盘亏与差异说明一张表</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/assetKeeper/xinzpd.png" alt="新建盘点单界面" loading="lazy">
+                <div class="shot-cap">新建盘点单：选范围自动带出应盘清单</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>不用打印表格挨个抄：</b>应盘清单系统生成，现场只录数字，回来不用二次誊写。</li>
+            <li><b>盘点单能分次做：</b>进行中可以反复保存，提交后锁定不可改；要改就新建一单，留痕清楚。</li>
+            <li><b>差异必有说明：</b>账实不符的每一行都要写清原因，年底审计问起来有依据。</li>
+        </ul>
+
+        <h3>5. 资产处置：报废和调拨都走单据</h3>
+        <p class="desc-text">处置分两类。报废要填报废原因、报废日期、审批人，处置后资产状态变成"报废待处置"，退出在用统计但历史记录全留。调拨要填原部门、目标部门、新责任人、新地点，保存后资产卡上的部门、责任人、存放地点直接更新，资产本身不退出单位。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/assetKeeper/zhiccz.png" alt="资产处置界面" loading="lazy">
+                <div class="shot-cap">资产处置：报废与调拨分类型登记，联动资产状态</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/assetKeeper/baofcz.png" alt="报废处置登记界面" loading="lazy">
+                <div class="shot-cap">报废处置：原因、日期、审批人必填，退出在用统计</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>处置必须留单：</b>不能直接改状态了事，谁审批的、什么时候处置的，都在单据上。</li>
+            <li><b>调拨不留空档：</b>人和地点一起转，不会出现"资产还在原部门名下、人已经调走了"。</li>
+        </ul>
+
+        <h3>6. 折旧核算：平均年限法，按月自动提</h3>
+        <p class="desc-text">折旧按平均年限法算，按月计提，同一资产同一期间只能提一次。报表里列出编号、名称、年限、原值、月折旧额、已计提月数、残值率、累计折旧和净值，底部还有累计折旧合计与净值合计。净值到残值或年限提满后自动停止，标上"已提足"。</p>
+        <div class="formula">年折旧额 =（原值 − 原值 × 残值率）÷ 折旧年限　　月折旧额 = 年折旧额 ÷ 12</div>
+        <div class="shot">
+            <img src="../../assets/img/assetKeeper/zhejbb.png" alt="折旧报表界面" loading="lazy">
+            <div class="shot-cap">折旧报表：月折旧额、累计折旧、净值与双合计</div>
+        </div>
+        <ul class="vlist">
+            <li><b>财务不用再算一遍：</b>季度、年度要报数，直接导出这张表，口径和台账一致。</li>
+            <li><b>提重了会拦：</b>同一期间重复计提要先冲销，账不会虚增。</li>
+            <li><b>折旧年限可以单项调：</b>每台资产都能设自己的年限和残值率，不用为特殊设备单独开表。</li>
+        </ul>
+
+        <h3>7. 报表中心：六类常用报表，点一下就出</h3>
+        <p class="desc-text">资产汇总表、部门资产统计表、资产增减变动表、盘点报表、领用归还流水、折旧统计表——六类报表都能选统计区间、按分类或部门细分，先预览再导出 Excel。数据全部来自同一个库，不做二次加工，所以报表和台账永远对得上。</p>
+        <div class="shot">
+            <img src="../../assets/img/assetKeeper/baobzx.png" alt="报表中心界面" loading="lazy">
+            <div class="shot-cap">报表中心：六类报表统一入口，支持预览与导出</div>
+        </div>
+        <ul class="vlist">
+            <li><b>领导要数字，两分钟能给：</b>不用临时拼表，也不用担心各个科室报上来的数不一样。</li>
+            <li><b>导出带格式：</b>金额、数量按内容自动适配列宽和数字格式，拿去 WPS 或 Excel 打开就能用。</li>
+        </ul>
+
+        <h3>8. 账号、设置与日志：两个人的活，权限分开</h3>
+        <p class="desc-text">只有两种角色：管理员和操作员。操作员能建档、领用归还、盘点、处置、查报表，但删不了资产、改不了系统设置、不能计提折旧、日志也只能看自己的。系统设置是独立页面（不弹窗），分资产分类、部门设置、标签打印模板、数据备份、其他五个页签。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/assetKeeper/xitzj.png" alt="系统设置界面" loading="lazy">
+                <div class="shot-cap">系统设置：分类、部门、标签模板、数据备份五个页签</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/assetKeeper/caozrz.png" alt="操作日志界面" loading="lazy">
+                <div class="shot-cap">操作日志：记录到人，留最近三个月，可筛选可导出</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/assetKeeper/souqxx.png" alt="授权信息界面" loading="lazy">
+                <div class="shot-cap">授权信息：机器码、授权类型、激活时间与验签说明</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>操作员只能看自己部门的资产：</b>可见部门范围由管理员指定，超出范围的资产根本不显示。</li>
+            <li><b>人员离职停用不删除：</b>历史领用和日志的归属关系保留，查账不断线。</li>
+            <li><b>备份能一键做：</b>备份生成带时间戳的 .db 副本，恢复前会自动再备份一次当前库，防止误覆盖。</li>
+            <li><b>密码有防护：</b>密码不可逆加密存储，连续 5 次输错锁 10 分钟，锁定也记日志。</li>
+        </ul>
+
+        <p class="shot-note">以上截图为软件实际界面，图中数据仅为演示用途。</p>
+    </div>
+
+    <!-- 三、版本对比 -->
+    <div class="section" id="version">
+        <h2>标准版还是专业版，看你要不要算折旧</h2>
+        <p class="h2-sub">两个版本共用一个程序，用授权控制功能可见性。差别就一句话：财务要不要从这套系统里直接出折旧数据。</p>
+
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>功能</th>
+                        <th>标准版</th>
+                        <th>专业版</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>资产台账、条码标签、导入导出</th>
+                        <td class="yes">✓</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>领用归还、盘点、报废调拨</th>
+                        <td class="yes">✓</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>报表中心（汇总、部门统计）</th>
+                        <td class="yes">✓</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>数据备份与恢复</th>
+                        <td class="yes">✓</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>折旧核算与折旧报表</th>
+                        <td class="no">—</td>
+                        <td class="yes">✓</td>
+                    </tr>
+                    <tr>
+                        <th>效果图存档</th>
+                        <td>每项上限 3 张</td>
+                        <td class="yes">不限</td>
+                    </tr>
+                    <tr>
+                        <th>多账号与部门数据范围</th>
+                        <td class="no">单管理员</td>
+                        <td class="yes">管理员 + 操作员</td>
+                    </tr>
+                    <tr>
+                        <th>操作日志留存</th>
+                        <td>最近 1 个月</td>
+                        <td class="yes">最近 3 个月</td>
+                    </tr>
+                    <tr>
+                        <th>标签打印模板</th>
+                        <td>固定模板</td>
+                        <td class="yes">可自定义</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tip-box">
+            <strong>怎么判断要不要买专业版：</strong>如果财务每季度要报固定资产净值和累计折旧，那一定要专业版——标准版不出折旧表，这部分还得手工补。如果你只管台账、领用和盘点，折旧由财务在别的系统里算，标准版够用。
+        </div>
+    </div>
+
+    <!-- 四、适用人群 -->
+    <div class="section">
+        <h2>适合哪些单位用</h2>
+        <p class="h2-sub">只要是"买了一堆设备分给各个部门用"的场景，而且数据不方便放到别人服务器上，就适合。</p>
+        <div class="who-grid">
+            <div class="who">
+                <h4>机关 / 事业单位</h4>
+                <p>资产要建台账、要贴码、要年度盘点、要经得起审计，而且数据不能出内网。</p>
+            </div>
+            <div class="who">
+                <h4>50–500 人民营企业</h4>
+                <p>行政一个人兼着管资产，靠 Excel 管到几百台就开始乱，需要一个不显重的系统。</p>
+            </div>
+            <div class="who">
+                <h4>学校 / 医院 / 培训机构</h4>
+                <p>设备按科室、按年级分散使用，损坏维修频繁，谁领走、坏没坏都要有记录。</p>
+            </div>
+            <div class="who">
+                <h4>工厂 / 连锁门店</h4>
+                <p>电脑、打印机、仪器、车辆分散在各处，要能按部门统计原值，也要能批量导入台账。</p>
+            </div>
+        </div>
+        <div class="tip-box">
+            <strong>说清楚不合适的情况：</strong>需要生成财务凭证、对接总账系统、走多级审批流的，V1.0 不做（报废只有单级审批人登记）；集团多组织、多账套、手机扫码盘点、云端同步也都不支持。资管易的定位是<strong>一套台账管到底，一台电脑上把家底管明白</strong>——不做大系统，但做到装完当天就能用。
+        </div>
+    </div>
+
+    <!-- 五、对比 -->
+    <div class="section">
+        <h2>跟 Excel、纸质台账、云端资产系统比，差在哪</h2>
+        <p class="h2-sub">不是功能最多的，但一定是最容易推着别人一起用的那一种。</p>
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>对比项</th>
+                        <th>纸质台账</th>
+                        <th>自己搭 Excel</th>
+                        <th>云端资产系统</th>
+                        <th>资管易</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>台账是否唯一</th>
+                        <td class="no">多个副本</td>
+                        <td class="no">版本互相覆盖</td>
+                        <td>是</td>
+                        <td class="self">单一数据库，一处改全局生效</td>
+                    </tr>
+                    <tr>
+                        <th>领用和归还</th>
+                        <td class="no">手写登记</td>
+                        <td class="no">容易漏记</td>
+                        <td>有</td>
+                        <td class="self">单据 + 未还拦截</td>
+                    </tr>
+                    <tr>
+                        <th>盘点核对</th>
+                        <td class="no">抄表再誊一遍</td>
+                        <td class="no">手工比对</td>
+                        <td>有</td>
+                        <td class="self">自动算盘盈盘亏</td>
+                    </tr>
+                    <tr>
+                        <th>折旧与净值</th>
+                        <td class="no">手工算</td>
+                        <td class="no">公式易错</td>
+                        <td>有</td>
+                        <td class="self">平均年限法按月自动</td>
+                    </tr>
+                    <tr>
+                        <th>数据在哪</th>
+                        <td>纸本</td>
+                        <td>自己电脑</td>
+                        <td class="no">厂商服务器</td>
+                        <td class="self">自己电脑，不出内网</td>
+                    </tr>
+                    <tr>
+                        <th>费用</th>
+                        <td>便宜</td>
+                        <td>便宜</td>
+                        <td class="no">按年按人订阅</td>
+                        <td class="self">一次买断</td>
+                    </tr>
+                    <tr>
+                        <th>断网能用</th>
+                        <td>能</td>
+                        <td>能</td>
+                        <td class="no">不能</td>
+                        <td class="self">能，完全离线</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 六、试用与激活 -->
+    <div class="section">
+        <h2>先试用，觉得合适再买</h2>
+        <p>未激活状态下也能进软件试用，功能都能点，只限了数量：<b>最多录入 10 项资产</b>。拿自己单位真实的三五台设备跑一遍——建档、打一张标签、办一次领用、建一张盘点单，顺不顺手半小时就知道。</p>
+        <div class="center">
+            <a class="btn btn-download" href="http://14.215.237.133:1030/AssetKeeper.zip" target="_blank">📥 下载 Windows 试用版</a>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
+                <p>下载解压，绿色版双击即用；或用安装包安装</p>
+            </div>
+            <div class="step">
+                <div class="num">2</div>
+                <p>首次启动创建管理员账号，进入授权页复制本机机器码</p>
+            </div>
+            <div class="step">
+                <div class="num">3</div>
+                <p>下单时选择版本（标准版 / 专业版）并提交机器码</p>
+            </div>
+            <div class="step">
+                <div class="num">4</div>
+                <p>回填激活码与授权串，离线验签通过即转为永久授权</p>
+            </div>
+        </div>
+        <p style="color:#94a3b8; font-size:13.5px; margin-top:14px;">验签全程离线，不联网、不上报机器码；试用期录入的资产数据激活后继续沿用，不用重录。</p>
+    </div>
+
+    <!-- 七、购买 -->
+    <div class="section">
+        <h2>购买授权：一次付费，永久使用</h2>
+        <p>买断制永久授权，按机器授权、一机一码，不绑定账号、不按年收费。标准版与专业版为同一程序，凭授权中的版本字段解锁对应功能。</p>
+        <div class="center">
+            <a class="btn btn-buy" href="【替换成资管易的购买链接】" target="_blank">💰 前往购买授权</a>
+        </div>
+        <p class="center" style="color:#6b7280; font-size:14px; margin-top:6px;">付款后按机器码发放激活码与授权串 · 授权绑定本机机器码</p>
+        <p class="center" style="color:#94a3b8; font-size:13.5px; margin-top:10px;">具体价格与活动以下单页面为准；换机或重装系统需重新申请授权，原授权自动失效。</p>
+    </div>
+
+    <!-- 八、FAQ -->
+    <div class="section">
+        <h2>常见问题</h2>
+        <div class="faq-item">
+            <strong>Q：资产数据会上传到外网吗？</strong>
+            <p>A：不会。全部数据保存在本机的 SQLite 数据库（assetkeeper.db）里，图片也只存本地路径。软件不联网、不上报任何信息，满足事业单位"数据不出内网"的普遍要求。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：试用版有什么限制？</strong>
+            <p>A：只限资产数量——最多录入 10 项。建档、条码标签、领用归还、盘点、处置、报表都能正常试用，激活后不限数量，试用期录的数据继续沿用。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：资产太多，能不能用 Excel 一次性导进来？</strong>
+            <p>A：可以。按系统给的固定模板整理好（字段和台账一致），导入时系统先做格式校验和重复编号校验，有问题的行会列在结果页说明原因，全部通过才写入，不会导一半卡住。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：标签用什么打印机打？</strong>
+            <p>A：走 Windows 打印驱动，常见的条码打印机都能用。支持 50×30mm 和 60×40mm 两种规格；专业版还能自己调标签上的字段组合和字号。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：折旧怎么算？能改年限吗？</strong>
+            <p>A：平均年限法：年折旧额 =（原值 − 原值 × 残值率）÷ 折旧年限，再除以 12 得月折旧额，按月计提。每台资产都能单独设折旧年限（1–30 年）和残值率，默认 5 年 / 5%。提满或净值到残值后自动停提并标"已提足"。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：盘点时发现账实不符怎么办？</strong>
+            <p>A：录实际数量，系统自动算盘盈盘亏；差异行必须填差异说明才能提交。盘点单提交后锁定，如需调整要新建一单，改动留痕。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：资产删错了能恢复吗？</strong>
+            <p>A：能。删除是逻辑删除，30 天内可以从回收站恢复，超期才物理删除。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：部门同事也能用吗？会不会把账改乱？</strong>
+            <p>A：专业版支持多账号。操作员只能建档、领用归还、盘点、处置、看报表，删不了资产、改不了设置、不能计提折旧，日志也只看到自己的；管理员可以给每个操作员指定可见部门范围。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：数据怎么备份？</strong>
+            <p>A：系统设置里一键备份，生成带时间戳的 .db 副本，路径可自定义；恢复前会自动再备份一次当前库，避免误覆盖。建议每月盘点前后各备一次。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：换电脑了怎么办？</strong>
+            <p>A：授权按机器授权，换机需要重新取机器码并申请授权，原授权自动失效。具体规则和迁移方式请参考统一售后页面。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：装不上 / 杀毒软件报毒怎么办？</strong>
+            <p>A：单机小工具可能被部分杀软误报，可先加入信任列表再运行。遇到无法解决的问题，请通过售后页面联系处理。</p>
+        </div>
+    </div>
+
+    <!-- 九、结尾 CTA -->
+    <div class="final-cta">
+        <h2>家底清楚了，管理才谈得上</h2>
+        <p>下载试用版，把单位里真实的三五台设备录进去，打一张标签、办一次领用、建一张盘点单——半小时就能判断它合不合你的习惯。</p>
+        <a class="btn btn-download" href="http://14.215.237.133:1030/AssetKeeper.zip" target="_blank">📥 免费下载试用</a>
+        <a class="btn btn-buy" href="【替换成资管易的购买链接】" target="_blank">💰 购买买断授权</a>
+        <div class="small">Windows 10 / 11 ｜ 单机版，无需服务器 ｜ 一次买断，永久使用</div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="container">
+        <img class="footer-logo" src="../../assets/img/linzi-logo-horizontal.png" alt="林子软件" width="134" height="46">
+        <p class="footer-afdian">林子软件已入驻爱发电：<a href="https://ifdian.net/a/lin1030" target="_blank" rel="noopener noreferrer">https://ifdian.net/a/lin1030</a></p>
+        <p>© 2026 林子软件工具库 ｜ 单机工具均为买断授权模式 ｜ <a href="../../about.html">售后与授权说明</a></p>
+        <p style="font-size:13px; margin-top:6px; color:#9ca3af;">站内截图为软件真实界面，演示数据仅作示例。</p>
+    </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+    <span class="close" id="lbClose">&times;</span>
+    <img src="" alt="放大查看" id="lbImg">
+</div>
+
+<script>
+    (function () {
+        var lb = document.getElementById('lightbox');
+        var lbImg = document.getElementById('lbImg');
+        var closeBtn = document.getElementById('lbClose');
+
+        document.querySelectorAll('.shot img').forEach(function (img) {
+            img.addEventListener('click', function () {
+                lbImg.src = img.currentSrc || img.src;
+                lbImg.alt = img.alt || '软件界面放大查看';
+                lb.classList.add('on');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLb() {
+            lb.classList.remove('on');
+            lbImg.src = '';
+            document.body.style.overflow = '';
+        }
+        lb.addEventListener('click', closeLb);
+        closeBtn.addEventListener('click', closeLb);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lb.classList.contains('on')) closeLb();
+        });
+    })();
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->

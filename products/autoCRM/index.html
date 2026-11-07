@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客销管家 AutoCRM - 汽车门店客户全链路管理单机软件｜林子软件工具库</title>
+    <meta name="description" content="客销管家 AutoCRM，面向汽车 4S 店、汽贸店的客户关系管理单机软件：线索登记、跟进回访、试驾登记、成交订单、战败客户、客户档案、业绩报表、账号权限与操作日志。Windows 单机版，数据本地 SQLite 存储，一次买断永久使用。">
+    <meta name="keywords" content="客销管家,AutoCRM,汽车4S店管理软件,汽贸店客户管理,客户线索管理,跟进回访提醒,试驾登记,成交订单管理,战败客户,单机版CRM,买断制CRM">
+    <meta property="og:title" content="客销管家 AutoCRM - 谁该回访、哪单该成交，一屏看清">
+    <meta property="og:description" content="Windows 单机版汽车门店 CRM：线索、跟进、试驾、成交、战败全链路留痕，待回访到期自动提醒，数据存本地。">
+    <meta property="og:type" content="product">
+    <meta property="og:image" content="../../assets/img/autoCRM/home.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", system-ui, -apple-system, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #f4f6f9;
+            color: #1b2330;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        a {
+            color: inherit;
+        }
+
+        /* ---------- 头部 ---------- */
+        header {
+            background: linear-gradient(135deg, #1e3fd8 0%, #16309e 100%);
+            color: #fff;
+            padding: 56px 16px 64px;
+            text-align: center;
+            position: relative;
+        }
+        header .badge-top {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: .5px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+        header h1 {
+            font-size: 36px;
+            line-height: 1.35;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        header .en {
+            font-size: 15px;
+            letter-spacing: 3px;
+            color: #c7d2ff;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        header .sub {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: .3px;
+            text-shadow: 0 1px 3px rgba(15, 23, 42, .22);
+            max-width: 780px;
+            margin: 0 auto;
+        }
+        header .kv {
+            display: flex;
+            justify-content: center;
+            gap: 10px 26px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+            font-size: 15px;
+            opacity: .95;
+        }
+        header .kv span::before {
+            content: "✓";
+            color: #6ee7b7;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        .hero-cta {
+            margin-top: 32px;
+        }
+        nav {
+            background-color: #16309e;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(22, 48, 158, .25);
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 11px;
+            font-size: 15.5px;
+            white-space: nowrap;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- 布局 ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .wrap {
+            padding-bottom: 40px;
+        }
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 36px 32px;
+            margin: 26px 0;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
+        }
+        h2 {
+            color: #16309e;
+            font-size: 25px;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .h2-sub {
+            color: #5a6478;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+        h3 {
+            color: #0f172a;
+            font-size: 20px;
+            margin: 36px 0 6px;
+            padding-left: 12px;
+            border-left: 4px solid #1e3fd8;
+        }
+        h3:first-of-type {
+            margin-top: 8px;
+        }
+        p {
+            color: #374151;
+        }
+        .desc-text {
+            color: #475569;
+            margin: 12px 0 0;
+            font-size: 15.5px;
+        }
+        .vlist {
+            list-style: none;
+            margin: 14px 0 0;
+        }
+        .vlist li {
+            position: relative;
+            padding: 6px 0 6px 26px;
+            font-size: 15.5px;
+            color: #374151;
+        }
+        .vlist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            color: #0faf7d;
+            font-weight: bold;
+        }
+        .vlist li b {
+            color: #0f172a;
+        }
+
+        /* ---------- 按钮 ---------- */
+        .btn {
+            display: inline-block;
+            padding: 14px 34px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+            margin: 8px 6px;
+            transition: transform .15s, box-shadow .15s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+        }
+        .btn-download {
+            background: #0faf7d;
+            color: #fff;
+        }
+        .btn-buy {
+            background: #c9382f;
+            color: #fff;
+        }
+        .btn-ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .55);
+        }
+        .center {
+            text-align: center;
+        }
+
+        /* ---------- 价值卡片 ---------- */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+        .value-card {
+            background: #f7f9fc;
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 22px 20px;
+        }
+        .value-card .ico {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .value-card h4 {
+            font-size: 17px;
+            color: #16309e;
+            margin-bottom: 6px;
+        }
+        .value-card p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- 状态流转 ---------- */
+        .status-strip {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0 4px;
+            padding: 18px;
+            background: #f2f5ff;
+            border: 1px dashed #c7d2fe;
+            border-radius: 10px;
+        }
+        .status-strip .st {
+            font-size: 14.5px;
+            background: #fff;
+            border: 1px solid #c7d2fe;
+            color: #16309e;
+            border-radius: 999px;
+            padding: 5px 15px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        .status-strip .st.win {
+            background: #0faf7d;
+            border-color: #0faf7d;
+            color: #fff;
+        }
+        .status-strip .st.lose {
+            background: #fdf1f0;
+            border-color: #f2c9c5;
+            color: #c9382f;
+        }
+        .status-strip .arrow {
+            color: #a5b4fc;
+            font-size: 14px;
+        }
+        .status-strip .note {
+            font-size: 13px;
+            color: #5a6478;
+            width: 100%;
+            margin-top: 6px;
+        }
+
+        /* ---------- 截图 ---------- */
+        .shot {
+            margin: 18px 0 0;
+            background: #f1f5f9;
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 8px;
+            cursor: zoom-in;
+            transition: border-color .15s;
+        }
+        .shot:hover {
+            border-color: #a5b4fc;
+        }
+        .shot img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+        .shot-cap {
+            font-size: 13px;
+            color: #5a6478;
+            text-align: center;
+            padding: 8px 0 2px;
+        }
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .shot-grid .shot {
+            margin: 0;
+        }
+        .shot-note {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* ---------- 提示框 ---------- */
+        .tip-box {
+            background: #fffbeb;
+            border-left: 4px solid #c2760a;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #703f06;
+        }
+        .tip-box strong {
+            color: #8a4d06;
+        }
+
+        /* ---------- 对比表 ---------- */
+        .cmp-wrap {
+            overflow-x: auto;
+            margin-top: 22px;
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+        }
+        table.cmp {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+            font-size: 15px;
+        }
+        table.cmp th,
+        table.cmp td {
+            padding: 13px 14px;
+            text-align: center;
+            border-bottom: 1px solid #eef2f7;
+        }
+        table.cmp thead th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table.cmp tbody th {
+            text-align: left;
+            font-weight: 500;
+            color: #334155;
+            background: #fafbfc;
+            white-space: nowrap;
+        }
+        table.cmp td.self {
+            background: #eef2ff;
+            color: #1e3fd8;
+            font-weight: 600;
+        }
+        table.cmp .no {
+            color: #94a3b8;
+        }
+
+        /* ---------- 适用行业 ---------- */
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .who {
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 18px 20px;
+            background: #fff;
+        }
+        .who h4 {
+            font-size: 16px;
+            color: #16309e;
+            margin-bottom: 4px;
+        }
+        .who p {
+            font-size: 14px;
+            color: #5a6478;
+        }
+
+        /* ---------- 授权步骤 ---------- */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 22px;
+        }
+        .step {
+            position: relative;
+            background: #f7f9fc;
+            border: 1px solid #e3e7ee;
+            border-radius: 10px;
+            padding: 20px 18px;
+        }
+        .step .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #1e3fd8;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .step p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- FAQ ---------- */
+        .faq-item {
+            padding: 16px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-item strong {
+            display: block;
+            color: #16309e;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .faq-item p {
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        /* ---------- 底部 CTA ---------- */
+        .final-cta {
+            background: linear-gradient(135deg, #16309e 0%, #1e3fd8 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 44px 32px;
+            text-align: center;
+            margin: 26px 0;
+        }
+        .final-cta h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .final-cta p {
+            color: rgba(255, 255, 255, .9);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .final-cta .small {
+            font-size: 13px;
+            opacity: .8;
+            margin-top: 14px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 16px 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        footer a {
+            color: #1e3fd8;
+            text-decoration: none;
+        }
+        footer .footer-logo {
+            height: 46px;
+            width: auto;
+            margin: 0 auto 14px;
+            opacity: .92;
+        }
+        footer .footer-afdian {
+            margin-bottom: 8px;
+        }
+
+        /* ---------- 图片放大 ---------- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .92);
+            z-index: 999;
+            padding: 28px;
+            overflow: auto;
+            cursor: zoom-out;
+        }
+        .lightbox.on {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .lightbox img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+        }
+        .lightbox .close {
+            position: fixed;
+            top: 14px;
+            right: 22px;
+            color: #fff;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: .8;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 40px 16px 44px;
+            }
+            header h1 {
+                font-size: 26px;
+            }
+            header .sub {
+                font-size: 15.5px;
+            }
+            .section {
+                padding: 24px 18px;
+                border-radius: 10px;
+            }
+            h2 {
+                font-size: 21px;
+            }
+            h3 {
+                font-size: 18px;
+                margin-top: 28px;
+            }
+            .btn {
+                display: block;
+                margin: 10px auto;
+                max-width: 320px;
+                font-size: 16px;
+            }
+            nav a {
+                margin: 0 7px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="badge-top">Windows 单机版 · 买断制</div>
+        <h1>客销管家</h1>
+        <div class="en">AutoCRM</div>
+        <p class="sub">今天该回访谁、这个月卖了几台、哪些客户快掉队了——<br>一条线索从进店到成交，全程留痕，不用再靠微信聊天记录和大脑袋记。</p>
+        <div class="kv">
+            <span>数据存本机，不上云</span>
+            <span>一次买断，无年费</span>
+            <span>断网照常用</span>
+            <span>一机一码，离线激活</span>
+        </div>
+        <div class="hero-cta">
+            <a class="btn btn-download" href="http://14.215.237.133:1030/AutoCRM.zip" target="_blank">📥 下载 Windows 版</a>
+            <a class="btn btn-ghost" href="#feature">先看看功能界面</a>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <a href="../../index.html">首页</a>
+    <a href="../qidantong/index.html">企档通</a>
+    <a href="../saleSystem/index.html">货物销售管理系统</a>
+    <a href="../stockKeeper/index.html">仓管通</a>
+    <a href="../rentKeeper/index.html">租管通</a>
+    <a href="../codeCraft/index.html">码小匠</a>
+    <a href="../adProManager/index.html">广告工程管家</a>
+    <a href="index.html">客销管家</a>
+    <a href="../assetKeeper/index.html">资管易</a>
+    <a href="../estatePilot/index.html">物管通</a>
+    <a href="../../about.html">售后与授权</a>
+</nav>
+
+<div class="container wrap">
+
+    <!-- 一、痛点与价值 -->
+    <div class="section">
+        <h2>客户不是没来，是没人跟到底</h2>
+        <p class="h2-sub">留了电话没存、说好下周回访忘了、试驾完就没了下文——4S 店里最贵的成本，是那些再也没联系上的意向客户。</p>
+
+        <p>客销管家把「线索 — 跟进 — 到店 — 试驾 — 成交 — 战败」这条链路装进一台电脑。每个客户只有一个档案、一条状态、一条完整的沟通时间线：谁跟的、聊了什么、约了什么时候再来、最后成没成，全在里头。到期该回访的客户，首页自动列出来。</p>
+
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="ico">⏰</div>
+                <h4>该回访的，一个都不会忘</h4>
+                <p>每次跟进都记一个"下次回访时间"，到期当天自动进首页待回访清单，逾期还会标出逾期天数——不用靠手机日历提醒自己。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🧭</div>
+                <h4>每个客户在哪一步，一目了然</h4>
+                <p>新线索、跟进中、邀约到店、试驾、已成交、战败，六种状态就是筛选条件。想知道还剩多少人在池子里，按状态一筛就出来。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">📞</div>
+                <h4>上次聊了什么都查得到</h4>
+                <p>跟进记录只增不改不删，一条条排成时间线。客户第二天打回来，接电话的人换谁都能接上话。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">📊</div>
+                <h4>谁带来多少单，账算得清</h4>
+                <p>按销售顾问统计线索量、试驾量、成交台数、成交金额、转化率和战败率。月底不用挨个问"你这个月卖了几台"。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二、功能详解 -->
+    <div class="section" id="feature">
+        <h2>功能详解：跟着一条线索走一遍</h2>
+        <p class="h2-sub">下面都是软件里的真实界面（数据为演示数据）。客户进店登记 → 电话/微信跟进 → 约到店 → 试驾 → 成交或战败，就是完整的一条链路。</p>
+
+        <div class="status-strip">
+            <span class="st">新线索</span><span class="arrow">→</span>
+            <span class="st">跟进中</span><span class="arrow">→</span>
+            <span class="st">邀约到店</span><span class="arrow">→</span>
+            <span class="st">试驾</span><span class="arrow">→</span>
+            <span class="st win">已成交</span>
+            <span class="note">任意环节都可登记 <b style="color:#c9382f">战败</b>（价格偏高 / 选择他店 / 暂不购车 / 家人反对），战败客户单独留存，管理员可"恢复为线索"重新激活。</span>
+        </div>
+
+        <h3>1. 首页看板：今天要跟谁，一眼就知</h3>
+        <p class="desc-text">登录后默认进首页。四张指标卡回答"这个月卖得怎么样"：今日新增线索、待回访客户、本月成交订单、本月成交金额。两张清单回答"今天要做什么"：待回访客户、近期动态。右上角三个快捷入口——新增客户、登记试驾、录入成交，直接开工。</p>
+        <div class="shot">
+            <img src="../../assets/img/autoCRM/home.png" alt="首页看板界面" loading="lazy">
+            <div class="shot-cap">首页看板：四张指标卡 + 待回访清单 + 近期动态 + 快捷入口</div>
+        </div>
+        <ul class="vlist">
+            <li><b>待回访清单会冒红：</b>到期和逾期的客户排在最前面，逾期的还会标出已经拖了几天。</li>
+            <li><b>数据按账号范围算：</b>销售只看自己的，主管和管理员看全店，同一个界面不同口径。</li>
+            <li><b>近期动态倒序六条：</b>谁刚跟进、谁刚试驾、谁刚成交，团队的节奏看得见。</li>
+        </ul>
+
+        <h3>2. 客户线索：进店就登记，别让它变成一张纸条</h3>
+        <p class="desc-text">客户编号自动生成（KH-年份-序号），姓名、手机号、意向车型、预算区间、意向颜色、线索来源、归属销售、备注、附件一次录清。手机号是查重键——同一个人录第二次会直接提示已有档案，并给一个跳转入口，不会出现一个客户三条记录。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/kehusx.png" alt="客户线索列表界面" loading="lazy">
+                <div class="shot-cap">客户线索：关键词、车型、来源、状态、归属销售组合筛选</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/xinzku.png" alt="新增客户表单界面" loading="lazy">
+                <div class="shot-cap">新增客户：分组表单，必填项没填按钮置灰</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>来源分得细：</b>到店、抖音、电话、转介绍、外拓、其他，半年后回看哪种渠道最出单，有依据。</li>
+            <li><b>手机号查重：</b>录重了当场提示"该手机号已存在客户档案（编号 KH-2026-0031）"，点一下就跳过去。</li>
+            <li><b>附件能传：</b>报价单、微信截图、证件照都挂在客户档案上，换人接手不用再问一遍。</li>
+            <li><b>回车即查询：</b>输完关键词按回车直接筛，不用再去点按钮。</li>
+        </ul>
+
+        <h3>3. 跟进回访：把"下次再说"变成"下次什么时候"</h3>
+        <p class="desc-text">每次联系录一条跟进：时间、方式（电话 / 微信 / 到店 / 短信）、聊了什么、客户反馈、下次回访时间、有没有报价。新线索跟完一次自动变成"跟进中"。同一个客户的跟进按时间正序排成一条时间线，最新一条显示在档案最上面。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/gengjhf.png" alt="跟进回访列表界面" loading="lazy">
+                <div class="shot-cap">跟进回访：按时间、方式、归属销售筛选，逾期的标红</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/gengjhf2.png" alt="跟进记录录入界面" loading="lazy">
+                <div class="shot-cap">跟进记录：方式、内容、反馈、下次回访时间一屏录完</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>只增不改不删：</b>要补充就再加一条"补充说明"，沟通链永远完整，谁也不能事后改口。</li>
+            <li><b>到期自动提醒：</b>回访时间一到就进首页清单，逾期显示拖了几天，销售主管一眼看出谁在偷懒。</li>
+            <li><b>能导出：</b>按时间、方式、销售导成 Excel，做复盘或者交接都用得上。</li>
+        </ul>
+
+        <h3>4. 试驾管理：到店了别只倒杯水</h3>
+        <p class="desc-text">客户上车试驾，就登记一张试驾单：客户、试驾车型、试驾时间、陪同销售、证件是否核验、试驾路线、试驾反馈、有没有生成报价。登记后客户状态自动进"试驾"。列表能按时间和车型筛，谁陪的试驾、客户什么反应，都留得下来。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/sijgl.png" alt="试驾管理列表界面" loading="lazy">
+                <div class="shot-cap">试驾管理：试驾时间、客户、车型、陪同销售、反馈摘要</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/dengjsj.png" alt="登记试驾界面" loading="lazy">
+                <div class="shot-cap">登记试驾：绑定客户与车型，证件核验与路线一并记录</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>必须绑客户和车型：</b>不会出现"试了台车但不知道是谁"的糊涂账。</li>
+            <li><b>证件核验留痕：</b>试驾前的证件核对记一笔，出了状况有依据。</li>
+            <li><b>试驾反馈结构化：</b>客户嫌贵还是嫌空间小，写进系统，下次跟进不用重新猜。</li>
+        </ul>
+
+        <h3>5. 成交订单：一台车一台车地记</h3>
+        <p class="desc-text">成交订单号自动生成（DD-年份-序号），记客户、成交车型、车架号（17 位会校验）、成交价、定金、尾款（成交价减定金自动带出）、成交日期、交付计划、销售顾问。保存后客户状态直接置为"已成交"。列表底部固定显示当前筛选的成交笔数和金额合计。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/chenjdd.png" alt="成交订单列表界面" loading="lazy">
+                <div class="shot-cap">成交订单：列表底部实时显示笔数与金额合计</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/lurdd.png" alt="录入成交订单界面" loading="lazy">
+                <div class="shot-cap">录入成交：尾款自动算，车架号长度当场校验</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>筛选即合计：</b>改一下筛选条件，下面的笔数和金额马上跟着变，月底对账不用另开 Excel。</li>
+            <li><b>导出带合计：</b>导出的 Excel 首行就写合计金额，直接拿去交差。</li>
+            <li><b>定金尾款分开记：</b>收了多少、还差多少，一台车一台车清楚。</li>
+        </ul>
+
+        <h3>6. 战败客户：走了也要知道为什么走</h3>
+        <p class="desc-text">客户明确不买了或者去别家订了，就登记战败：选原因（价格偏高 / 选择他店 / 暂不购车 / 家人反对 / 其他），写两句说明。战败客户从线索池移出、进单独的列表，但全部历史记录都保留。哪天客户又回来了，管理员一键"恢复为线索"，重新进跟进流程。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/zanbaidd.png" alt="战败客户列表界面" loading="lazy">
+                <div class="shot-cap">战败客户：按原因、时间、归属销售筛选</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/zanbdj.png" alt="战败登记界面" loading="lazy">
+                <div class="shot-cap">战败登记：选原因 + 写说明，动作写入操作日志</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>战败原因能统计：</b>一个月里"价格偏高"占一半，说明该调政策了，不是销售不努力。</li>
+            <li><b>恢复要管理员操作：</b>普通销售不能自己把战败客户捞回来重算业绩。</li>
+        </ul>
+
+        <h3>7. 客户档案：一个客户一页看完</h3>
+        <p class="desc-text">客户档案是单个客户的一页式全景：基本信息卡、漏斗状态条、最近一次跟进摘要、完整跟进时间线、试驾记录、成交订单、附件。右上角三个动作——新增跟进、登记试驾、录入成交，按客户当前状态自动显隐（已经成交的客户就不会再显示"录入成交"）。</p>
+        <div class="shot">
+            <img src="../../assets/img/autoCRM/kehuda.png" alt="客户档案界面" loading="lazy">
+            <div class="shot-cap">客户档案：资料、状态、跟进时间线、试驾与成交记录一页聚合</div>
+        </div>
+        <ul class="vlist">
+            <li><b>换人接手不掉链：</b>销售离职把客户转给别人，接手的人打开档案就能看到全部经过。</li>
+            <li><b>不用来回跳页：</b>想跟进、想登记试驾、想录单，都在这一页上点，不用先去菜单里找。</li>
+        </ul>
+
+        <h3>8. 统计报表：谁出单、谁掉队，按人看得清</h3>
+        <p class="desc-text">报表中心按销售顾问维度统计：线索量、试驾量、成交台数、成交金额、转化率（成交 ÷ 线索）、战败率（战败 ÷ 线索）。默认看本月，也能自选起止日期。线索量还配了横向条形对比，谁的线索多、谁的转化高，一根条就看出来。</p>
+        <div class="shot">
+            <img src="../../assets/img/autoCRM/tongjbb.png" alt="统计报表界面" loading="lazy">
+            <div class="shot-cap">统计报表：按销售顾问统计线索、试驾、成交、转化与战败</div>
+        </div>
+        <ul class="vlist">
+            <li><b>转化率比台数更有用：</b>线索多但转化低，和线索少但转化高，是两种完全不同的管理动作。</li>
+            <li><b>导出带口径说明：</b>报表导出的 Excel 会写清统计口径和生成时间，拿去汇报不会被追问"这数怎么来的"。</li>
+        </ul>
+
+        <h3>9. 账号、设置与日志：谁能看什么，都有规矩</h3>
+        <p class="desc-text">只有两种账号：管理员和普通销售。普通销售看不到账号管理、系统设置、操作日志三个菜单，也不能删客户、不能作废订单、不能恢复战败客户——菜单和按钮是真隐藏，不是灰着。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/zanghgl.png" alt="账号管理界面" loading="lazy">
+                <div class="shot-cap">账号管理：新增账号、设定角色、重置密码、启用停用</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/xtonggl.png" alt="系统设置界面" loading="lazy">
+                <div class="shot-cap">系统设置：个人设置、字典维护（车型 / 来源 / 战败原因）、关于</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/autoCRM/caozrz.png" alt="操作日志界面" loading="lazy">
+                <div class="shot-cap">操作日志：记录到人，留最近三个月，可筛选可导出</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>人员离职停用不删除：</b>历史客户和日志的归属关系不断，账不会乱。</li>
+            <li><b>字典自己维护：</b>车型、线索来源、战败原因都能改，停用的选项不再出现在下拉里，历史数据照样保留。</li>
+            <li><b>密码有防护：</b>密码加盐哈希存储，连续 5 次输错锁 10 分钟，锁定也记日志。</li>
+            <li><b>日志留三个月：</b>登录、增改客户、跟进、试驾、成交、战败、账号变动、字典变更全都记，超期自动清理。</li>
+        </ul>
+
+        <p class="shot-note">以上截图为软件实际界面，图中数据仅为演示用途。</p>
+    </div>
+
+    <!-- 三、适用人群 -->
+    <div class="section">
+        <h2>适合哪些人用</h2>
+        <p class="h2-sub">只要你的生意是"客户留电话—销售反复跟—到店成交"这个循环，并且客户资料不想放到别人服务器上，就适合。</p>
+        <div class="who-grid">
+            <div class="who">
+                <h4>汽车 4S 店 / 品牌店</h4>
+                <p>销售顾问多、线索来源杂，最需要按人统计转化率，也需要防止客户被带走到别的店。</p>
+            </div>
+            <div class="who">
+                <h4>汽贸店 / 综合展厅</h4>
+                <p>一人身兼销售和接待，回访全靠脑子记，一个待回访清单能救回不少订单。</p>
+            </div>
+            <div class="who">
+                <h4>新能源直营 / 城市展厅</h4>
+                <p>试驾环节重，试驾反馈和证件核验要留痕，方便复盘哪台车客户最买账。</p>
+            </div>
+            <div class="who">
+                <h4>二手车 / 商用车门店</h4>
+                <p>客户决策周期长，跟进动辄十来次，时间线和到期提醒比什么都重要。</p>
+            </div>
+        </div>
+        <div class="tip-box">
+            <strong>说清楚不合适的情况：</strong>需要集团多门店联网、总部统一看数、手机端跑外展、对接厂家 DMS 或财务系统、需要微信自动群发营销的，这类得用云端 CRM。客销管家的定位是<strong>把一家门店的客户资料留在自己电脑里</strong>——单机、离线、不走服务器，客户名单不会跟着销售一起流失。
+        </div>
+    </div>
+
+    <!-- 四、对比 -->
+    <div class="section">
+        <h2>跟微信记录、Excel、云端 CRM 比，差在哪</h2>
+        <p class="h2-sub">不是功能最多的，但一定是门店销售最容易每天打开的那一种。</p>
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>对比项</th>
+                        <th>微信 + 本子</th>
+                        <th>自己搭 Excel</th>
+                        <th>云端 CRM</th>
+                        <th>客销管家</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>客户资料归属</th>
+                        <td class="no">在销售手机里</td>
+                        <td>自己电脑</td>
+                        <td class="no">厂商服务器</td>
+                        <td class="self">自己电脑，离职带不走</td>
+                    </tr>
+                    <tr>
+                        <th>到期回访提醒</th>
+                        <td class="no">靠记性</td>
+                        <td class="no">要自己设条件</td>
+                        <td>有</td>
+                        <td class="self">首页清单 + 逾期天数</td>
+                    </tr>
+                    <tr>
+                        <th>沟通时间线</th>
+                        <td class="no">翻聊天记录</td>
+                        <td class="no">手工堆行</td>
+                        <td>有</td>
+                        <td class="self">只增不改，一条线到底</td>
+                    </tr>
+                    <tr>
+                        <th>试驾与战败留痕</th>
+                        <td class="no">没有</td>
+                        <td class="no">经常漏记</td>
+                        <td>要配模块</td>
+                        <td class="self">专用单据 + 原因统计</td>
+                    </tr>
+                    <tr>
+                        <th>按销售的业绩口径</th>
+                        <td class="no">开会挨个问</td>
+                        <td class="no">透视表自己拼</td>
+                        <td>有</td>
+                        <td class="self">线索/试驾/成交/转化率</td>
+                    </tr>
+                    <tr>
+                        <th>费用</th>
+                        <td>便宜</td>
+                        <td>便宜</td>
+                        <td class="no">按人按年订阅</td>
+                        <td class="self">一次买断</td>
+                    </tr>
+                    <tr>
+                        <th>断网能用</th>
+                        <td>能</td>
+                        <td>能</td>
+                        <td class="no">不能</td>
+                        <td class="self">能，完全离线</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 五、安装与激活 -->
+    <div class="section">
+        <h2>安装与激活：四步就能开工</h2>
+        <p>软件是绿色版单文件，解压双击就能跑；也提供标准安装包。首次启动会引导创建管理员账号，然后进入授权激活页——把本机机器码发出来，拿到授权码粘贴进去，全程离线验签。</p>
+        <div class="center">
+            <a class="btn btn-download" href="http://14.215.237.133:1030/AutoCRM.zip" target="_blank">📥 下载 Windows 版</a>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
+                <p>下载解压，双击运行；或用安装包安装</p>
+            </div>
+            <div class="step">
+                <div class="num">2</div>
+                <p>首次启动创建管理员账号（密码不少于 6 位）</p>
+            </div>
+            <div class="step">
+                <div class="num">3</div>
+                <p>在激活页复制本机机器码（带横杠那串，别改格式）发出来</p>
+            </div>
+            <div class="step">
+                <div class="num">4</div>
+                <p>拿到授权码粘贴进去，验签通过即可登录使用</p>
+            </div>
+        </div>
+        <p style="color:#94a3b8; font-size:13.5px; margin-top:14px;">激活不联网、不上传机器码到任何服务器；授权信息保存在本地，重启后免激活。</p>
+    </div>
+
+    <!-- 六、购买 -->
+    <div class="section">
+        <h2>购买授权：一次付费，永久使用</h2>
+        <p>买断制，没有年费、没有续费、不按账号人数收费。授权码一机一码，绑定本机机器码，同一授权码不能在另一台电脑上激活。</p>
+        <div class="center">
+            <a class="btn btn-buy" href="【替换成客销管家的购买链接】" target="_blank">💰 前往购买授权</a>
+        </div>
+        <p class="center" style="color:#6b7280; font-size:14px; margin-top:6px;">付款后按机器码发放授权码 · 授权码绑定本机机器码</p>
+        <p class="center" style="color:#94a3b8; font-size:13.5px; margin-top:10px;">具体价格与活动以下单页面为准；同一台电脑重装系统不影响授权，重新粘贴原授权码即可。</p>
+    </div>
+
+    <!-- 七、FAQ -->
+    <div class="section">
+        <h2>常见问题</h2>
+        <div class="faq-item">
+            <strong>Q：客户资料、成交价这些数据会上传吗？</strong>
+            <p>A：不会。全部数据保存在本机的 SQLite 数据库文件（autocrm.db）里，软件不主动联网、不上报任何信息，断网状态下功能完整可用。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：没激活能用吗？</strong>
+            <p>A：未激活时会停在授权激活页，粘贴有效授权码后才能登录使用。授权码绑定本机机器码，一机一码，不能拿到别的电脑上用。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：销售能看到别人的客户吗？</strong>
+            <p>A：默认看不到。普通销售的首页和列表只统计本人数据，客户线索、跟进、档案都按归属过滤；主管和管理员账号可以看全店。账号管理、系统设置、操作日志三个菜单对普通销售直接不显示。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：销售离职了，他手上的客户怎么办？</strong>
+            <p>A：账号设成"停用"而不是删除，他的客户和历史日志都还在。管理员把客户改派给在职的人，接手的人打开客户档案就能看到全部跟进经过。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：跟进记录能改或删吗？</strong>
+            <p>A：不能。跟进只增不改不删，要补充信息就再加一条"补充说明"。这样沟通链不会被事后修改，出了问题查得到原始记录。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：客户跑单了怎么办？</strong>
+            <p>A：登记战败并选原因（价格偏高 / 选择他店 / 暂不购车 / 家人反对 / 其他）。战败客户单独列表留存，历史记录全在；客户回头时管理员可以一键"恢复为线索"，重新进跟进流程。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：数据多了会不会卡？</strong>
+            <p>A：按 2 万条客户、5 万条跟进的规模做过设计，列表首屏 1 秒内出，条件查询 1.5 秒内出，导出 5000 行 Excel 十秒内完成。常用查询字段都建了索引。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：数据怎么备份？电脑坏了会不会全丢？</strong>
+            <p>A：系统设置里有"备份数据库"和"还原数据库"，备份会生成带日期时间的 .db 副本，路径可自定义。建议每天营业结束备份一次，拷到U盘或另一台电脑。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：换电脑了怎么办？</strong>
+            <p>A：授权码绑定本机机器码，换电脑需要重新申请。具体规则和迁移方式请参考统一售后页面。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：装不上 / 杀毒软件报毒怎么办？</strong>
+            <p>A：单机小工具可能被部分杀软误报，可先加入信任列表再运行。遇到无法解决的问题，请通过售后页面联系处理。</p>
+        </div>
+    </div>
+
+    <!-- 八、结尾 CTA -->
+    <div class="final-cta">
+        <h2>客户跟到底，业绩才留得下</h2>
+        <p>把手上正在跟的十几个客户录进去，看看待回访清单能不能帮你想起几通该打的电话——半天就能判断。</p>
+        <a class="btn btn-download" href="http://14.215.237.133:1030/AutoCRM.zip" target="_blank">📥 下载 Windows 版</a>
+        <a class="btn btn-buy" href="【替换成客销管家的购买链接】" target="_blank">💰 购买买断授权</a>
+        <div class="small">Windows 10 / 11（64 位）｜ 单机版，无需服务器 ｜ 一次买断，永久使用</div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="container">
+        <img class="footer-logo" src="../../assets/img/linzi-logo-horizontal.png" alt="林子软件" width="134" height="46">
+        <p class="footer-afdian">林子软件已入驻爱发电：<a href="https://ifdian.net/a/lin1030" target="_blank" rel="noopener noreferrer">https://ifdian.net/a/lin1030</a></p>
+        <p>© 2026 林子软件工具库 ｜ 单机工具均为买断授权模式 ｜ <a href="../../about.html">售后与授权说明</a></p>
+        <p style="font-size:13px; margin-top:6px; color:#9ca3af;">站内截图为软件真实界面，演示数据仅作示例。</p>
+    </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+    <span class="close" id="lbClose">&times;</span>
+    <img src="" alt="放大查看" id="lbImg">
+</div>
+
+<script>
+    (function () {
+        var lb = document.getElementById('lightbox');
+        var lbImg = document.getElementById('lbImg');
+        var closeBtn = document.getElementById('lbClose');
+
+        document.querySelectorAll('.shot img').forEach(function (img) {
+            img.addEventListener('click', function () {
+                lbImg.src = img.currentSrc || img.src;
+                lbImg.alt = img.alt || '软件界面放大查看';
+                lb.classList.add('on');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLb() {
+            lb.classList.remove('on');
+            lbImg.src = '';
+            document.body.style.overflow = '';
+        }
+        lb.addEventListener('click', closeLb);
+        closeBtn.addEventListener('click', closeLb);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lb.classList.contains('on')) closeLb();
+        });
+    })();
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->
