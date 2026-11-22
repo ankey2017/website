@@ -1,0 +1,16 @@
+﻿
+Name          
+----          
+adProManager  
+assetKeeper   
+autoCRM       
+codeCraft     
+estatePilot   
+license-keeper
+liveSell      
+qidantong     
+rentKeeper    
+saleSystem    
+stockKeeper   
+
+

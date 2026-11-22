@@ -1,0 +1,6 @@
+@+18% speech(s1+s2+s3)=57.17s budget=53.20s
+target rate=+26%
+@+26% speech=53.57s
+retry @+30% speech=51.94s
+total=60.99s
+wav E:\vscode\zhouji\webHome\_video\master_livesell.wav

@@ -88,6 +88,8 @@ def build_broll():
         return build_broll_crm()
     if P.BROLL == "asset":
         return build_broll_asset()
+    if P.BROLL == "live":
+        return build_broll_live()
     return build_broll_ad()
 
 
@@ -237,6 +239,48 @@ def build_broll_asset():
     led2 = make_asset_ledger(127, 900, 1160).rotate(9, expand=True, resample=Image.Resampling.BICUBIC)
     c.alpha_composite(dof(led2, 1.1), (430, 1180))
     c.alpha_composite(make_sticky(["这台在谁手上"], 300, 240, seed=129), (830, 1290))
+    shots.append(c)
+    return shots
+
+
+def build_broll_live():
+    """直播带货三组画面：手写发货单 / Excel 台账 / 微信对单与样品条子"""
+    W2, H2 = 1400, 2400
+    shots = []
+
+    # A：手写发货单 + 手机后台
+    a = build_desk(W2, H2)
+    sn = make_shipping_note(133, 780, 1000).rotate(-7, expand=True, resample=Image.Resampling.BICUBIC)
+    a.alpha_composite(dof(sn, 0.35), (120, 480))
+    ph = make_phone(135, title="小张 · 要货", msgs=[
+        ("left", "那件毛毯还有吗？\n直播间说有的"),
+        ("right", "我看一下库存哈"),
+        ("left", "顺便问下佣金\n怎么算的？"),
+        ("right", "我翻下本子……"),
+        ("left", "算好了发我"),
+    ]).rotate(5, expand=True, resample=Image.Resampling.BICUBIC)
+    a.alpha_composite(dof(ph, 0.8), (640, 1420))
+    a.alpha_composite(make_sticky(["到底还剩几件？"], 320, 230, seed=137), (860, 500))
+    shots.append(a)
+
+    # B：Excel 台账，一堆 #REF!
+    b = build_desk(W2, H2)
+    ex = make_live_excel(131, 1160, 820).rotate(-3, expand=True, resample=Image.Resampling.BICUBIC)
+    b.alpha_composite(dof(ex, 0.2), (90, 640))
+    nb = make_notebook(139, 400, 540, "样品领用", (58, 92, 132)).rotate(12, expand=True, resample=Image.Resampling.BICUBIC)
+    b.alpha_composite(dof(nb, 1.3), (740, 1460))
+    b.alpha_composite(make_sticky(["库存手改", "改错了"], 300, 250, seed=141), (700, 320))
+    shots.append(b)
+
+    # C：一桌子的样品 + 条子 + 计算器
+    c = build_desk(W2, H2)
+    nb2 = make_notebook(143, 440, 580, "样品借出", (120, 70, 46)).rotate(-11, expand=True, resample=Image.Resampling.BICUBIC)
+    c.alpha_composite(dof(nb2, 0.4), (100, 520))
+    sn2 = make_shipping_note(145, 720, 940, "退换货记录").rotate(8, expand=True, resample=Image.Resampling.BICUBIC)
+    c.alpha_composite(dof(sn2, 0.9), (560, 900))
+    c.alpha_composite(make_sticky(["佣金拿计算器", "算三遍"], 320, 250, seed=147), (820, 460))
+    ex2 = make_live_excel(149, 1100, 780).rotate(5, expand=True, resample=Image.Resampling.BICUBIC)
+    c.alpha_composite(dof(ex2, 1.5), (280, 1520))
     shots.append(c)
     return shots
 

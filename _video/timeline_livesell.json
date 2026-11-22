@@ -1,0 +1,28 @@
+{
+  "total": 60.99,
+  "rate": "+30%",
+  "s1": {
+    "start": 0.35,
+    "end": 14.03,
+    "dur": 13.68,
+    "wav": "E:\\vscode\\zhouji\\webHome\\_video\\audio\\livesell_s1_r30.wav"
+  },
+  "s2": {
+    "start": 14.48,
+    "end": 43.04,
+    "dur": 28.56,
+    "wav": "E:\\vscode\\zhouji\\webHome\\_video\\audio\\livesell_s2_r30.wav"
+  },
+  "s3": {
+    "start": 43.49,
+    "end": 53.19,
+    "dur": 9.7,
+    "wav": "E:\\vscode\\zhouji\\webHome\\_video\\audio\\livesell_s3_r30.wav"
+  },
+  "s4": {
+    "start": 53.74,
+    "end": 57.07,
+    "dur": 3.34,
+    "wav": "E:\\vscode\\zhouji\\webHome\\_video\\audio\\livesell_s4_r30.wav"
+  }
+}

@@ -1,0 +1,42 @@
+== preview_livesell_002.5.png mean=86.0
+   top      : mean= 41.0 bright%= 2.43 std= 44.0
+   card     : mean=102.5 bright%= 0.37 std= 45.3
+   below    : mean=106.9 bright%= 0.00 std= 51.5
+   subtitle : mean= 78.1 bright%= 1.85 std= 61.5
+   footer   : mean= 72.2 bright%= 0.00 std= 58.2
+== preview_livesell_008.5.png mean=84.6
+   top      : mean= 35.0 bright%= 2.25 std= 38.8
+   card     : mean= 83.8 bright%= 0.33 std= 52.0
+   below    : mean= 83.4 bright%= 0.00 std= 57.5
+   subtitle : mean=121.7 bright%= 0.04 std= 41.5
+   footer   : mean=120.0 bright%= 0.00 std= 42.1
+== preview_livesell_013.0.png mean=86.3
+   top      : mean= 37.9 bright%= 2.11 std= 40.4
+   card     : mean= 84.8 bright%= 0.33 std= 51.9
+   below    : mean= 90.4 bright%= 0.00 std= 57.7
+   subtitle : mean=126.3 bright%= 0.04 std= 35.3
+   footer   : mean=125.9 bright%= 0.00 std= 35.8
+== preview_livesell_026.0.png mean=86.7
+   top      : mean= 46.9 bright%= 3.16 std= 38.7
+   card     : mean=170.1 bright%=61.32 std=106.1
+   below    : mean= 31.4 bright%= 0.00 std= 17.2
+   subtitle : mean= 31.9 bright%= 0.59 std= 28.3
+   footer   : mean= 20.1 bright%= 0.00 std=  1.4
+== preview_livesell_044.0.png mean=68.4
+   top      : mean= 71.6 bright%= 2.24 std= 29.5
+   card     : mean= 67.5 bright%= 0.23 std= 10.4
+   below    : mean= 66.4 bright%= 0.00 std=  1.5
+   subtitle : mean= 71.4 bright%= 0.68 std= 25.6
+   footer   : mean= 66.5 bright%= 0.00 std=  0.5
+== preview_livesell_050.0.png mean=63.5
+   top      : mean= 71.4 bright%= 2.06 std= 28.5
+   card     : mean= 59.5 bright%= 0.45 std= 20.5
+   below    : mean= 57.1 bright%= 0.47 std= 24.0
+   subtitle : mean= 70.5 bright%= 0.56 std= 23.2
+   footer   : mean= 66.5 bright%= 0.00 std=  0.5
+== preview_livesell_058.6.png mean=36.8
+   top      : mean= 33.9 bright%= 1.58 std= 30.6
+   card     : mean= 42.5 bright%= 5.16 std= 49.8
+   below    : mean= 37.9 bright%= 4.46 std= 47.3
+   subtitle : mean= 34.8 bright%= 3.99 std= 45.4
+   footer   : mean= 24.0 bright%= 0.00 std=  0.0

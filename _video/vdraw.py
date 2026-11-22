@@ -814,6 +814,72 @@ def make_barcode_sheet(seed=113, w=880, h=560, n=6):
     return im
 
 
+def make_live_excel(seed=131, w=1140, h=800):
+    """Excel 直播台账：场次 / 订单 / 佣金 全堆在一张表，扣库存靠手改"""
+    rng = random.Random(seed)
+    im = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 0, w - 1, h - 1], fill=(255, 255, 255, 255))
+    d.rectangle([0, 0, w - 1, 46], fill=(33, 115, 70, 255))
+    d.text((16, 8), "直播台账 11月(改2).xlsx", font=font(26, "b"), fill=(255, 255, 255, 255))
+    cols = ["场次", "商品", "售价", "成本", "库存", "佣金", "毛利"]
+    colw = [150, 230, 130, 130, 130, 150, 220]
+    y = 46
+    d.rectangle([0, y, w - 1, y + 44], fill=(235, 241, 246, 255))
+    x = 0
+    for c, cw in zip(cols, colw):
+        d.text((x + 12, y + 10), c, font=font(23, "b"), fill=(54, 68, 86, 255))
+        d.line([x, y, x, h], fill=(210, 216, 224, 255), width=1)
+        x += cw
+    rows = [
+        ("11-05 晚场", "羊毛围巾", "59", "28", "-3", "?", "#REF!"),
+        ("11-05 晚场", "保温杯", "89", "42", "12", "按 15%", "?"),
+        ("11-08 场", "羊绒手套", "69", "35", "手改 0", "?", "#REF!"),
+        ("11-08 场", "暖手宝", "49", "22", "8", "按 15%", "12"),
+        ("11-12 场", "毛毯", "129", "60", "?", "固定 20", "#REF!"),
+        ("11-12 场", "睡衣", "159", "78", "5", "?", "?"),
+        ("11-15 场", "拖鞋", "39", "16", "-12", "按 15%", "#REF!"),
+    ]
+    y += 44
+    rowh = 62
+    for i, r in enumerate(rows):
+        d.rectangle([0, y, w - 1, y + rowh], fill=(247, 250, 252, 255) if i % 2 == 0 else (255, 255, 255, 255))
+        d.line([0, y, w, y], fill=(214, 220, 228, 255), width=1)
+        x = 0
+        for j, (val, cw) in enumerate(zip(r, colw)):
+            col = (34, 46, 60, 255)
+            fw = "r"
+            if val in ("#REF!", "?", "手改 0") or val.startswith("-"):
+                col = (198, 42, 42, 255)
+                fw = "b"
+            d.text((x + 12, y + 16), val, font=font(23, fw), fill=col)
+            x += cw
+        y += rowh
+    d.ellipse([colw[0] + colw[1] + colw[2] + colw[3] + 4, 46 + 44 + 62 * 6 + 6,
+               colw[0] + colw[1] + colw[2] + colw[3] + 126, 46 + 44 + 62 * 7 - 4],
+              outline=(205, 50, 50, 200), width=3)
+    return im
+
+
+def make_shipping_note(seed=133, w=760, h=980, title="发货单"):
+    """手写发货单：单号、收件人、微信对单"""
+    rng = random.Random(seed)
+    im = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle([0, 0, w - 1, h - 1], radius=6, fill=(251, 250, 246, 255))
+    d.text((w / 2, 50), title, font=font(38, "b"), fill=(48, 58, 76, 255), anchor="mm")
+    d.line([40, 86, w - 40, 86], fill=(150, 162, 178, 255), width=2)
+    for i in range(9):
+        y = 128 + i * 92
+        d.text((44, y), f"{i + 1}.", font=font(24), fill=(120, 132, 150, 255))
+        _scribble(d, 82, y + 22, rng.randint(150, 240), rng, gap_prob=0.15)
+        _scribble(d, 350, y + 22, rng.randint(120, 250), rng, gap_prob=0.18)
+        if rng.random() < 0.4:
+            d.text((620, y + 4), "待确认", font=font(22, "b"), fill=(198, 46, 46, 230))
+        d.line([40, y + 64, w - 40, y + 64], fill=(206, 214, 226, 255), width=1)
+    return im
+
+
 def gradient_overlay(w, h, c1, c2, vertical=True):
     ov = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     d = ImageDraw.Draw(ov)

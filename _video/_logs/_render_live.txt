@@ -1,0 +1,11 @@
+﻿frame 0/1830
+frame 200/1830
+frame 400/1830
+frame 600/1830
+frame 800/1830
+frame 1000/1830
+frame 1200/1830
+frame 1400/1830
+frame 1600/1830
+frame 1800/1830
+done E:\vscode\zhouji\webHome\_video\promo_livesell.mp4 60.99
