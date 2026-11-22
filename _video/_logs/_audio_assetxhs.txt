@@ -1,0 +1,10 @@
+﻿python.exe : Traceback (most recent call last):
+所在位置 行:445 字符: 106
++ ... ython.exe"; & $py "E:\vscode\zhouji\webHome\_video\build_audio.py" 2> ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "E:\vscode\zhouji\webHome\_video\build_audio.py", line 16, in <module>
+    P = __import__("project_" + PROJ)
+ModuleNotFoundError: No module named 'project_assetxhs'

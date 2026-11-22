@@ -1,0 +1,12 @@
+﻿    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+asyncio.exceptions.CancelledError
+The above exception was the direct cause of the following exception:
+        req, traces=traces, timeout=real_timeout
+    proto = await self._create_connection(req, traces, timeout)
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+    async with ceil_timeout(
+        timeout.sock_connect, ceil_threshold=timeout.ceil_threshold
+  File "C:\Users\41810\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\timeouts.py", line 117, in __aexit__
+    raise TimeoutError from exc_val
+TimeoutError

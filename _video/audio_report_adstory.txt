@@ -1,0 +1,5 @@
+@+18% speech(s1+s2+s3)=70.61s budget=77.20s
+target rate=+8%
+@+8% speech=77.14s
+total=93.31s
+wav E:\vscode\zhouji\webHome\_video\master_adstory.wav

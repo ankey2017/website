@@ -1,0 +1,19 @@
+﻿
+Name                   KB
+----                   --
+01_痛点_登记本与名片.png      505
+02_痛点_客户在手机里.png      379
+03_功能_首页看板.png        249
+04_功能_成交订单.png        455
+05_适配_场景.png           98
+06_适配_对比.png          112
+07_片尾_官网电话.png        158
+preview_crm_002.5.png 443
+preview_crm_009.0.png 414
+preview_crm_013.5.png 249
+preview_crm_025.0.png 455
+preview_crm_043.0.png  98
+preview_crm_048.0.png 112
+preview_crm_057.5.png 158
+
+

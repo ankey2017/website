@@ -1,0 +1,22 @@
+= 2613 fps= 10 q=25.0 size=   11776KiB time=00:01:29.32 bitrate=1080.0kbits/s speed=0.347x elapsed=0:04:17.32    frame= 2707 fps= 10 q=25.0 size=   12032KiB time=00:01:32.50 bitrate=1065.5kbits/s speed=0.359x elapsed=0:04:17.83    [mp4 @ 00000171656e00c0] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 00000171650ee640] video:9983KiB audio:2235KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.801993%
+frame= 2799 fps= 11 q=-1.0 Lsize=   12316KiB time=00:01:33.29 bitrate=1081.4kbits/s speed=0.361x elapsed=0:04:18.22    
+[libx264 @ 00000171631c8180] frame I:12    Avg QP: 8.69  size: 64367
+[libx264 @ 00000171631c8180] frame P:1010  Avg QP:15.60  size:  8481
+[libx264 @ 00000171631c8180] frame B:1777  Avg QP:25.02  size:   497
+[libx264 @ 00000171631c8180] consecutive B-frames: 11.6%  7.6% 10.7% 70.0%
+[libx264 @ 00000171631c8180] mb I  I16..4: 60.4% 23.1% 16.6%
+[libx264 @ 00000171631c8180] mb P  I16..4:  2.7%  1.1%  0.4%  P16..4:  4.9%  0.9%  0.6%  0.0%  0.0%    skip:89.3%
+[libx264 @ 00000171631c8180] mb B  I16..4:  0.2%  0.1%  0.0%  B16..8:  4.3%  0.1%  0.0%  direct: 0.1%  skip:95.2%  L0:46.6% L1:51.4% BI: 2.0%
+[libx264 @ 00000171631c8180] 8x8 transform intra:25.9% inter:29.9%
+[libx264 @ 00000171631c8180] coded y,uvDC,uvAC intra: 10.4% 11.9% 7.5% inter: 0.9% 0.9% 0.4%
+[libx264 @ 00000171631c8180] i16 v,h,dc,p: 38% 60%  0%  1%
+[libx264 @ 00000171631c8180] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 22% 21% 55%  0%  0%  0%  0%  0%  0%
+[libx264 @ 00000171631c8180] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 28% 44% 17%  2%  2%  2%  2%  2%  2%
+[libx264 @ 00000171631c8180] i8c dc,h,v,p: 50% 41%  9%  1%
+[libx264 @ 00000171631c8180] Weighted P-Frames: Y:2.8% UV:0.9%
+[libx264 @ 00000171631c8180] ref P L0: 71.9%  9.1% 12.2%  6.6%  0.1%
+[libx264 @ 00000171631c8180] ref B L0: 67.3% 27.1%  5.6%
+[libx264 @ 00000171631c8180] ref B L1: 96.4%  3.6%
+[libx264 @ 00000171631c8180] kb/s:876.45
+[aac @ 0000017164ff7040] Qavg: 458.558

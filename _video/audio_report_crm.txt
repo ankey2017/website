@@ -1,0 +1,6 @@
+@+18% speech(s1+s2+s3)=54.36s budget=53.20s
+target rate=+20%
+@+20% speech=53.45s
+retry @+24% speech=51.74s
+total=60.79s
+wav E:\vscode\zhouji\webHome\_video\master_crm.wav

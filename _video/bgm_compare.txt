@@ -1,0 +1,2 @@
+master_ad.wav: rms=0.0894 主峰=494Hz 392Hz 261Hz 261Hz 谱心=3298Hz
+master_asset.wav: rms=0.0823 主峰=391Hz 392Hz 466Hz 587Hz 谱心=3306Hz

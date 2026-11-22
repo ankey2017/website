@@ -1,0 +1,49 @@
+== preview_003.0.png  mean=106.4
+   top       y0-320: mean= 66.1 bright%= 2.47 std= 39.2
+   card      y320-1060: mean=119.3 bright%= 0.00 std= 40.5
+   below     y1060-1400: mean=124.1 bright%= 0.00 std= 39.9
+   subtitle  y1520-1800: mean=101.0 bright%= 1.91 std= 33.0
+   footer    y1800-1920: mean= 95.9 bright%= 0.00 std= 18.7
+   right-edge mean=102.9
+== preview_013.0.png  mean=95.1
+   top       y0-320: mean= 49.7 bright%= 4.53 std= 45.2
+   card      y320-1060: mean=188.3 bright%=70.46 std= 96.1
+   below     y1060-1400: mean= 32.8 bright%= 0.00 std= 21.0
+   subtitle  y1520-1800: mean= 36.2 bright%= 2.73 std= 41.7
+   footer    y1800-1920: mean= 20.1 bright%= 0.00 std=  1.4
+   right-edge mean=30.4
+== preview_024.0.png  mean=74.0
+   top       y0-320: mean= 48.8 bright%= 3.96 std= 42.8
+   card      y320-1060: mean=134.3 bright%=21.15 std= 76.4
+   below     y1060-1400: mean= 31.6 bright%= 0.00 std= 18.0
+   subtitle  y1520-1800: mean= 36.8 bright%= 3.16 std= 43.3
+   footer    y1800-1920: mean= 20.1 bright%= 0.00 std=  1.4
+   right-edge mean=30.4
+== preview_033.0.png  mean=94.2
+   top       y0-320: mean= 46.8 bright%= 3.00 std= 37.9
+   card      y320-1060: mean=187.9 bright%=70.24 std= 95.6
+   below     y1060-1400: mean= 32.0 bright%= 0.00 std= 19.0
+   subtitle  y1520-1800: mean= 35.5 bright%= 2.53 std= 40.2
+   footer    y1800-1920: mean= 20.1 bright%= 0.00 std=  1.4
+   right-edge mean=30.4
+== preview_046.0.png  mean=36.2
+   top       y0-320: mean= 46.1 bright%= 2.25 std= 34.7
+   card      y320-1060: mean= 39.7 bright%= 1.19 std= 26.0
+   below     y1060-1400: mean= 28.6 bright%= 0.00 std=  1.2
+   subtitle  y1520-1800: mean= 34.8 bright%= 0.67 std= 34.4
+   footer    y1800-1920: mean= 20.1 bright%= 0.00 std=  1.4
+   right-edge mean=31.2
+== preview_052.0.png  mean=36.5
+   top       y0-320: mean= 45.8 bright%= 2.06 std= 33.6
+   card      y320-1060: mean= 35.3 bright%= 0.28 std= 13.3
+   below     y1060-1400: mean= 38.3 bright%= 0.44 std= 26.8
+   subtitle  y1520-1800: mean= 36.9 bright%= 3.48 std= 44.1
+   footer    y1800-1920: mean= 20.1 bright%= 0.00 std=  1.4
+   right-edge mean=31.0
+== preview_058.5.png  mean=31.6
+   top       y0-320: mean= 27.6 bright%= 1.58 std= 31.6
+   card      y320-1060: mean= 36.3 bright%= 5.40 std= 52.3
+   below     y1060-1400: mean= 34.7 bright%= 4.45 std= 48.2
+   subtitle  y1520-1800: mean= 30.2 bright%= 3.62 std= 44.5
+   footer    y1800-1920: mean= 20.0 bright%= 0.00 std=  0.0
+   right-edge mean=21.1

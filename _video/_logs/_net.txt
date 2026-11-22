@@ -1,0 +1,4 @@
+﻿www.baidu.com=True
+speech.platform.bing.com=True
+www.bing.com=True
+pypi.org=True

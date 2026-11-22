@@ -1,0 +1,14 @@
+﻿qu
+est
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohttp\client.py", line 858, in _conn
+ect_and_send_request
+    raise ConnectionTimeoutError(
+        f"Connection timeout to host {req.url}"
+    ) from exc
+aiohttp.client_exceptions.ConnectionTimeoutError: Connection timeout to host wss://speech.platform.bing.com/consumer/sp
+eech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4&ConnectionId=82214815dbdc43349f93
+0b851b3ed5ad&Sec-MS-GEC=9507FDFB5C1B641B-4923578367C30C93C8DF9BE9C621852BA08273DED4ED54F18BA5540B0174C72A&Sec-MS-GEC-Ve
+rsion=2-143.0.3650.75
+

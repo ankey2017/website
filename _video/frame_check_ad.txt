@@ -1,0 +1,48 @@
+== preview_ad_002.5.png mean=108.0
+   top      : mean= 58.2 bright%= 2.86 std= 52.2
+   card     : mean=111.6 bright%= 0.41 std= 36.9
+   below    : mean=130.6 bright%= 0.00 std= 27.4
+   subtitle : mean=113.8 bright%= 1.26 std= 48.2
+   footer   : mean=115.2 bright%= 0.00 std= 43.0
+== preview_ad_008.5.png mean=84.9
+   top      : mean= 70.6 bright%= 2.67 std= 55.8
+   card     : mean=107.5 bright%= 0.31 std= 46.5
+   below    : mean=122.9 bright%= 0.00 std= 43.8
+   subtitle : mean= 46.8 bright%= 0.04 std= 49.7
+   footer   : mean= 17.1 bright%= 0.00 std=  0.4
+== preview_ad_010.8.png mean=87.4
+   top      : mean= 73.6 bright%= 2.60 std= 56.2
+   card     : mean=108.0 bright%= 0.31 std= 45.9
+   below    : mean=132.9 bright%= 0.00 std= 30.9
+   subtitle : mean= 50.4 bright%= 0.04 std= 51.2
+   footer   : mean= 17.5 bright%= 0.00 std=  0.6
+== preview_ad_014.0.png mean=95.1
+   top      : mean= 47.4 bright%= 3.34 std= 39.5
+   card     : mean=189.4 bright%=70.02 std= 96.4
+   below    : mean= 32.8 bright%= 0.00 std= 21.1
+   subtitle : mean= 36.3 bright%= 3.06 std= 42.6
+   footer   : mean= 20.1 bright%= 0.00 std=  1.4
+== preview_ad_030.0.png mean=94.2
+   top      : mean= 48.2 bright%= 3.48 std= 40.4
+   card     : mean=188.3 bright%=69.40 std= 96.4
+   below    : mean= 31.6 bright%= 0.00 std= 17.8
+   subtitle : mean= 33.5 bright%= 1.27 std= 33.7
+   footer   : mean= 20.1 bright%= 0.00 std=  1.4
+== preview_ad_044.0.png mean=70.8
+   top      : mean= 73.1 bright%= 2.71 std= 31.8
+   card     : mean= 73.3 bright%= 1.34 std= 22.7
+   below    : mean= 65.5 bright%= 0.00 std=  2.5
+   subtitle : mean= 71.7 bright%= 0.68 std= 26.9
+   footer   : mean= 66.8 bright%= 0.00 std=  0.4
+== preview_ad_050.0.png mean=63.8
+   top      : mean= 72.9 bright%= 2.53 std= 30.8
+   card     : mean= 59.4 bright%= 0.43 std= 19.7
+   below    : mean= 58.4 bright%= 0.34 std= 27.6
+   subtitle : mean= 69.4 bright%= 0.56 std= 21.3
+   footer   : mean= 66.8 bright%= 0.00 std=  0.4
+== preview_ad_059.0.png mean=37.8
+   top      : mean= 33.8 bright%= 1.58 std= 30.6
+   card     : mean= 45.0 bright%= 6.30 std= 54.4
+   below    : mean= 37.9 bright%= 4.46 std= 47.3
+   subtitle : mean= 34.8 bright%= 4.00 std= 45.6
+   footer   : mean= 24.0 bright%= 0.00 std=  0.0

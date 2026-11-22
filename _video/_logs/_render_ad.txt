@@ -1,0 +1,11 @@
+﻿frame 0/1849
+frame 200/1849
+frame 400/1849
+frame 600/1849
+frame 800/1849
+frame 1000/1849
+frame 1200/1849
+frame 1400/1849
+frame 1600/1849
+frame 1800/1849
+done E:\vscode\zhouji\webHome\_video\promo_ad.mp4 61.63

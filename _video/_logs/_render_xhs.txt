@@ -1,0 +1,11 @@
+﻿frame 0/1861
+frame 200/1861
+frame 400/1861
+frame 600/1861
+frame 800/1861
+frame 1000/1861
+frame 1200/1861
+frame 1400/1861
+frame 1600/1861
+frame 1800/1861
+done E:\vscode\zhouji\webHome\_video\promo_assetxhs.mp4 62.02

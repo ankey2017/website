@@ -1,0 +1,10 @@
+﻿python.exe : [safe-delete][SAFE_DELETE_BULK_CONFIRM_REQUIRED] {"count":50,"thre
+shold":50,"scope":"turn","targets":["E:\\vscode\\zhouji\\webHome\\_video\\qc_cr
+m\\050.png"],"targetCount":1}
+所在位置 行:445 字符: 101
++ ... ython.exe"; & $py "E:\vscode\zhouji\webHome\_video\qc_proj.py" 2>&1 | ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([safe-delete][S...targetCount":1} 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

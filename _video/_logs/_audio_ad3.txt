@@ -1,0 +1,142 @@
+﻿python.exe : Traceback (most recent call last):
+所在位置 行:445 字符: 100
++ ... ython.exe"; & $py "E:\vscode\zhouji\webHome\_video\build_audio.py" 2> ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohttp\connector.py", line 1322, in _
+wrap_create_connection
+    sock = await aiohappyeyeballs.start_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohappyeyeballs\impl.py", line 75, in
+ start_connection
+    sock = await _connect_sock(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohappyeyeballs\impl.py", line 210, i
+n _connect_sock
+    await loop.sock_connect(sock, address)
+  File "C:\Users\41810\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\proactor_events.py", line 728, in sock_c
+onnect
+    return await self._proactor.connect(sock, address)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohttp\client.py", line 854, in _conn
+ect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohttp\connector.py", line 665, in co
+nnect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohttp\connector.py", line 1263, in _
+create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohttp\connector.py", line 1641, in _
+create_direct_connection
+    raise last_exc
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohttp\connector.py", line 1610, in _
+create_direct_connection
+    transp, proto = await self._wrap_create_connection(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohttp\connector.py", line 1319, in _
+wrap_create_connection
+    async with ceil_timeout(
+               ~~~~~~~~~~~~^
+        timeout.sock_connect, ceil_threshold=timeout.ceil_threshold
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "C:\Users\41810\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\timeouts.py", line 117, in __aexit__
+    raise TimeoutError from exc_val
+TimeoutError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\vscode\zhouji\webHome\_video\build_audio.py", line 283, in <module>
+    asyncio.run(main())
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\41810\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\runners.py", line 196, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\41810\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\runners.py", line 119, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\41810\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 725, in run_until_
+complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "E:\vscode\zhouji\webHome\_video\build_audio.py", line 273, in main
+    tl, log = await pick()
+              ^^^^^^^^^^^^
+  File "E:\vscode\zhouji\webHome\_video\build_audio.py", line 64, in pick
+    chosen = await measure(f"+{int(round(r * 100))}%", tag)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\vscode\zhouji\webHome\_video\build_audio.py", line 49, in measure
+    res = await asyncio.gather(*[synth(k, rate, tag) for k in keys])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\vscode\zhouji\webHome\_video\build_audio.py", line 42, in synth
+    await edge_tts.Communicate(TEXT[key], VOICE, rate=rate).save(mp3)
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\edge_tts\communicate.py", line 613, in
+ save
+    async for message in self.stream():
+    ...<7 lines>...
+            metadata.write("\n")
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\edge_tts\communicate.py", line 588, in
+ stream
+    async for message in self.__stream():
+        yield message
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\edge_tts\communicate.py", line 465, in
+ __stream
+    ) as session, session.ws_connect(
+                  ~~~~~~~~~~~~~~~~~~^
+        f"{WSS_URL}&ConnectionId={connect_id()}"
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+        ssl=_SSL_CTX,
+        ^^^^^^^^^^^^^
+    ) as websocket:
+    ^
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohttp\client.py", line 1756, in __ae
+nter__
+    self._resp: _RetType_co = await self._coro
+                              ^^^^^^^^^^^^^^^^
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohttp\client.py", line 1312, in _ws_
+connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohttp\client.py", line 900, in _requ
+est
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\41810\.workbuddy\binaries\python\envs\default\Lib\site-packages\aiohttp\client.py", line 858, in _conn
+ect_and_send_request
+    raise ConnectionTimeoutError(
+        f"Connection timeout to host {req.url}"
+    ) from exc
+aiohttp.client_exceptions.ConnectionTimeoutError: Connection timeout to host wss://speech.platform.bing.com/consumer/sp
+eech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4&ConnectionId=eb7f7da2eabc45c1827b
+6b239c774d44&Sec-MS-GEC=9507FDFB5C1B641B-4923578367C30C93C8DF9BE9C621852BA08273DED4ED54F18BA5540B0174C72A&Sec-MS-GEC-Ve
+rsion=2-143.0.3650.75

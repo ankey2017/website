@@ -1,0 +1,36 @@
+== preview_assetxhs_056.0.png mean=37
+   logo    mean=   46 bright%= 3.92
+   name    mean=   59 bright%= 9.04
+   slogan  mean=   61 bright%=11.83
+   ask     mean=   49 bright%= 3.22
+   chips   mean=   24 bright%= 0.00
+   follow  mean=   24 bright%= 0.00
+   bottom  mean=   27 bright%= 0.00
+   [旧URL+电话区] mean=47 bright%=3.05
+== preview_assetxhs_058.0.png mean=38
+   logo    mean=   46 bright%= 3.92
+   name    mean=   59 bright%= 9.04
+   slogan  mean=   61 bright%=11.83
+   ask     mean=   50 bright%= 3.22
+   chips   mean=   36 bright%= 1.64
+   follow  mean=   43 bright%= 7.70
+   bottom  mean=   27 bright%= 0.00
+   [旧URL+电话区] mean=47 bright%=3.06
+== preview_assetxhs_059.5.png mean=38
+   logo    mean=   46 bright%= 3.92
+   name    mean=   59 bright%= 9.04
+   slogan  mean=   61 bright%=11.83
+   ask     mean=   50 bright%= 3.22
+   chips   mean=   36 bright%= 1.64
+   follow  mean=   43 bright%= 7.70
+   bottom  mean=   27 bright%= 0.00
+   [旧URL+电话区] mean=47 bright%=3.06
+== preview_assetxhs_061.5.png mean=39
+   logo    mean=   46 bright%= 3.92
+   name    mean=   59 bright%= 9.04
+   slogan  mean=   61 bright%=11.83
+   ask     mean=   50 bright%= 3.22
+   chips   mean=   36 bright%= 1.64
+   follow  mean=   43 bright%= 7.70
+   bottom  mean=   27 bright%= 0.00
+   [旧URL+电话区] mean=47 bright%=3.06

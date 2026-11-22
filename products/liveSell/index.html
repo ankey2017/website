@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>播销通 LiveSell - 直播带货单机管理软件｜林子软件工具库</title>
+    <meta name="description" content="播销通 LiveSell，面向个人主播、夫妻档与小工作室的直播带货管理单机软件：商品与SKU、库存流水预警、直播场次、订单录入与批量导入、样品领用归还、发货与退换货、直播复盘、佣金结算、客户对账、销售报表。Windows 单机版，数据本地 SQLite 存储，一次买断永久使用。">
+    <meta name="keywords" content="播销通,LiveSell,直播带货管理软件,直播订单管理,场次复盘,主播佣金结算,样品领用归还,直播库存管理,单机版带货软件,买断制软件">
+    <meta property="og:title" content="播销通 LiveSell - 一场直播卖了多少、赚了多少，播完就知道">
+    <meta property="og:description" content="Windows 单机版直播带货管理：场次、订单、库存、样品、发货、售后、佣金一套账，数据留在自己电脑。">
+    <meta property="og:type" content="product">
+    <meta property="og:image" content="../../assets/img/liveSell/home.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", system-ui, -apple-system, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: #303133;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        a {
+            color: inherit;
+        }
+
+        /* ---------- 头部 ---------- */
+        header {
+            background: linear-gradient(135deg, #409eff 0%, #1d5fbd 100%);
+            color: #fff;
+            padding: 56px 16px 64px;
+            text-align: center;
+            position: relative;
+        }
+        header .badge-top {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: .5px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+        header h1 {
+            font-size: 36px;
+            line-height: 1.35;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        header .en {
+            font-size: 15px;
+            letter-spacing: 3px;
+            color: #d6e9ff;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        header .sub {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: .3px;
+            text-shadow: 0 1px 3px rgba(15, 23, 42, .22);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header .kv {
+            display: flex;
+            justify-content: center;
+            gap: 10px 26px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+            font-size: 15px;
+            opacity: .95;
+        }
+        header .kv span::before {
+            content: "✓";
+            color: #c8f0b4;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        .hero-cta {
+            margin-top: 32px;
+        }
+        nav {
+            background-color: #001529;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(0, 21, 41, .35);
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 8px;
+            font-size: 14.5px;
+            white-space: nowrap;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- 布局 ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .wrap {
+            padding-bottom: 40px;
+        }
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 36px 32px;
+            margin: 26px 0;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
+        }
+        h2 {
+            color: #1d5fbd;
+            font-size: 25px;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .h2-sub {
+            color: #606266;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+        h3 {
+            color: #1f2d3d;
+            font-size: 20px;
+            margin: 36px 0 6px;
+            padding-left: 12px;
+            border-left: 4px solid #409eff;
+        }
+        h3:first-of-type {
+            margin-top: 8px;
+        }
+        p {
+            color: #4b5563;
+        }
+        .desc-text {
+            color: #606266;
+            margin: 12px 0 0;
+            font-size: 15.5px;
+        }
+        .vlist {
+            list-style: none;
+            margin: 14px 0 0;
+        }
+        .vlist li {
+            position: relative;
+            padding: 6px 0 6px 26px;
+            font-size: 15.5px;
+            color: #4b5563;
+        }
+        .vlist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            color: #67c23a;
+            font-weight: bold;
+        }
+        .vlist li b {
+            color: #1f2d3d;
+        }
+
+        /* ---------- 按钮 ---------- */
+        .btn {
+            display: inline-block;
+            padding: 14px 34px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+            margin: 8px 6px;
+            transition: transform .15s, box-shadow .15s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+        }
+        .btn-download {
+            background: #67c23a;
+            color: #fff;
+        }
+        .btn-buy {
+            background: #f56c6c;
+            color: #fff;
+        }
+        .btn-ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .55);
+        }
+        .center {
+            text-align: center;
+        }
+
+        /* ---------- 价值卡片 ---------- */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+        .value-card {
+            background: #f7f9fc;
+            border: 1px solid #dcdfe6;
+            border-radius: 10px;
+            padding: 22px 20px;
+        }
+        .value-card .ico {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .value-card h4 {
+            font-size: 17px;
+            color: #1d5fbd;
+            margin-bottom: 6px;
+        }
+        .value-card p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- 流程条 ---------- */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0 4px;
+            padding: 16px 18px;
+            background: #ecf5ff;
+            border: 1px dashed #b3d8ff;
+            border-radius: 10px;
+        }
+        .flow span.node {
+            font-size: 14.5px;
+            color: #1d5fbd;
+            background: #fff;
+            border: 1px solid #b3d8ff;
+            border-radius: 999px;
+            padding: 4px 14px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        .flow span.arrow {
+            color: #8ec5ff;
+            font-size: 14px;
+        }
+
+        /* ---------- 截图 ---------- */
+        .shot {
+            margin: 18px 0 0;
+            background: #f1f5f9;
+            border: 1px solid #dcdfe6;
+            border-radius: 10px;
+            padding: 8px;
+            cursor: zoom-in;
+            transition: border-color .15s;
+        }
+        .shot:hover {
+            border-color: #8ec5ff;
+        }
+        .shot img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+        .shot-cap {
+            font-size: 13px;
+            color: #606266;
+            text-align: center;
+            padding: 8px 0 2px;
+        }
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .shot-grid .shot {
+            margin: 0;
+        }
+        .shot-grid.three {
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        }
+        .shot-note {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* ---------- 提示框 ---------- */
+        .tip-box {
+            background: #fdf6ec;
+            border-left: 4px solid #e6a23c;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #8a5a10;
+        }
+        .tip-box strong {
+            color: #7a4d0a;
+        }
+
+        /* ---------- 对比表 ---------- */
+        .cmp-wrap {
+            overflow-x: auto;
+            margin-top: 22px;
+            border: 1px solid #dcdfe6;
+            border-radius: 10px;
+        }
+        table.cmp {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+            font-size: 15px;
+        }
+        table.cmp th,
+        table.cmp td {
+            padding: 13px 14px;
+            text-align: center;
+            border-bottom: 1px solid #eef2f7;
+        }
+        table.cmp thead th {
+            background: #f2f2f2;
+            color: #303133;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table.cmp tbody th {
+            text-align: left;
+            font-weight: 500;
+            color: #303133;
+            background: #fafbfc;
+            white-space: nowrap;
+        }
+        table.cmp td.self {
+            background: #ecf5ff;
+            color: #1d5fbd;
+            font-weight: 600;
+        }
+        table.cmp .no {
+            color: #94a3b8;
+        }
+        table.cmp .yes {
+            color: #67c23a;
+            font-weight: 600;
+        }
+        table.cmp td small {
+            display: block;
+            color: #94a3b8;
+            font-size: 12.5px;
+            font-weight: 400;
+        }
+
+        /* ---------- 适用行业 ---------- */
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .who-card {
+            border: 1px solid #dcdfe6;
+            border-radius: 10px;
+            padding: 18px 20px;
+            background: #fff;
+        }
+        .who-card h4 {
+            font-size: 16px;
+            color: #1d5fbd;
+            margin-bottom: 4px;
+        }
+        .who-card p {
+            font-size: 14px;
+            color: #606266;
+        }
+
+        /* ---------- 步骤 ---------- */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 22px;
+        }
+        .step {
+            position: relative;
+            background: #f7f9fc;
+            border: 1px solid #dcdfe6;
+            border-radius: 10px;
+            padding: 20px 18px;
+        }
+        .step .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #409eff;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .step p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- FAQ ---------- */
+        .faq-item {
+            padding: 16px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-item strong {
+            display: block;
+            color: #1d5fbd;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .faq-item p {
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        /* ---------- 底部 CTA ---------- */
+        .final-cta {
+            background: linear-gradient(135deg, #1d5fbd 0%, #409eff 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 44px 32px;
+            text-align: center;
+            margin: 26px 0;
+        }
+        .final-cta h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .final-cta p {
+            color: rgba(255, 255, 255, .92);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .final-cta .small {
+            font-size: 13px;
+            opacity: .85;
+            margin-top: 14px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 16px 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        footer a {
+            color: #409eff;
+            text-decoration: none;
+        }
+        footer .footer-logo {
+            height: 46px;
+            width: auto;
+            margin: 0 auto 14px;
+            opacity: .92;
+        }
+        footer .footer-afdian {
+            margin-bottom: 8px;
+        }
+
+        /* ---------- 图片放大 ---------- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 21, 41, .94);
+            z-index: 999;
+            padding: 28px;
+            overflow: auto;
+            cursor: zoom-out;
+        }
+        .lightbox.on {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .lightbox img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+        }
+        .lightbox .close {
+            position: fixed;
+            top: 14px;
+            right: 22px;
+            color: #fff;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: .8;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 40px 16px 44px;
+            }
+            header h1 {
+                font-size: 26px;
+            }
+            header .sub {
+                font-size: 15.5px;
+            }
+            .section {
+                padding: 24px 18px;
+                border-radius: 10px;
+            }
+            h2 {
+                font-size: 21px;
+            }
+            h3 {
+                font-size: 18px;
+                margin-top: 28px;
+            }
+            .btn {
+                display: block;
+                margin: 10px auto;
+                max-width: 320px;
+                font-size: 16px;
+            }
+            nav a {
+                margin: 0 5px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="badge-top">Windows 单机版 · 买断制</div>
+        <h1>播销通</h1>
+        <div class="en">LiveSell</div>
+        <p class="sub">这一场卖了多少、发了没发、退了几个、主播该拿多少佣金——<br>按场次记账，播完就能复盘，不用再翻直播后台和微信聊天记录对账。</p>
+        <div class="kv">
+            <span>数据存本机，不上云</span>
+            <span>一次买断，无年费</span>
+            <span>断网也能开单</span>
+            <span>录单即扣库存</span>
+        </div>
+        <div class="hero-cta">
+            <a class="btn btn-download" href="【替换成播销通的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 版</a>
+            <a class="btn btn-ghost" href="#feature">先看看功能界面</a>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <a href="../../index.html">首页</a>
+    <a href="../qidantong/index.html">企档通</a>
+    <a href="../saleSystem/index.html">货物销售管理系统</a>
+    <a href="../stockKeeper/index.html">仓管通</a>
+    <a href="../rentKeeper/index.html">租管通</a>
+    <a href="../codeCraft/index.html">码小匠</a>
+    <a href="../adProManager/index.html">广告工程管家</a>
+    <a href="../autoCRM/index.html">客销管家</a>
+    <a href="../assetKeeper/index.html">资管易</a>
+    <a href="../estatePilot/index.html">物管通</a>
+    <a href="index.html">播销通</a>
+    <a href="../../about.html">售后与授权</a>
+</nav>
+
+<div class="container wrap">
+
+    <!-- 一、痛点与价值 -->
+    <div class="section">
+        <h2>一场直播下来，账最容易乱在四个地方</h2>
+        <p class="h2-sub">后台只告诉你卖了多少，不会告诉你这批货还剩几件、样品拿出去还不还得回来、主播这次该结多少钱。</p>
+
+        <p>播销通把一场直播拆成一条线：先建商品和库存，开播前建场次，播的时候录单（录单即扣库存），播完发货、处理退换货，最后复盘本场毛利、结算主播佣金。所有数据落在同一个本地数据库里，播完点一下，一场清清楚楚。</p>
+
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="ico">🎬</div>
+                <h4>每一单都挂在某一场上</h4>
+                <p>订单必须绑场次，非直播渠道的成交自动归到"非直播订单"。哪场带得动货、哪场白播，用数据说话。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">📦</div>
+                <h4>录单即扣库存，不会超卖</h4>
+                <p>订单保存就按 SKU 扣库存，取消和退货自动回补。库存不能手改数字，只能走出入库和盘点单据，笔笔有流水。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🎁</div>
+                <h4>样品拿出去，有人记住</h4>
+                <p>领用按成本价计入本场成本，归还冲减、没还的标损耗。谁拿的、还了没、亏了多少，场次里查得到。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">💰</div>
+                <h4>佣金不用拿计算器算</h4>
+                <p>按主播设比例或固定金额，可针对单品单独覆盖。业绩单按周期出，点进去能下钻到每一笔订单，退款自动扣除。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二、功能详解 -->
+    <div class="section" id="feature">
+        <h2>功能详解：跟着一场直播走一遍</h2>
+        <p class="h2-sub">下面都是软件里的真实界面（数据为演示数据）。备货建档 → 开播建场 → 录单扣库存 → 发货运样 → 退货处理 → 复盘结算，就是一场完整的直播。</p>
+
+        <div class="flow">
+            <span class="node">商品与 SKU</span><span class="arrow">→</span>
+            <span class="node">建场次</span><span class="arrow">→</span>
+            <span class="node">录单扣库存</span><span class="arrow">→</span>
+            <span class="node">发货 / 退换货</span><span class="arrow">→</span>
+            <span class="node">直播复盘</span><span class="arrow">→</span>
+            <span class="node">佣金结算</span>
+        </div>
+
+        <h3>1. 工作台：今天该干什么，六个数字说清</h3>
+        <p class="desc-text">登录第一屏。今日订单、今日销售额、待发货、待售后、进行中场次、库存预警六张卡，下面还有近 7 天和近 30 天的销售趋势。五个快捷入口直接开工：新建场次、录入订单、样品领用、库存查询、立即备份。</p>
+        <div class="shot">
+            <img src="../../assets/img/liveSell/home.png" alt="工作台界面" loading="lazy">
+            <div class="shot-cap">工作台：六张指标卡 + 销售趋势 + 快捷入口 + 待办与备份提醒</div>
+        </div>
+        <ul class="vlist">
+            <li><b>待办直接可点：</b>待发货、待售后、超期未还的样品、库存预警，点一下跳到对应列表，不用自己找。</li>
+            <li><b>备份提醒会变黄：</b>超过 7 天没备份就提示你，点一下直接进备份页面——单机版最怕的就是电脑一坏数据全没。</li>
+            <li><b>进行中场次常驻：</b>正在播的那一场就在工作台上，随时切进去录单。</li>
+        </ul>
+
+        <h3>2. 商品与 SKU：成本和直播价分开记</h3>
+        <p class="desc-text">商品建档记编码、名称、分类、单位、图片、成本价、日常售价、直播价、预警库存和默认供应商。有规格的按规格生成 SKU，每个 SKU 有自己的编码、库存和成本；没有 SKU 的按单规格算。图片会复制到数据目录，源文件挪走也不会失效。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/liveSell/shangpda.png" alt="商品档案界面" loading="lazy">
+                <div class="shot-cap">商品档案：成本价 / 日常售价 / 直播价三档分开记</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/liveSell/SKUgggl.png" alt="SKU规格管理界面" loading="lazy">
+                <div class="shot-cap">SKU 管理：按规格拆开，各自独立库存与成本</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>成本是快照的：</b>录单时把当时的成本价写进订单明细，以后进货涨价，也不会把历史毛利算乱。</li>
+            <li><b>编码唯一：</b>同一个编码建不了两次，避免一人两个名字。</li>
+            <li><b>能停用：</b>不带的货停掉就行，历史订单照样查得到。</li>
+        </ul>
+
+        <h3>3. 库存与供应商：只能靠单据变，不能手改数字</h3>
+        <p class="desc-text">入库有采购、退货回库、盘盈；出库有发货、样品领用、盘亏。每一次变动都写进库存流水：商品、SKU、变动类型、数量、变动前后库存、来源单据、操作人和时间。库存预警单独一个视图，低于预警值、零库存、负库存都列出来，可以直接导出补货清单。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/liveSell/kucgl.png" alt="库存管理界面" loading="lazy">
+                <div class="shot-cap">库存管理：流水可追溯，预警列出该补的货</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/liveSell/gysgl.png" alt="供应商管理界面" loading="lazy">
+                <div class="shot-cap">供应商管理：联系人、结算方式与供货商品</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>数字对不上能查到底：</b>每一件货的增减都有流水和来源单据，不是"凭空少了两件"。</li>
+            <li><b>超卖会提示：</b>库存不够时下单会拦住并提醒，比事后跟买家道歉体面。</li>
+            <li><b>盘点生成差异流水：</b>实盘录进去，差额自动记账，账实一致有依据。</li>
+        </ul>
+
+        <h3>4. 直播场次：一场一档，状态自己走</h3>
+        <p class="desc-text">开播前建场次：标题、主播、平台、开播与计划下播时间、主推商品、备注。状态分待开播、直播中、已下播、已取消，点按钮开始和结束，时间自动记。同一个主播还有没结束的场次时，系统会提示先结束原来那场。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/liveSell/zhbcq.png" alt="直播场次列表界面" loading="lazy">
+                <div class="shot-cap">场次列表：按状态筛，开始与结束一键切换</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/liveSell/zhibdz.png" alt="场次登记界面" loading="lazy">
+                <div class="shot-cap">场次登记：主播、平台、时间、主推商品一次填清</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>先结束再开新场：</b>避免一场的订单算到另一场头上，复盘数据才可信。</li>
+            <li><b>主推商品提前定：</b>播完能对照"主推的到底卖没卖动"。</li>
+        </ul>
+
+        <h3>5. 订单：录一单，库存跟着动</h3>
+        <p class="desc-text">选场次后录买家、手机、地址、SKU、数量、实付、运费、来源，勾不勾样品单一目了然。保存即扣库存。订单多的时候可以用 Excel 模板批量导入，系统会校验必填列和商品是否存在，最后给你成功和失败的清单。未发货的订单能改数量金额并重算库存，已发货的只能改备注。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/liveSell/zhibdd.png" alt="订单录入界面" loading="lazy">
+                <div class="shot-cap">订单录入：明细可增行，合计与运费自动算</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/liveSell/dindlb.png" alt="订单列表界面" loading="lazy">
+                <div class="shot-cap">订单列表：按场次、主播、平台、时间、状态组合筛</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>批量导入不背锅：</b>哪几行失败、为什么失败都列出来，改完再导一次，不会导一半乱掉。</li>
+            <li><b>状态流转清楚：</b>待发货 → 已发货 → 已完成，退款走退款中 → 已退款，取消订单自动回补库存。</li>
+            <li><b>改单有边界：</b>发货前能改，发货后只能改备注，避免账实错位。</li>
+        </ul>
+
+        <h3>6. 样品领用归还：带货最容易被忽略的一笔成本</h3>
+        <p class="desc-text">登记主播、SKU、数量、领用时间和预计归还时间，领用按成本价计入本场成本。归还的时候登记归还数量和时间，归还部分冲减成本；没还的标成损耗，单独统计。超期未还的会在工作台待办里提醒。</p>
+        <div class="shot">
+            <img src="../../assets/img/liveSell/yplygh.png" alt="样品领用归还界面" loading="lazy">
+            <div class="shot-cap">样品领用归还：领用、归还、损耗三件事在一张表里</div>
+        </div>
+        <ul class="vlist">
+            <li><b>样品也是成本：</b>不算这一笔，毛利永远是虚高的。</li>
+            <li><b>超期能追：</b>预计归还时间过了没还，待办里会点出来，不用靠问主播"那个样品还在吗"。</li>
+        </ul>
+
+        <h3>7. 发货与售后：发出去之后的麻烦事</h3>
+        <p class="desc-text">发货登记录快递公司和单号、发货时间，支持批量发货，一单分多个包裹也能记。退换货分仅退款和退货退款，登记退回的商品数量、退款金额、原因和是否回库，选了回库库存自动加回来。退款会冲减发生期的销售额，并从佣金计算基数里扣掉。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/liveSell/kuaidfh.png" alt="快递发货界面" loading="lazy">
+                <div class="shot-cap">发货登记：快递公司 + 单号，支持批量与分包</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/liveSell/touhhgl.png" alt="退换货管理界面" loading="lazy">
+                <div class="shot-cap">退换货管理：退款金额、是否回库一并处理</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>退货自动回库：</b>勾一下库存就加回来，不用手工再补一笔入库。</li>
+            <li><b>退款不算佣金：</b>退了的那部分从佣金基数里扣掉，主播和老板都不吃亏。</li>
+        </ul>
+
+        <h3>8. 直播复盘与佣金结算：这一场到底赚了多少</h3>
+        <p class="desc-text">每场直播都能复盘：成交订单、销售额、成本、样品损耗、退款、毛利、客单价汇总在一页，还能写复盘笔记。佣金按主播设比例或固定金额，支持针对某个商品单独覆盖规则，并记录生效与失效时间。业绩单按周期汇总，点进去能下钻到每一笔参与计算的订单。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/liveSell/zhibfp.png" alt="直播复盘界面" loading="lazy">
+                <div class="shot-cap">直播复盘：成交、成本、损耗、退款、毛利一页看完</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/liveSell/yongjsz.png" alt="佣金设置界面" loading="lazy">
+                <div class="shot-cap">佣金方案：按主播设比例或固定额，可按商品覆盖</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/liveSell/zubyj.png" alt="主播业绩界面" loading="lazy">
+                <div class="shot-cap">主播业绩：成交额、退款额、应发佣金与明细下钻</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>毛利是真毛利：</b>里面已经减掉了商品成本、样品损耗和退款，不是只看销售额。</li>
+            <li><b>结算记录只能作废：</b>算错了作废重开，作废要填原因，账面上不会凭空少一条。</li>
+            <li><b>主播排行：</b>按周期看谁带得多、谁退得多，分钱的时候有依据。</li>
+        </ul>
+
+        <h3>9. 客户与对账：老客记得住，账目说得清</h3>
+        <p class="desc-text">客户档案记昵称、手机号、收货地址、常用平台账号、标签和备注。客户详情里能看到全部订单、累计成交、累计退款和最近下单时间。重复的客户可以合并，订单和地址归到主档案，合并动作留痕。要跟某个客户对账，按时间段导出对账单就行。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/liveSell/khda.png" alt="客户档案界面" loading="lazy">
+                <div class="shot-cap">客户档案：累计成交、累计退款、最近下单时间</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/liveSell/khdzd.png" alt="客户对账单界面" loading="lazy">
+                <div class="shot-cap">客户对账：按时间段汇总下单、实收与退款并导出</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>老客回头有印象：</b>复购的客人一看历史就知道他上次买了什么、退过什么。</li>
+            <li><b>重复客户能合并：</b>同一个人的昵称和手机号各建过一次，合并后记录不丢。</li>
+        </ul>
+
+        <h3>10. 统计分析：哪个货好卖、哪场最赚钱</h3>
+        <p class="desc-text">销售看板按日、周、月看销售额、订单量、退款额和毛利，可以切换平台。热销排行按销量或销售额排前 20 名，还带退货率——卖得多退得也多，那就不是好卖的货。场次对比能多场放一起比成交额、订单数、客单价和毛利率。所有报表都能导出 Excel。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/liveSell/sellkb.png" alt="销售看板界面" loading="lazy">
+                <div class="shot-cap">销售看板：日 / 周 / 月切换，销售额与毛利并看</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/liveSell/tongjbb.png" alt="统计报表界面" loading="lazy">
+                <div class="shot-cap">统计报表：区间与平台筛选，支持导出 Excel</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/liveSell/yxpx.png" alt="热销排行界面" loading="lazy">
+                <div class="shot-cap">热销排行：销量 / 销售额前 20 名，附退货率</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>退货率一起看：</b>只看销量容易选错主推，退货率高的货越推越亏。</li>
+            <li><b>场次横向对比：</b>同一批货换个时段播，效果差多少，一比就出来。</li>
+        </ul>
+
+        <h3>11. 设置、备份与打印：单机版最要紧的三件事</h3>
+        <p class="desc-text">一键备份会调用数据库的在线备份接口生成一致性副本（不会因为正在写入而备出坏文件），文件名带日期时间戳；恢复前会先自动备份一次当前数据，恢复完要求重新登录。另外还有操作员账号（可以限制他看到成本和利润字段）、打印模板（小票 / 拣货单 / 发货单）、导出、操作日志和关于页面。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/liveSell/beifeng.png" alt="数据备份与恢复界面" loading="lazy">
+                <div class="shot-cap">备份与恢复：显示数据路径与最近备份时间</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/liveSell/daygn.png" alt="打印模板界面" loading="lazy">
+                <div class="shot-cap">打印模板：小票、拣货单、发货单字段可调</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/liveSell/yonghgl.png" alt="操作员账号界面" loading="lazy">
+                <div class="shot-cap">操作员账号：可隐藏成本与利润字段</div>
+            </div>
+        </div>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/liveSell/daocu.png" alt="数据导出界面" loading="lazy">
+                <div class="shot-cap">导出：导出到本机自选目录，动作写入日志</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>备份不是复制文件：</b>用 SQLite 在线备份接口生成，正在开单的时候备份也不会坏。</li>
+            <li><b>恢复有二次确认：</b>会先展示备份时间、文件大小和数据条数让你确认，再自动留一份安全备份。</li>
+            <li><b>店员看不到成本：</b>操作员角色下成本和利润字段直接隐藏，不用担心毛利被看光。</li>
+            <li><b>数据就在本机：</b>数据库是 %AppData% 下那个 .db 文件，路径在设置里能看、能打开所在文件夹。</li>
+        </ul>
+
+        <p class="shot-note">以上截图为软件实际界面，图中数据仅为演示用途。</p>
+    </div>
+
+    <!-- 三、单机版 vs 网页版 -->
+    <div class="section" id="version">
+        <h2>单机版够用，还是要网页版？</h2>
+        <p class="h2-sub">播销通有单机版和网页版两套形态，业务逻辑和授权规则是同一套，区别在"几个人用、数据放哪"。</p>
+
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>对比项</th>
+                        <th>单机版（本页）</th>
+                        <th>网页版</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>运行方式</th>
+                        <td class="self">Windows 桌面程序，双击即用</td>
+                        <td>浏览器访问，需部署服务端</td>
+                    </tr>
+                    <tr>
+                        <th>数据存在哪</th>
+                        <td class="self">本机 SQLite 文件，自己拿走</td>
+                        <td>服务器数据库</td>
+                    </tr>
+                    <tr>
+                        <th>部署成本</th>
+                        <td class="self">零运维，装完就能用</td>
+                        <td class="no">需服务器、数据库与实施</td>
+                    </tr>
+                    <tr>
+                        <th>几个人用</th>
+                        <td>1–3 人，同一台电脑</td>
+                        <td class="yes">多人多账号并发</td>
+                    </tr>
+                    <tr>
+                        <th>跨设备访问</th>
+                        <td class="no">不支持</td>
+                        <td class="yes">支持</td>
+                    </tr>
+                    <tr>
+                        <th>断网能用</th>
+                        <td class="self">能，完全离线</td>
+                        <td class="no">不能</td>
+                    </tr>
+                    <tr>
+                        <th>年度费用</th>
+                        <td class="self">无，一次买断</td>
+                        <td>有服务器与运维支出</td>
+                    </tr>
+                    <tr>
+                        <th>授权</th>
+                        <td>一机一码，永久授权</td>
+                        <td>同一套授权体系</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tip-box">
+            <strong>怎么选：</strong>一两个人、一台电脑开播，单机版最省事，数据还全在自己手里；如果是几个人分工（一个录单、一个发货、一个管库存）并且要各用各的电脑，那得上网页版。拿不准就问我，我按你的实际人数和流程给建议。
+        </div>
+    </div>
+
+    <!-- 四、适用人群 -->
+    <div class="section">
+        <h2>适合谁用</h2>
+        <p class="h2-sub">只要你的生意是"一场一场开播、一单一单发货"，并且不想把客户和价格放别人服务器上，就适合。</p>
+        <div class="who-grid">
+            <div class="who-card">
+                <h4>个人主播</h4>
+                <p>一人开播一人记账，电脑就是工作台。播完想知道这场到底赚了多少。</p>
+            </div>
+            <div class="who-card">
+                <h4>夫妻档 / 小工作室</h4>
+                <p>两个人分工，一台电脑集中录单，不想为账号权限折腾。</p>
+            </div>
+            <div class="who-card">
+                <h4>刚起步的带货团队</h4>
+                <p>预算有限，不愿背服务器和运维成本，先把账管明白再说。</p>
+            </div>
+            <div class="who-card">
+                <h4>数据敏感型客户</h4>
+                <p>客户名单、供货价、佣金比例不想上云，数据只在自己电脑里。</p>
+            </div>
+        </div>
+        <div class="tip-box">
+            <strong>说清楚不合适的情况：</strong>单机版不支持多台电脑同时连同一个数据库，也不做网络共享；本期不接平台订单接口（不自动同步抖音、快手后台订单，需要手工录或 Excel 导入）、不做手机端、不做云同步、不做多仓库和批次保质期。需要多人协作的请用<b>网页版</b>。播销通单机版的定位是<strong>一到三个人、一台电脑，把一场直播的账算清楚</strong>。
+        </div>
+
+        <div class="tip-box" style="background:#ecf5ff;border-left-color:#409eff;color:#1d5fbd;">
+            <strong style="color:#1d5fbd;">上面这些"不合适"，有一部分是能改的。</strong>如果这款软件和你店里的流程差一两步——多一个字段、换一套单据格式、加一道审批、多一条业务线——都可以做<b>定制修改开发</b>，不必为了一个环节换掉整套工具。<a href="../../about.html#custom" style="color:#1d5fbd;font-weight:600;">看看能定制什么 →</a>
+            <br>🌐 <b>需要多人同时在线、手机端操作？</b>这几款软件的网络版会陆续上线，进度和方案可以直接<a href="../../about.html#contact" style="color:#1d5fbd;font-weight:600;">联系开发者</a>。
+        </div>
+    </div>
+
+    <!-- 五、对比 -->
+    <div class="section">
+        <h2>跟直播后台、Excel、云端工具比，差在哪</h2>
+        <p class="h2-sub">直播后台只给你销售额，不给你成本、样品损耗和佣金。</p>
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>对比项</th>
+                        <th>直播后台 + 本子</th>
+                        <th>自己搭 Excel</th>
+                        <th>云端进销存</th>
+                        <th>播销通</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>按场次看业绩</th>
+                        <td class="no">后台只看整店</td>
+                        <td class="no">手工归集</td>
+                        <td>要自己建维度</td>
+                        <td class="self">订单必绑场次</td>
+                    </tr>
+                    <tr>
+                        <th>本场真实毛利</th>
+                        <td class="no">算不出</td>
+                        <td class="no">成本和退款要另算</td>
+                        <td>部分支持</td>
+                        <td class="self">含成本、样品损耗、退款</td>
+                    </tr>
+                    <tr>
+                        <th>样品去向</th>
+                        <td class="no">靠微信问主播</td>
+                        <td class="no">基本不记</td>
+                        <td>通常不做</td>
+                        <td class="self">领用 / 归还 / 损耗留痕</td>
+                    </tr>
+                    <tr>
+                        <th>主播佣金</th>
+                        <td class="no">拿计算器算</td>
+                        <td class="no">公式容易错</td>
+                        <td>多数没有</td>
+                        <td class="self">方案 + 业绩单 + 结算记录</td>
+                    </tr>
+                    <tr>
+                        <th>库存准确度</th>
+                        <td class="no">经常超卖</td>
+                        <td class="no">改错一格全乱</td>
+                        <td>准确</td>
+                        <td class="self">录单即扣，超卖拦截</td>
+                    </tr>
+                    <tr>
+                        <th>数据在哪</th>
+                        <td>纸本 / 后台</td>
+                        <td>自己电脑</td>
+                        <td class="no">厂商服务器</td>
+                        <td class="self">自己电脑，可备份可销毁</td>
+                    </tr>
+                    <tr>
+                        <th>费用</th>
+                        <td>便宜</td>
+                        <td>便宜</td>
+                        <td class="no">按年订阅</td>
+                        <td class="self">一次买断</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 六、安装与激活 -->
+    <div class="section">
+        <h2>安装与激活：四步就能开播</h2>
+        <p>提供安装包和绿色压缩包两种：安装包默认装到 Program Files 并建快捷方式，绿色版解压即用，放U盘或非系统盘都行。卸载时会保留数据目录，避免误删经营数据。</p>
+        <div class="center">
+            <a class="btn btn-download" href="【替换成播销通的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 版</a>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
+                <p>下载安装或解压，双击运行（系统需 WebView2 运行时，安装包会检测并引导安装）</p>
+            </div>
+            <div class="step">
+                <div class="num">2</div>
+                <p>进「系统设置 → 授权激活」，复制本机机器码（带横杠，别改格式）</p>
+            </div>
+            <div class="step">
+                <div class="num">3</div>
+                <p>把机器码发出来，换取授权码</p>
+            </div>
+            <div class="step">
+                <div class="num">4</div>
+                <p>粘贴授权码点激活，离线验签通过后全部功能解锁</p>
+            </div>
+        </div>
+        <p style="color:#94a3b8; font-size:13.5px; margin-top:14px;">激活全程离线，不联网、不上报机器码。未激活时可以先打开软件浏览界面和示例数据，但录入、导出、打印、备份这些功能要激活后才开放。</p>
+    </div>
+
+    <!-- 七、购买 -->
+    <div class="section">
+        <h2>购买授权：一次付费，永久使用</h2>
+        <p>买断制永久授权，一机一码，绑定本机机器码，不设到期时间、不按年收费。换电脑需要重新取机器码申请授权，数据用备份文件迁移。</p>
+        <div class="center">
+            <a class="btn btn-buy" href="【替换成播销通的购买链接】" target="_blank">💰 前往购买授权</a>
+        </div>
+        <p class="center" style="color:#6b7280; font-size:14px; margin-top:6px;">付款后按机器码发放授权码 · 离线验签，不联网校验</p>
+        <p class="center" style="color:#94a3b8; font-size:13.5px; margin-top:10px;">具体价格与活动以下单页面为准；换机流程：旧机备份 → 新机装机取机器码 → 重新签发授权 → 新机恢复数据。</p>
+    </div>
+
+    <!-- 八、FAQ -->
+    <div class="section">
+        <h2>常见问题</h2>
+        <div class="faq-item">
+            <strong>Q：能自动同步抖音 / 快手后台的订单吗？</strong>
+            <p>A：本期不做平台接口对接，订单靠手工录入或用 Excel 模板批量导入。导入时会校验必填列和商品是否存在，最后给你成功与失败清单。这样虽然少了一点自动，但不用申请接口权限，也不依赖平台改版。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：没激活能用吗？</strong>
+            <p>A：能打开软件、浏览界面、看示例数据，但新增、修改、删除、导入、导出、打印、备份都要激活后才能用。也就是先看界面判断合不合用，正式录数据前完成激活。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：两个人能用同一套软件吗？</strong>
+            <p>A：同一台电脑可以，管理员和操作员两个角色，操作员看不到成本和利润字段。但两台电脑同时连同一个数据库不支持——那是多机协作，得用网页版。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：库存能不能直接改数字？</strong>
+            <p>A：不能。库存只能通过入库、出库、盘点三类单据变更，每次变更都写一笔库存流水。这是故意的——能直接改数字的库存表，三个月后一定对不上。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：退货之后佣金怎么算？</strong>
+            <p>A：退款会冲减发生期的销售额，并从佣金计算基数里扣掉。所以主播业绩里的"成交额"是净额，不会出现退了货还按原价结佣金的情况。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：样品算成本吗？</strong>
+            <p>A：算。领用按成本价计入本场成本，归还的部分冲减，没还的标损耗单独统计。不算这一笔，本场毛利就是虚高的。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：电脑坏了数据会丢吗？</strong>
+            <p>A：取决于你有没有备份。软件里有一键备份，生成带时间戳的 .db 文件，建议放U盘或网盘；工作台超过 7 天没备份会提醒你。恢复时会先展示备份时间和数据条数让你确认，并自动留一份当前数据的安全备份。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：数据多了会不会卡？</strong>
+            <p>A：按 10 万订单、5000 商品、5 万客户的规模设计：冷启动 5 秒内进主界面，2000 条数据的列表 2 秒内出，单笔订单保存 500 毫秒内，导出 1 万行 Excel 30 秒内完成。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：换电脑了怎么办？</strong>
+            <p>A：授权绑定机器码，换机要重新申请授权码。步骤：旧机做一次数据备份 → 备份文件拷到新机 → 新机装软件并记下新机器码 → 用新机器码换授权码 → 激活后恢复数据。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：装不上 / 提示缺 WebView2 怎么办？</strong>
+            <p>A：安装包会检测 WebView2 运行时，缺失时会引导安装，按提示装完再启动即可。杀软误报的话先加入信任列表。</p>
+        </div>
+    </div>
+
+    <!-- 九、结尾 CTA -->
+    <div class="final-cta">
+        <h2>播完就知道赚了多少，下一场才敢加货</h2>
+        <p>下载装好，把正在带的几个商品和今天这一场录进去，看看复盘出来的毛利和你估的差多少——一晚上就能判断。</p>
+        <a class="btn btn-download" href="【替换成播销通的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 版</a>
+        <a class="btn btn-buy" href="【替换成播销通的购买链接】" target="_blank">💰 购买买断授权</a>
+        <div class="small">Windows 10 1809+ / 11（64 位）｜ 单机版，无需服务器 ｜ 一次买断，永久使用 ｜ 支持定制修改开发</div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="container">
+        <img class="footer-logo" src="../../assets/img/linzi-logo-horizontal.png" alt="林子软件" width="134" height="46">
+        <p class="footer-afdian">林子软件已入驻爱发电：<a href="https://ifdian.net/a/lin1030" target="_blank" rel="noopener noreferrer">https://ifdian.net/a/lin1030</a></p>
+        <p>© 2026 林子软件工具库 ｜ 单机工具均为买断授权模式 ｜ <a href="../../about.html">售后与授权说明</a></p>
+        <p style="font-size:13px; margin-top:6px; color:#9ca3af;">站内截图为软件真实界面，演示数据仅作示例。</p>
+    </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+    <span class="close" id="lbClose">&times;</span>
+    <img src="" alt="放大查看" id="lbImg">
+</div>
+
+<script>
+    (function () {
+        var lb = document.getElementById('lightbox');
+        var lbImg = document.getElementById('lbImg');
+        var closeBtn = document.getElementById('lbClose');
+
+        document.querySelectorAll('.shot img').forEach(function (img) {
+            img.addEventListener('click', function () {
+                lbImg.src = img.currentSrc || img.src;
+                lbImg.alt = img.alt || '软件界面放大查看';
+                lb.classList.add('on');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLb() {
+            lb.classList.remove('on');
+            lbImg.src = '';
+            document.body.style.overflow = '';
+        }
+        lb.addEventListener('click', closeLb);
+        closeBtn.addEventListener('click', closeLb);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lb.classList.contains('on')) closeLb();
+        });
+    })();
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->

@@ -1,0 +1,6 @@
+t=57.0 mean=31.6
+  y800-860 max=249 bright%=14.49
+  y908-968 max=19 bright%=0.00
+  y1016-1076 max=249 bright%=23.23
+  y1124-1184 max=166 bright%=0.00
+  y1232-1292 max=226 bright%=0.89

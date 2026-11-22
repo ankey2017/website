@@ -1,0 +1,18 @@
+﻿python.exe : Traceback (most recent call last):
+所在位置 行:445 字符: 100
++ ... ython.exe"; & $py "E:\vscode\zhouji\webHome\_video\vrender.py" --prev ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last) 
+   ::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "E:\vscode\zhouji\webHome\_video\vrender.py", line 563, in <module>
+    main()
+    ~~~~^^
+  File "E:\vscode\zhouji\webHome\_video\vrender.py", line 528, in main
+    init_assets()
+    ~~~~~~~~~~~^^
+  File "E:\vscode\zhouji\webHome\_video\vrender.py", line 219, in init_assets
+    src = SHOT_IMGS["home.png"]
+          ~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'home.png'

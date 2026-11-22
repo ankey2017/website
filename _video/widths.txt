@@ -1,0 +1,22 @@
+URL@36 = 969  (limit 958)
+PHONE@100 = 682  (limit 1000)
+SLOGAN@40 = 750  (limit 1000)
+TITLE@66 = 572
+kw1 total=496
+kw2 total=346
+kw3 total=346
+kw4 total=346
+kw5 total=346
+kw6 total=406
+kw7 total=406
+kw8 total=466
+kw9 total=406
+screen1 title=312 note=547
+screen2 title=389 note=465
+screen3 title=312 note=443
+screen4 title=312 note=465
+screen5 title=312 note=439
+screen6 title=312 note=470
+screen7 title=208 note=434
+screen8 title=208 note=434
+screen9 title=260 note=465
