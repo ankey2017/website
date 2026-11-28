@@ -880,6 +880,224 @@ def make_shipping_note(seed=133, w=760, h=980, title="发货单"):
     return im
 
 
+def make_stock_excel(seed=151, w=1120, h=780):
+    """Excel 库存表：结存靠手改，改错一格整表全乱"""
+    rng = random.Random(seed)
+    im = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 0, w - 1, h - 1], fill=(255, 255, 255, 255))
+    d.rectangle([0, 0, w - 1, 46], fill=(33, 115, 70, 255))
+    d.text((16, 8), "库存表 11月(最终版).xlsx", font=font(26, "b"), fill=(255, 255, 255, 255))
+    cols = ["商品", "编码", "单位", "入库", "出库", "结存", "预警"]
+    colw = [250, 160, 100, 120, 120, 170, 200]
+    y = 46
+    d.rectangle([0, y, w - 1, y + 44], fill=(235, 241, 246, 255))
+    x = 0
+    for c, cw in zip(cols, colw):
+        d.text((x + 12, y + 10), c, font=font(23, "b"), fill=(54, 68, 86, 255))
+        d.line([x, y, x, h], fill=(210, 216, 224, 255), width=1)
+        x += cw
+    rows = [
+        ("PP 打包带", "SP-0021", "卷", "120", "96", "24", "20"),
+        ("纸箱 5 号", "SP-0033", "个", "800", "760", "40", "100"),
+        ("封箱胶带", "SP-0044", "卷", "240", "?", "手改 60", "50"),
+        ("珍珠棉", "SP-0052", "卷", "80", "62", "-8", "20"),
+        ("气泡膜", "SP-0061", "卷", "60", "41", "19", "?"),
+        ("五金合页", "SP-0077", "件", "400", "?", "#REF!", "150"),
+        ("螺丝 M6", "SP-0088", "盒", "150", "128", "22", "30"),
+        ("标签纸", "SP-0095", "卷", "90", "74", "16", "?"),
+    ]
+    y += 44
+    rowh = 62
+    for i, r in enumerate(rows):
+        d.rectangle([0, y, w - 1, y + rowh], fill=(247, 250, 252, 255) if i % 2 == 0 else (255, 255, 255, 255))
+        d.line([0, y, w, y], fill=(214, 220, 228, 255), width=1)
+        x = 0
+        for j, (val, cw) in enumerate(zip(r, colw)):
+            col = (34, 46, 60, 255)
+            fw = "r"
+            if val in ("#REF!", "?", "手改 60") or val.startswith("-"):
+                col = (198, 42, 42, 255)
+                fw = "b"
+            d.text((x + 12, y + 16), val, font=font(23, fw), fill=col)
+            x += cw
+        y += rowh
+    d.ellipse([250 + 160 + 100 + 120 + 120 + 4, 46 + 44 + 62 * 2 + 6,
+               250 + 160 + 100 + 120 + 120 + 156, 46 + 44 + 62 * 3 - 4],
+              outline=(205, 50, 50, 200), width=3)
+    return im
+
+
+def make_qr(seed=171, size=420, fg=(26, 30, 38), bg=(255, 255, 255), watermark=None):
+    """画一个像真的二维码：三个定位角 + 时序线 + 随机模块"""
+    rng = random.Random(seed)
+    n = 29
+    cell = size // (n + 4)
+    qsize = cell * n
+    im = Image.new("RGBA", (size, size), bg + (255,))
+    d = ImageDraw.Draw(im)
+    ox = (size - qsize) // 2
+    oy = ox
+
+    grid = [[0] * n for _ in range(n)]
+
+    def finder(cx, cy):
+        for y in range(-1, 8):
+            for x in range(-1, 8):
+                gx, gy = cx + x, cy + y
+                if not (0 <= gx < n and 0 <= gy < n):
+                    continue
+                if x in (-1, 7) or y in (-1, 7):
+                    grid[gy][gx] = 0
+                elif x in (0, 6) or y in (0, 6):
+                    grid[gy][gx] = 1
+                elif 2 <= x <= 4 and 2 <= y <= 4:
+                    grid[gy][gx] = 1
+                else:
+                    grid[gy][gx] = 0
+
+    finder(0, 0)
+    finder(n - 7, 0)
+    finder(0, n - 7)
+
+    # 时序线
+    for i in range(8, n - 8):
+        grid[6][i] = 1 if i % 2 == 0 else 0
+        grid[i][6] = 1 if i % 2 == 0 else 0
+
+    # 其余随机填
+    for y in range(n):
+        for x in range(n):
+            if (x < 9 and y < 9) or (x > n - 9 and y < 9) or (x < 9 and y > n - 9):
+                continue
+            if x == 6 or y == 6:
+                continue
+            grid[y][x] = 1 if rng.random() < 0.48 else 0
+
+    for y in range(n):
+        for x in range(n):
+            if grid[y][x]:
+                d.rectangle([ox + x * cell, oy + y * cell,
+                             ox + (x + 1) * cell - 1, oy + (y + 1) * cell - 1], fill=fg + (255,))
+
+    if watermark:
+        lay = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+        ld = ImageDraw.Draw(lay)
+        txt = watermark
+        fs = 30
+        while text_w(txt, fs, "b") > size * 0.86 and fs > 14:
+            fs -= 1
+        cy = size / 2
+        ld.rectangle([0, cy - fs, size, cy + fs * 1.2], fill=(255, 255, 255, 210))
+        ld.text((size / 2, cy + fs * 0.1), txt, font=font(fs, "b"), fill=(120, 126, 138, 255), anchor="mm")
+        im = Image.alpha_composite(im, lay)
+    return im
+
+
+def make_qr_site(seed=173, w=980, h=760):
+    """在线二维码生成器：广告糊屏 + 水印 + 充值弹窗"""
+    rng = random.Random(seed)
+    im = Image.new("RGBA", (w, h), (255, 255, 255, 255))
+    d = ImageDraw.Draw(im)
+    # 浏览器栏
+    d.rectangle([0, 0, w - 1, 62], fill=(238, 240, 244, 255))
+    for i, col in enumerate([(255, 95, 86), (255, 189, 46), (39, 201, 63)]):
+        d.ellipse([18 + i * 22, 22, 32 + i * 22, 36], fill=col + (255,))
+    d.rounded_rectangle([110, 14, w - 90, 48], radius=17, fill=(255, 255, 255, 255),
+                        outline=(214, 218, 226, 255))
+    d.text((126, 21), "www.mianfei-qrcode-zaixian.com", font=font(19), fill=(120, 128, 140, 255))
+    d.text((w - 62, 20), "✕", font=font(24, "b"), fill=(150, 156, 166, 255))
+
+    # 顶部广告条
+    d.rectangle([0, 62, w - 1, 128], fill=(255, 232, 204, 255))
+    d.text((w / 2, 84), "🎁 限时活动：开通会员 立减 30 元 · 广告位招租", font=font(22, "b"),
+           fill=(186, 96, 22, 255), anchor="mm")
+    d.rounded_rectangle([w - 150, 72, w - 24, 116], radius=8, fill=(240, 120, 40, 255))
+    d.text((w - 87, 94), "立即开通", font=font(20, "b"), fill=(255, 255, 255, 255), anchor="mm")
+
+    # 左侧表单
+    d.text((44, 158), "内容", font=font(20), fill=(130, 136, 148, 255))
+    d.rounded_rectangle([44, 188, 380, 232], radius=6, fill=(248, 249, 251, 255), outline=(222, 226, 233, 255))
+    d.text((58, 198), "商品名称 / 链接…", font=font(20), fill=(160, 166, 176, 255))
+    for i, lab in enumerate(["尺寸", "纠错等级", "颜色"]):
+        y = 258 + i * 74
+        d.text((44, y), lab, font=font(20), fill=(130, 136, 148, 255))
+        for j in range(3):
+            xx = 130 + j * 84
+            act = (i == 0 and j == 1)
+            d.rounded_rectangle([xx, y - 4, xx + 74, y + 30], radius=6,
+                                fill=(66, 133, 244, 255) if act else (243, 245, 248, 255),
+                                outline=None if act else (222, 226, 233, 255))
+            d.text((xx + 37, y + 13), ["小", "中", "大"][j], font=font(17),
+                   fill=(255, 255, 255) if act else (110, 118, 130), anchor="mm")
+    d.rounded_rectangle([44, 500, 300, 556], radius=8, fill=(66, 133, 244, 255))
+    d.text((172, 528), "生成二维码", font=font(22, "b"), fill=(255, 255, 255, 255), anchor="mm")
+    d.text((44, 580), "⚠ 免费版导出图片带水印", font=font(18, "b"), fill=(206, 74, 40, 255))
+
+    # 右侧二维码（带水印）
+    qr = make_qr(175, 380, watermark="免费版 仅供预览")
+    im.alpha_composite(qr, (450, 170))
+    d.rounded_rectangle([450, 170, 830, 550], radius=10, outline=(226, 230, 236, 255), width=2)
+
+    # 充值弹窗
+    d.rounded_rectangle([470, 570, 940, 720], radius=12, fill=(255, 255, 255, 255),
+                        outline=(240, 120, 40, 255), width=3)
+    d.text((492, 588), "导出高清图需开通会员", font=font(24, "b"), fill=(60, 66, 78, 255))
+    d.text((492, 626), "9.9 元 / 月 · 39 元 / 年", font=font(20), fill=(140, 146, 158, 255))
+    d.rounded_rectangle([492, 664, 690, 706], radius=7, fill=(240, 120, 40, 255))
+    d.text((591, 685), "去充值", font=font(20, "b"), fill=(255, 255, 255, 255), anchor="mm")
+    d.text((710, 674), "以后再说", font=font(19), fill=(150, 156, 166, 255))
+    return im
+
+
+def make_price_tags(seed=177, w=820, h=980, n=6):
+    """手写价签：歪歪扭扭，贴上去还行，但没法批量"""
+    rng = random.Random(seed)
+    im = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    names = [("纯棉毛巾", "19.9"), ("不锈钢杯", "39"), ("暖手宝", "49"),
+             ("羊毛围巾", "59"), ("保温饭盒", "69"), ("棉拖鞋", "25")]
+    for i in range(n):
+        cw, ch = 340, 250
+        x = 30 + (i % 2) * 380 + rng.randint(-10, 10)
+        y = 40 + (i // 2) * 300 + rng.randint(-12, 12)
+        card = Image.new("RGBA", (cw, ch), (0, 0, 0, 0))
+        cd = ImageDraw.Draw(card)
+        cd.rounded_rectangle([0, 0, cw - 1, ch - 1], radius=10, fill=(252, 250, 244, 255),
+                             outline=(208, 202, 190, 255), width=2)
+        nm, pr = names[i]
+        cd.text((28, 34), nm, font=font(34, "b"), fill=(52, 60, 74, 255))
+        cd.text((28, 96), "¥ " + pr, font=font(64, "b"), fill=(196, 58, 46, 255))
+        _scribble(cd, 30, 190, rng.randint(120, 200), rng, color=(120, 130, 146, 220), thick=2)
+        if i % 3 == 0:
+            cd.text((cw - 96, 30), "手写", font=font(20), fill=(196, 120, 40, 200))
+        im.alpha_composite(card.rotate(rng.uniform(-6, 6), expand=False,
+                                       resample=Image.Resampling.BICUBIC), (x, y))
+    return im
+
+
+def make_label_sheet(seed=179, w=900, h=1100, cols=3, rows=5):
+    """打印出来的标签纸：行列对不齐、有几个歪了"""
+    rng = random.Random(seed)
+    im = Image.new("RGBA", (w, h), (255, 255, 255, 255))
+    d = ImageDraw.Draw(im)
+    cw, ch = w // cols, h // rows
+    for r_ in range(rows):
+        for c_ in range(cols):
+            x, y = c_ * cw, r_ * ch
+            d.rectangle([x + 1, y + 1, x + cw - 2, y + ch - 2], outline=(224, 228, 234, 255), width=1)
+            bad = rng.random() < 0.28
+            dx = rng.randint(-8, 8) if bad else 0
+            dy = rng.randint(-6, 6) if bad else 0
+            qs = min(cw, ch) - 78
+            qr = make_qr(seed + r_ * 10 + c_, qs, fg=(30, 34, 42))
+            if bad:
+                qr = qr.filter(ImageFilter.GaussianBlur(1.6))
+            im.alpha_composite(qr, (x + (cw - qs) // 2 + dx, y + 20 + dy))
+            d.text((x + cw / 2, y + ch - 34), f"SP-{r_ * cols + c_ + 21:04d}", font=font(19, "b"),
+                   fill=(70, 78, 92, 255), anchor="mm")
+    return im
+
+
 def gradient_overlay(w, h, c1, c2, vertical=True):
     ov = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     d = ImageDraw.Draw(ov)

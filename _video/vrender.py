@@ -55,7 +55,7 @@ def load_timeline():
         a = s1["start"] - 0.05 if i == 0 else s1["start"] + s1["dur"] * f0
         b = T1 if i == len(P.S1_SUBS) - 1 else s1["start"] + s1["dur"] * f1
         subs.append((a, b, txt))
-    span = s2["dur"] / 9.0
+    span = s2["dur"] / float(len(DEMO_SUBS))
     for i, txt in enumerate(DEMO_SUBS):
         subs.append((s2["start"] + i * span - 0.30 if i else T1 + 0.1,
                      s2["start"] + (i + 1) * span + 0.12, txt))
@@ -90,6 +90,10 @@ def build_broll():
         return build_broll_asset()
     if P.BROLL == "live":
         return build_broll_live()
+    if P.BROLL == "stock":
+        return build_broll_stock()
+    if P.BROLL == "code":
+        return build_broll_code()
     return build_broll_ad()
 
 
@@ -285,6 +289,85 @@ def build_broll_live():
     return shots
 
 
+def build_broll_stock():
+    """仓库三组画面：手写进货本 / Excel 库存表 / 出货单与客户问货"""
+    W2, H2 = 1400, 2400
+    shots = []
+
+    # A：手写进货本 + 出货单
+    a = build_desk(W2, H2)
+    nb = make_notebook(151, 440, 580, "进货登记", (52, 84, 128)).rotate(-9, expand=True, resample=Image.Resampling.BICUBIC)
+    a.alpha_composite(dof(nb, 0.35), (110, 480))
+    sn = make_shipping_note(153, 760, 980, "出货单").rotate(8, expand=True, resample=Image.Resampling.BICUBIC)
+    a.alpha_composite(dof(sn, 0.85), (560, 1360))
+    a.alpha_composite(make_sticky(["还剩几箱？"], 310, 240, seed=155), (860, 500))
+    shots.append(a)
+
+    # B：Excel 库存表，一堆 #REF!
+    b = build_desk(W2, H2)
+    ex = make_stock_excel(157, 1140, 790).rotate(-3, expand=True, resample=Image.Resampling.BICUBIC)
+    b.alpha_composite(dof(ex, 0.2), (90, 620))
+    nb2 = make_notebook(159, 400, 520, "盘点草稿", (120, 78, 46)).rotate(12, expand=True, resample=Image.Resampling.BICUBIC)
+    b.alpha_composite(dof(nb2, 1.3), (740, 1480))
+    b.alpha_composite(make_sticky(["改错一格", "整表全乱"], 300, 250, seed=161), (700, 320))
+    shots.append(b)
+
+    # C：客户在微信里问货
+    c = build_desk(W2, H2)
+    ph = make_phone(163, title="老陈 · 五金", msgs=[
+        ("left", "5 号纸箱还有多少？\n我要 200 个"),
+        ("right", "我看下表……"),
+        ("left", "上次说还有 800 的"),
+        ("right", "那是上个月的数了"),
+        ("left", "那你查清楚回我"),
+    ]).rotate(-5, expand=True, resample=Image.Resampling.BICUBIC)
+    c.alpha_composite(dof(ph, 0.3), (330, 460))
+    sn2 = make_shipping_note(165, 720, 940, "送货单").rotate(9, expand=True, resample=Image.Resampling.BICUBIC)
+    c.alpha_composite(dof(sn2, 1.1), (560, 1400))
+    c.alpha_composite(make_sticky(["到底有没有货"], 310, 240, seed=167), (830, 1520))
+    shots.append(c)
+    return shots
+
+
+def build_broll_code():
+    """打标签三组画面：手写价签 / 在线生成器带水印 / 打印歪掉的标签纸"""
+    W2, H2 = 1400, 2400
+    shots = []
+
+    # A：手写价签摊一桌 + 剪刀
+    a = build_desk(W2, H2)
+    tags = make_price_tags(177, 860, 1020).rotate(-5, expand=True, resample=Image.Resampling.BICUBIC)
+    a.alpha_composite(dof(tags, 0.35), (130, 480))
+    nb = make_notebook(181, 400, 520, "价签登记", (120, 78, 46)).rotate(11, expand=True, resample=Image.Resampling.BICUBIC)
+    a.alpha_composite(dof(nb, 1.0), (620, 1440))
+    a.alpha_composite(make_sticky(["又得重写一遍"], 310, 240, seed=183), (850, 500))
+    shots.append(a)
+
+    # B：在线生成器，广告 + 水印 + 充值弹窗
+    b = build_desk(W2, H2)
+    site = make_qr_site(173, 1020, 790).rotate(-2, expand=True, resample=Image.Resampling.BICUBIC)
+    b.alpha_composite(dof(site, 0.18), (140, 560))
+    ph = make_phone(185, title="二维码生成", msgs=[
+        ("left", "这图有水印啊，不能印"),
+        ("right", "我再换一个网站试试"),
+        ("left", "这个也要会员"),
+        ("right", "那就手写吧……"),
+    ]).rotate(7, expand=True, resample=Image.Resampling.BICUBIC)
+    b.alpha_composite(dof(ph, 1.1), (620, 1400))
+    b.alpha_composite(make_sticky(["导出来全带水印"], 320, 230, seed=187), (700, 330))
+    shots.append(b)
+
+    # C：打印出来的标签纸，歪的、糊的
+    c = build_desk(W2, H2)
+    sheet = make_label_sheet(179, 920, 1140).rotate(-6, expand=True, resample=Image.Resampling.BICUBIC)
+    c.alpha_composite(dof(sheet, 0.28), (110, 520))
+    tags2 = make_price_tags(189, 700, 860, n=4).rotate(10, expand=True, resample=Image.Resampling.BICUBIC)
+    c.alpha_composite(dof(tags2, 1.0), (650, 1380))
+    c.alpha_composite(make_sticky(["打印歪了", "扫码扫不出"], 320, 250, seed=191), (830, 470))
+    shots.append(c)
+    return shots
+
+
 def init_assets():
     global BG, BASE, BROLL, S3BG
     load_timeline()
@@ -417,9 +500,10 @@ def screen_frame(fn, zoom, drift):
 
 
 def scene_demo(img, t):
-    span = TL["s2"]["dur"] / 9.0
+    n = len(SCREENS)
+    span = TL["s2"]["dur"] / float(n)
     k = int((t - TL["s2"]["start"] + 0.30) / span)
-    k = max(0, min(8, k))
+    k = max(0, min(n - 1, k))
     local = t - (TL["s2"]["start"] - 0.30 + k * span)
     p = clamp(local / span)
     title, fn, note, tgt = SCREENS[k]
@@ -443,9 +527,10 @@ def scene_demo(img, t):
     draw_keywords(img, k, CARD_Y + CARD_H + 112)
 
     rail_x = 1046
-    y0 = CARD_Y + CARD_H / 2 - 4 * 26
-    for i in range(9):
-        yy = y0 + i * 26
+    y0 = CARD_Y + CARD_H / 2 - (n - 1) * 13
+    step = 26 if n <= 9 else max(14, int(208 / max(1, n - 1)))
+    for i in range(n):
+        yy = y0 + i * step
         if i == k:
             ImageDraw.Draw(img).rounded_rectangle([rail_x - 4, yy - 9, rail_x + 4, yy + 9], radius=4, fill=BLUE + (255,))
         else:
@@ -670,8 +755,9 @@ def render_frame(t):
         draw_topbar(img, t, "痛点")
     elif t < T2:
         scene_demo(img, t)
-        idx = int((t - TL["s2"]["start"] + 0.30) / (TL["s2"]["dur"] / 9.0)) + 1
-        draw_topbar(img, t, "功能", max(1, min(9, idx)), 9)
+        n = len(SCREENS)
+        idx = int((t - TL["s2"]["start"] + 0.30) / (TL["s2"]["dur"] / float(n))) + 1
+        draw_topbar(img, t, "功能", max(1, min(n, idx)), n)
     elif t < T3:
         scene_suit(img, t)
         draw_topbar(img, t, "适配")

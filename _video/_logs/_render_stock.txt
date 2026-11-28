@@ -1,0 +1,11 @@
+﻿frame 0/1826
+frame 200/1826
+frame 400/1826
+frame 600/1826
+frame 800/1826
+frame 1000/1826
+frame 1200/1826
+frame 1400/1826
+frame 1600/1826
+frame 1800/1826
+done E:\vscode\zhouji\webHome\_video\promo_stock.mp4 60.87

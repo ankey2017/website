@@ -1,0 +1,28 @@
+{
+  "total": 60.87,
+  "rate": "+24%",
+  "s1": {
+    "start": 0.35,
+    "end": 12.73,
+    "dur": 12.38,
+    "wav": "E:\\vscode\\zhouji\\webHome\\_video\\audio\\stock_s1_r24.wav"
+  },
+  "s2": {
+    "start": 13.18,
+    "end": 41.24,
+    "dur": 28.06,
+    "wav": "E:\\vscode\\zhouji\\webHome\\_video\\audio\\stock_s2_r24.wav"
+  },
+  "s3": {
+    "start": 41.69,
+    "end": 53.07,
+    "dur": 11.38,
+    "wav": "E:\\vscode\\zhouji\\webHome\\_video\\audio\\stock_s3_r24.wav"
+  },
+  "s4": {
+    "start": 53.62,
+    "end": 57.1,
+    "dur": 3.48,
+    "wav": "E:\\vscode\\zhouji\\webHome\\_video\\audio\\stock_s4_r24.wav"
+  }
+}

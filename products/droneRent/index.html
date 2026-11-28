@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飞租通 DroneRent - 无人机租赁管理单机软件｜林子软件工具库</title>
+    <meta name="description" content="飞租通 DroneRent，面向无人机出租企业的租赁管理单机软件：客户与资质、租赁订单与设备档期、出库归还验机、维保工单与返库复验、保险与合规拦截、电池健康与配件库存、押金结算、经营与单机效益分析。Windows 单机版，数据本地 SQLite 存储，一机一码永久授权。">
+    <meta name="keywords" content="飞租通,DroneRent,无人机租赁管理软件,无人机出租管理系统,设备档期管理,归还验机,无人机维保管理,电池健康度,押金结算,单机版租赁软件,买断制软件">
+    <meta property="og:title" content="飞租通 DroneRent - 哪台机在谁手上、验机有没有磕，一本账到底">
+    <meta property="og:description" content="Windows 单机版无人机租赁管理：档期、出库、验机、维保、保险合规、电池配件、押金结算全链路留痕，数据留在自己电脑。">
+    <meta property="og:type" content="product">
+    <meta property="og:image" content="../../assets/img/droneRent/home.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", system-ui, -apple-system, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: #303133;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        a {
+            color: inherit;
+        }
+
+        /* ---------- 头部 ---------- */
+        header {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: #fff;
+            padding: 56px 16px 64px;
+            text-align: center;
+            position: relative;
+        }
+        header .badge-top {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: .5px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 18px;
+        }
+        header h1 {
+            font-size: 36px;
+            line-height: 1.35;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        header .en {
+            font-size: 15px;
+            letter-spacing: 3px;
+            color: #dbeafe;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        header .sub {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: .3px;
+            text-shadow: 0 1px 3px rgba(15, 23, 42, .22);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header .kv {
+            display: flex;
+            justify-content: center;
+            gap: 10px 26px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+            font-size: 15px;
+            opacity: .95;
+        }
+        header .kv span::before {
+            content: "✓";
+            color: #6ee7b7;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        .hero-cta {
+            margin-top: 32px;
+        }
+        nav {
+            background-color: #1e40af;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(30, 64, 175, .25);
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 8px;
+            font-size: 14.5px;
+            white-space: nowrap;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- 布局 ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .wrap {
+            padding-bottom: 40px;
+        }
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 36px 32px;
+            margin: 26px 0;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
+        }
+        h2 {
+            color: #0b4bb3;
+            font-size: 25px;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .h2-sub {
+            color: #606266;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+        h3 {
+            color: #1f2d3d;
+            font-size: 20px;
+            margin: 36px 0 6px;
+            padding-left: 12px;
+            border-left: 4px solid #1677ff;
+        }
+        h3:first-of-type {
+            margin-top: 8px;
+        }
+        p {
+            color: #4b5563;
+        }
+        .desc-text {
+            color: #606266;
+            margin: 12px 0 0;
+            font-size: 15.5px;
+        }
+        .vlist {
+            list-style: none;
+            margin: 14px 0 0;
+        }
+        .vlist li {
+            position: relative;
+            padding: 6px 0 6px 26px;
+            font-size: 15.5px;
+            color: #4b5563;
+        }
+        .vlist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            color: #52c41a;
+            font-weight: bold;
+        }
+        .vlist li b {
+            color: #1f2d3d;
+        }
+
+        /* ---------- 按钮 ---------- */
+        .btn {
+            display: inline-block;
+            padding: 14px 34px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+            margin: 8px 6px;
+            transition: transform .15s, box-shadow .15s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+        }
+        .btn-download {
+            background: #52c41a;
+            color: #fff;
+        }
+        .btn-buy {
+            background: #ff4d4f;
+            color: #fff;
+        }
+        .btn-ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .55);
+        }
+        .center {
+            text-align: center;
+        }
+
+        /* ---------- 价值卡片 ---------- */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+        .value-card {
+            background: #f7f9fc;
+            border: 1px solid #e4e7ed;
+            border-radius: 10px;
+            padding: 22px 20px;
+        }
+        .value-card .ico {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .value-card h4 {
+            font-size: 17px;
+            color: #0b4bb3;
+            margin-bottom: 6px;
+        }
+        .value-card p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- 流程条 ---------- */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0 4px;
+            padding: 16px 18px;
+            background: #f0f7ff;
+            border: 1px dashed #b8d8ff;
+            border-radius: 10px;
+        }
+        .flow span.node {
+            font-size: 14.5px;
+            color: #0b4bb3;
+            background: #fff;
+            border: 1px solid #b8d8ff;
+            border-radius: 999px;
+            padding: 4px 14px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        .flow span.arrow {
+            color: #91caff;
+            font-size: 14px;
+        }
+
+        /* ---------- 截图 ---------- */
+        .shot {
+            margin: 18px 0 0;
+            background: #f1f5f9;
+            border: 1px solid #e4e7ed;
+            border-radius: 10px;
+            padding: 8px;
+            cursor: zoom-in;
+            transition: border-color .15s;
+        }
+        .shot:hover {
+            border-color: #91caff;
+        }
+        .shot img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+        .shot-cap {
+            font-size: 13px;
+            color: #606266;
+            text-align: center;
+            padding: 8px 0 2px;
+        }
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .shot-grid .shot {
+            margin: 0;
+        }
+        .shot-grid.three {
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        }
+        .shot-note {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* ---------- 提示框 ---------- */
+        .tip-box {
+            background: #fffbe6;
+            border-left: 4px solid #faad14;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #8a6100;
+        }
+        .tip-box strong {
+            color: #7a5600;
+        }
+
+        /* ---------- 对比表 ---------- */
+        .cmp-wrap {
+            overflow-x: auto;
+            margin-top: 22px;
+            border: 1px solid #e4e7ed;
+            border-radius: 10px;
+        }
+        table.cmp {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+            font-size: 15px;
+        }
+        table.cmp th,
+        table.cmp td {
+            padding: 13px 14px;
+            text-align: center;
+            border-bottom: 1px solid #eef2f7;
+        }
+        table.cmp thead th {
+            background: #fafafa;
+            color: #303133;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        table.cmp tbody th {
+            text-align: left;
+            font-weight: 500;
+            color: #303133;
+            background: #fafbfc;
+            white-space: nowrap;
+        }
+        table.cmp td.self {
+            background: #f0f7ff;
+            color: #0b4bb3;
+            font-weight: 600;
+        }
+        table.cmp .no {
+            color: #94a3b8;
+        }
+        table.cmp .yes {
+            color: #52c41a;
+            font-weight: 600;
+        }
+        table.cmp td small {
+            display: block;
+            color: #94a3b8;
+            font-size: 12.5px;
+            font-weight: 400;
+        }
+
+        /* ---------- 适用行业 ---------- */
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .who-card {
+            border: 1px solid #e4e7ed;
+            border-radius: 10px;
+            padding: 18px 20px;
+            background: #fff;
+        }
+        .who-card h4 {
+            font-size: 16px;
+            color: #0b4bb3;
+            margin-bottom: 4px;
+        }
+        .who-card p {
+            font-size: 14px;
+            color: #606266;
+        }
+
+        /* ---------- 步骤 ---------- */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 22px;
+        }
+        .step {
+            position: relative;
+            background: #f7f9fc;
+            border: 1px solid #e4e7ed;
+            border-radius: 10px;
+            padding: 20px 18px;
+        }
+        .step .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #1677ff;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .step p {
+            font-size: 14.5px;
+            color: #4b5563;
+        }
+
+        /* ---------- FAQ ---------- */
+        .faq-item {
+            padding: 16px 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-item strong {
+            display: block;
+            color: #0b4bb3;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .faq-item p {
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        /* ---------- 底部 CTA ---------- */
+        .final-cta {
+            background: linear-gradient(135deg, #0b4bb3 0%, #1677ff 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 44px 32px;
+            text-align: center;
+            margin: 26px 0;
+        }
+        .final-cta h2 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .final-cta p {
+            color: rgba(255, 255, 255, .92);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .final-cta .small {
+            font-size: 13px;
+            opacity: .85;
+            margin-top: 14px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 16px 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        footer a {
+            color: #1677ff;
+            text-decoration: none;
+        }
+        footer .footer-logo {
+            height: 46px;
+            width: auto;
+            margin: 0 auto 14px;
+            opacity: .92;
+        }
+        footer .footer-afdian {
+            margin-bottom: 8px;
+        }
+
+        /* ---------- 图片放大 ---------- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .92);
+            z-index: 999;
+            padding: 28px;
+            overflow: auto;
+            cursor: zoom-out;
+        }
+        .lightbox.on {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .lightbox img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+        }
+        .lightbox .close {
+            position: fixed;
+            top: 14px;
+            right: 22px;
+            color: #fff;
+            font-size: 32px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: .8;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 40px 16px 44px;
+            }
+            header h1 {
+                font-size: 26px;
+            }
+            header .sub {
+                font-size: 15.5px;
+            }
+            .section {
+                padding: 24px 18px;
+                border-radius: 10px;
+            }
+            h2 {
+                font-size: 21px;
+            }
+            h3 {
+                font-size: 18px;
+                margin-top: 28px;
+            }
+            .btn {
+                display: block;
+                margin: 10px auto;
+                max-width: 320px;
+                font-size: 16px;
+            }
+            nav a {
+                margin: 0 5px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="badge-top">Windows 单机版 · 买断制</div>
+        <h1>飞租通</h1>
+        <div class="en">DroneRent</div>
+        <p class="sub">哪台机在谁手上、什么时候该还、验机有没有磕伤、押金该退多少——<br>一台设备一本账，从下单、出库、验机到结算，全链路留痕。</p>
+        <div class="kv">
+            <span>数据存本机，不上云</span>
+            <span>一次买断，无年费</span>
+            <span>断网也能开单</span>
+            <span>一机一码，离线激活</span>
+        </div>
+        <div class="hero-cta">
+            <a class="btn btn-download" href="【替换成飞租通的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 版</a>
+            <a class="btn btn-ghost" href="#feature">先看看功能界面</a>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <a href="../../index.html">首页</a>
+    <a href="../droneRent/index.html">飞租通</a>
+    <a href="../liveSell/index.html">播销通</a>
+    <a href="../estatePilot/index.html">物管通</a>
+    <a href="../assetKeeper/index.html">资管易</a>
+    <a href="../autoCRM/index.html">客销管家</a>
+    <a href="../adProManager/index.html">广告工程管家</a>
+    <a href="../stockKeeper/index.html">仓管通</a>
+    <a href="../codeCraft/index.html">码小匠</a>
+    <a href="../rentKeeper/index.html">租管通</a>
+    <a href="../saleSystem/index.html">货物销售管理系统</a>
+    <a href="../qidantong/index.html">企档通</a>
+    <a href="../../about.html">售后与授权</a>
+</nav>
+
+<div class="container wrap">
+
+    <!-- 一、痛点与价值 -->
+    <div class="section">
+        <h2>设备租出去容易，收回来才算真本事</h2>
+        <p class="h2-sub">撞档期、验机扯皮、电池老化了没人记、配件少了说不清、押金退多少全靠估——无人机租赁的坑，几乎都在这几件事上。</p>
+
+        <p>飞租通把一单租赁拆成一条链：客户和资质先过合规，下单锁设备档期，出库时给设备拍一遍基线照片，归还时按模板逐项验机并和出库照片对比，有异常就转维保工单，最后押金抵扣、出结算单。每一步都写进同一个本地数据库，出了纠纷翻记录就行。</p>
+
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="ico">🗓️</div>
+                <h4>档期不会卖两次</h4>
+                <p>同一台设备重复下单会被直接拦住；维修中、保养中、保险过期的设备自动锁定，查空闲设备一句话就有结果。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">📸</div>
+                <h4>出库留基线，归还才说得清</h4>
+                <p>出库拍一遍设备外观和关键部件；归还时按验机模板逐项检查，必拍项没拍完不能提交，新伤自动标红。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">🔋</div>
+                <h4>电池和配件都有人盯着</h4>
+                <p>每块电池独立编号，记循环次数和健康度：低于 80% 告警、低于 60% 强制报废，鼓包漏液直接锁定不能出库。</p>
+            </div>
+            <div class="value-card">
+                <div class="ico">💰</div>
+                <h4>押金退多少，算得出来</h4>
+                <p>超时费、清洁费、损伤赔偿、配件缺失分项抵扣，抵扣完剩多少退多少，退款要留记录，结算单一目了然。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二、功能详解 -->
+    <div class="section" id="feature">
+        <h2>功能详解：跟着一单租赁走一遍</h2>
+        <p class="h2-sub">下面都是软件里的真实界面（数据为演示数据）。客户建档验资质 → 下单锁档期 → 出库配组拍照 → 归还验机 → 异常转维保 → 押金结算，就是完整的一单。</p>
+
+        <div class="flow">
+            <span class="node">客户 + 资质</span><span class="arrow">→</span>
+            <span class="node">下单锁档期</span><span class="arrow">→</span>
+            <span class="node">出库配组拍照</span><span class="arrow">→</span>
+            <span class="node">归还验机</span><span class="arrow">→</span>
+            <span class="node">维保 / 复验</span><span class="arrow">→</span>
+            <span class="node">押金结算</span>
+        </div>
+
+        <h3>1. 工作台：今天该出库、该收机、该催结算</h3>
+        <p class="desc-text">登录第一屏。今日订单数、今日租金收入、进行中订单、待归还设备、待结算订单、库存预警六块数据，加上按紧急程度排好的待办：出库、归还、验机、维保、保险到期、资质到期。五个快捷入口直接开工，下面还有最近租赁订单列表。</p>
+        <div class="shot">
+            <img src="../../assets/img/droneRent/home.png" alt="工作台界面" loading="lazy">
+            <div class="shot-cap">工作台：今日经营数据 + 待办提醒 + 快捷入口 + 最近订单</div>
+        </div>
+        <ul class="vlist">
+            <li><b>待归还优先显示超期：</b>该收的机没回来，比什么都急，排在最前面。</li>
+            <li><b>今日数据按本机日期算：</b>不受时区、网络影响，开机就是这个数。</li>
+            <li><b>预警阈值自己设：</b>配件、电池、设备低于安全库存都会亮出来。</li>
+        </ul>
+
+        <h3>2. 客户与资质：不合规的客户，单开不下去</h3>
+        <p class="desc-text">客户分企业客户和个人客户，企业记单位名称、统一社会信用代码、联系人、电话、地址；个人记姓名、身份证号、电话、地址。营业执照、身份证、操控员执照都能上传存档，并记录资质有效期。到期前 30 天、15 天、7 天分级提醒，黑名单客户禁止下单或需要特殊审批。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/kuohda.png" alt="客户档案界面" loading="lazy">
+                <div class="shot-cap">客户档案：企业 / 个人两类，支持 Excel 导入</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/zizgl.png" alt="资质管理界面" loading="lazy">
+                <div class="shot-cap">资质管理：执照、身份证、操控员证一档留存</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/zizts.png" alt="资质到期提醒界面" loading="lazy">
+                <div class="shot-cap">资质到期提醒：30 / 15 / 7 天分级预警</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>信用分自动算：</b>按消费金额、违约次数、逾期归还次数、赔偿记录算出 A / B / C / D 四个等级。</li>
+            <li><b>等级影响押金：</b>不同信用等级对应不同押金比例或免押额度，调整要写原因。</li>
+            <li><b>停用不删除：</b>客户停用后不能新增订单，历史订单和押金记录照样查。</li>
+        </ul>
+
+        <h3>3. 租赁订单与档期：从下单到结算六个状态</h3>
+        <p class="desc-text">新建订单选客户、设备、机型、租期和操作员，系统自动算租期天数和租金（按机型、租期、附件数量）。订单状态走：待确认 → 待出库 → 进行中 → 待结算 → 已结算，中途可取消并释放档期。未出库前订单可改，出库后就不让动了。合同、出库单、签收单都能直接生成打印。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/zuldd.png" alt="租赁订单界面" loading="lazy">
+                <div class="shot-cap">租赁订单：租期与租金自动算，状态一路流转</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/dingdgl.png" alt="订单管理界面" loading="lazy">
+                <div class="shot-cap">订单管理：按客户、设备、日期、状态组合查询</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/hetdd.png" alt="合同与单据界面" loading="lazy">
+                <div class="shot-cap">合同与单据：合同、出库单、签收单可生成打印</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>档期冲突直接拦：</b>同一台设备在租期内重复下单是下不进去的，不用人工核对日历。</li>
+            <li><b>档期视图看占用：</b>哪台机哪天被订走，一眼看清，也能倒查某段时间还剩哪些空闲设备。</li>
+            <li><b>订单取消自动释放：</b>不占用设备档期，别人马上能订。</li>
+        </ul>
+
+        <h3>4. 机型与设备台账：一台机一个 SN</h3>
+        <p class="desc-text">机型档案记机型名称、品牌型号、基础参数（最大起飞重量、飞行时间、遥控距离）、日租 / 月租 / 超时费、押金标准、适用场景（航测、巡检、航拍、农业）。设备台账按 SN 逐台管理，记采购日期、价格、供应商、归属门店仓库、设备照片和折旧年限、当前净值。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/jixda.png" alt="机型档案界面" loading="lazy">
+                <div class="shot-cap">机型档案：日租 / 月租 / 超时费与押金标准</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/xbda.png" alt="设备台账界面" loading="lazy">
+                <div class="shot-cap">设备台账：一台一个 SN，状态与归属一栏看清</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>设备状态有六种：</b>在库、已租出、维修中、保养中、保险过期、报废，状态就是能不能租出去的依据。</li>
+            <li><b>折旧有记录：</b>折旧年限和当前净值都在台账里，算单机效益时用得上。</li>
+        </ul>
+
+        <h3>5. 出库与归还验机：最容易扯皮的两步，做成标准动作</h3>
+        <p class="desc-text">出库时按订单生成出库单，把主机、电池、遥控器、充电器等配组选好，给设备外观和关键部件拍基线照片，客户签收后设备状态转为已租出。归还时先登记归还时间，再按验机模板逐项检查——机身外观、桨叶、电池触点、遥控器、屏显模块、起落架、云台相机、IMU 校准、固件版本、定位模块、装箱清单、客户确认。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/cukdj.png" alt="出库登记界面" loading="lazy">
+                <div class="shot-cap">出库登记：设备与配件配组，出库基线拍照留档</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/guihxj.png" alt="归还验机界面" loading="lazy">
+                <div class="shot-cap">归还验机：逐项检查，与出库照片对比，差异标红</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>必拍项没拍完提交不了：</b>验机靠模板卡住，不靠人自觉，该拍的照一张都跑不掉。</li>
+            <li><b>新伤自动标红：</b>归还照片和出库基线一对比，多出来的损伤直接标出来，客户在场上就说得清。</li>
+            <li><b>结论联动下一步：</b>合格回库，待复检转维保，客户责任直接生成赔偿或扣款。</li>
+            <li><b>模板按机型配：</b>不同机型可以设不同验机模板，每项能设普通项、必检项、必拍项，改动留日志。</li>
+        </ul>
+
+        <h3>6. 维保管理：坏了修、修完验、验完才能再租</h3>
+        <p class="desc-text">报修登记记来源（客户归还发现、例行检查、故障上报）、故障描述、现象截图、关联设备 SN 和订单、紧急程度。维修工单自动编号，分配给维保人员，记维修项目、配件费 / 工时费 / 检测费、责任归属（客户承担 / 保险理赔 / 公司自担），状态走待报价 → 待维修 → 维修中 → 已完成 → 待复验。修完返库复验通过，设备才恢复在库。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/baoxdj.png" alt="报修登记界面" loading="lazy">
+                <div class="shot-cap">报修登记：来源、故障描述、紧急程度</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/weixgd.png" alt="维修工单界面" loading="lazy">
+                <div class="shot-cap">维修工单：配件费 / 工时费与责任归属分开记</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/fankfx.png" alt="返库复验界面" loading="lazy">
+                <div class="shot-cap">返库复验：不复验的设备不能重新出租</div>
+            </div>
+        </div>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/wbtj.png" alt="维保统计界面" loading="lazy">
+                <div class="shot-cap">维保统计：故障率、单台维修成本、平均修复时间、配件消耗排行</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/baoxgc.png" alt="维保记录界面" loading="lazy">
+                <div class="shot-cap">维保记录：按设备 SN 追溯每一次报修与处理</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>哪台机最费钱，查得到：</b>按 SN 统计维修成本，一直修的机器该清退了。</li>
+            <li><b>平均修复时间：</b>从报修到修完多久，直接影响设备能租出去几天。</li>
+            <li><b>责任分得清：</b>客户弄坏的算客户，保险赔的走理赔，自己担的进成本，结算时不会糊在一起。</li>
+        </ul>
+
+        <h3>7. 电池与配件：最容易被顺手带走的东西</h3>
+        <p class="desc-text">电池台账给每块电池独立编号，记采购日期、供应商、所在设备、循环次数、健康度、状态。健康度低于 80% 进告警，低于 60% 强制报废；鼓包、漏液、触点异常的电池直接锁定不能出库。配件库存管桨叶、遥控器、充电器、云台、屏显模块，下单时可预占，出库转实际出库，归还齐全回库，缺失的自动转赔偿单。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/xibtz.png" alt="电池台账界面" loading="lazy">
+                <div class="shot-cap">电池台账：循环次数、健康度、状态一目了然</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/diancgl.png" alt="电池管理界面" loading="lazy">
+                <div class="shot-cap">电池管理：健康度告警与报废规则自动卡</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/peijkc.png" alt="配件库存界面" loading="lazy">
+                <div class="shot-cap">配件库存：安全库存预警、呆滞分析与盘点差异</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>电池不是消耗品，是要记账的资产：</b>每块电池的循环和健康度都留着，什么时候该换心里有数。</li>
+            <li><b>危险电池租不出去：</b>告警电池要主管审批才能出，报废和异常电池直接锁死。</li>
+            <li><b>配件少了自动转赔偿：</b>归还时对不上装箱清单，直接生成赔偿单，不用事后追着客户要。</li>
+            <li><b>库存流水可查：</b>每一次入库、出库、赔回都有记录，月底盘点只核差异。</li>
+        </ul>
+
+        <h3>8. 保险与合规：该拦的单，系统帮你拦</h3>
+        <p class="desc-text">保单管理记保单号、承保设备 SN、保额、保费、保险期间、受益人。合规检查覆盖五项：客户实名登记、操控员执照、设备保险、空域信息、客户承诺书。到期前 30 / 15 / 7 天分级提醒，过期后设备自动变成不可租。</p>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/hegjc.png" alt="合规检查界面" loading="lazy">
+                <div class="shot-cap">合规检查：实名、执照、保险、空域、承诺书五项</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/hekxz.png" alt="合规规则设置界面" loading="lazy">
+                <div class="shot-cap">合规规则：不达标时的拦截条件可配置</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>四条硬拦截：</b>客户资质过期不能下单、设备保险过期不能出库、操控员资质缺失不能下单、黑名单客户要特殊审批。</li>
+            <li><b>拦截给原因：</b>不是一句"操作失败"，而是告诉你缺哪一项，补完就能继续。</li>
+            <li><b>保险过期自动锁：</b>不靠人记，到期那天设备就租不出去了。</li>
+        </ul>
+
+        <h3>9. 押金与结算：退多少、扣多少，一条条列出来</h3>
+        <p class="desc-text">押金按机型和客户等级定标准，收取时登记金额、方式、时间并关联订单，租期内冻结不可退。抵扣分五类：超时费、清洁费、损伤赔偿、丢失赔偿、配件缺失赔偿。验机合格后才能退款，退款记录金额、方式、时间、收款人，大额退款要审批，退完订单转已结算。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/yajisq.png" alt="押金收取界面" loading="lazy">
+                <div class="shot-cap">押金收取：按机型与客户等级定标准并登记</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/yajdj.png" alt="押金登记界面" loading="lazy">
+                <div class="shot-cap">押金登记：金额、方式、时间与订单绑定</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/yajdk.png" alt="押金抵扣界面" loading="lazy">
+                <div class="shot-cap">押金抵扣：超时、清洁、损伤、丢失分项扣</div>
+            </div>
+        </div>
+        <div class="shot-grid">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/yajtk.png" alt="押金退款界面" loading="lazy">
+                <div class="shot-cap">押金退款：验机合格才可退，大额需审批</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/jixd.png" alt="结算单界面" loading="lazy">
+                <div class="shot-cap">结算单：租金、超时、赔偿、维修、押金抵扣与应收合计</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/xjjl.png" alt="结算记录界面" loading="lazy">
+                <div class="shot-cap">结算记录：按订单追溯历史结算与押金往来</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>结算单九项列全：</b>订单租金、超时费、配件赔偿、维修费、保险费、押金抵扣、应收合计、已收、未收。</li>
+            <li><b>抵扣有依据：</b>每一笔扣款都能追到验机结论或维保工单，客户问就翻给他看。</li>
+            <li><b>大额退款要审批：</b>避免店员随手把钱退出去。</li>
+        </ul>
+
+        <h3>10. 统计分析：哪个机型赚钱、哪台机在吃灰</h3>
+        <p class="desc-text">经营概览看租金收入、订单数量、出租率、毛利率、回款金额和押金余额；机型效益看出租率、收入贡献、扣除成本后的毛利、维修费用分摊，还会给"增购 / 清退 / 重点保障"的建议；单机效益把每台设备的收入、维修成本、折旧、毛利和利用率算到台；客户贡献看租赁频次、累计消费、押金余额和违约记录。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/jxkl.png" alt="经营概览界面" loading="lazy">
+                <div class="shot-cap">经营概览：收入、订单、出租率、毛利率</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/jkxy.png" alt="机型效益界面" loading="lazy">
+                <div class="shot-cap">机型效益：出租率、毛利与增购 / 清退建议</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/danjxy.png" alt="单机效益界面" loading="lazy">
+                <div class="shot-cap">单机效益：每台机的收入、维修、折旧与毛利</div>
+            </div>
+        </div>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/kugx.png" alt="客户贡献分析界面" loading="lazy">
+                <div class="shot-cap">客户贡献：频次、累计消费、押金余额与违约</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/xjbb.png" alt="经营报表界面" loading="lazy">
+                <div class="shot-cap">经营报表：按周期汇总，支持导出 Excel</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/baobdc.png" alt="报表导出界面" loading="lazy">
+                <div class="shot-cap">报表导出：经营、订单、设备、维保、库存、结算六类</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>出租率是核心指标：</b>设备实际出租天数除以可租天数，比单纯看收入更能反映生意好坏。</li>
+            <li><b>机型建议直接用：</b>哪个该增购、哪个该清退，报表里给了判断，不用自己推。</li>
+            <li><b>六类报表都能导：</b>经营、订单、设备、维保、库存、结算，导出 Excel 给财务或自己做分析。</li>
+        </ul>
+
+        <h3>11. 系统设置与操作日志：数据归自己管</h3>
+        <p class="desc-text">系统设置管门店仓库、价格与押金、验机模板、用户权限、打印模板和数据备份。操作日志只读，记操作时间、操作员、模块、动作类型、业务单号、关键内容、本机标识，留 24 个月，支持按模块、操作员、时间、单号查询和导出。日志还能按订单号、设备 SN、客户三种线索串起整条链路。</p>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/mdck.png" alt="门店仓库设置界面" loading="lazy">
+                <div class="shot-cap">门店仓库：门店与仓库信息、地址联系人</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/jiagyj.png" alt="价格与押金设置界面" loading="lazy">
+                <div class="shot-cap">价格与押金：日租、月租、超时费、赔偿价</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/yanjmb.png" alt="验机模板设置界面" loading="lazy">
+                <div class="shot-cap">验机模板：新增验机项，设必检与必拍</div>
+            </div>
+        </div>
+        <div class="shot-grid three">
+            <div class="shot">
+                <img src="../../assets/img/droneRent/yonghxq.png" alt="用户权限界面" loading="lazy">
+                <div class="shot-cap">用户权限：账号、角色、菜单与数据权限</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/dymb.png" alt="打印模板界面" loading="lazy">
+                <div class="shot-cap">打印模板：出库、归还、验机、合同、结算、收据</div>
+            </div>
+            <div class="shot">
+                <img src="../../assets/img/droneRent/shujbf.png" alt="数据备份界面" loading="lazy">
+                <div class="shot-cap">数据备份：一键备份、自选路径、恢复二次确认</div>
+            </div>
+        </div>
+        <ul class="vlist">
+            <li><b>备份是自己的事：</b>数据就在本机那个 .db 文件里，建议定期备份并且异地存一份。</li>
+            <li><b>日志能串链路：</b>一笔订单从开单、出库、归还、验机、维保到结算，按单号能一路查下去。</li>
+            <li><b>权限分得开：</b>业务员只管开单出库收机，价格、结算、授权留给管理员。</li>
+        </ul>
+
+        <p class="shot-note">以上截图为软件实际界面，图中数据仅为演示用途。</p>
+    </div>
+
+    <!-- 三、适用人群 -->
+    <div class="section">
+        <h2>适合哪些人用</h2>
+        <p class="h2-sub">只要你的生意是"同一批设备反复租给不同客户"，并且设备贵、押金高、验机容易扯皮，就适合。</p>
+        <div class="who-grid">
+            <div class="who-card">
+                <h4>无人机租赁门店</h4>
+                <p>十几台到几十台机，一天进出几单，最怕档期撞车和验机没依据。</p>
+            </div>
+            <div class="who-card">
+                <h4>航测 / 巡检服务商</h4>
+                <p>设备按项目外租，客户是工程单位，资质与保险合规不能含糊。</p>
+            </div>
+            <div class="who-card">
+                <h4>航拍工作室</h4>
+                <p>机器多、配件散，电池和桨叶最容易流失，需要台账和赔偿依据。</p>
+            </div>
+            <div class="who-card">
+                <h4>农业植保队</h4>
+                <p>季节性强、机器使用强度大，维保成本和单机效益必须算清楚。</p>
+            </div>
+        </div>
+        <div class="tip-box">
+            <strong>说清楚不合适的情况：</strong>单机版面向单店本地使用，不做多门店联网、不支持多台电脑同时连同一个数据库、不做手机端和客户自助下单、不接无人机厂家后台、不做在线支付与银行代扣。需要跨店调度、多人异地协作的，属于网络版范畴。飞租通单机版的定位是<strong>一家租赁门店、一台电脑，把设备从租出去到收回来管清楚</strong>。
+        </div>
+
+        <div class="tip-box" style="background:#f0f7ff;border-left-color:#1677ff;color:#0b4bb3;">
+            <strong style="color:#0b4bb3;">上面这些"不合适"，有一部分是能改的。</strong>如果这款软件和你店里的流程差一两步——多一个字段、换一套单据格式、加一道审批、多一条业务线——都可以做<b>定制修改开发</b>，不必为了一个环节换掉整套工具。<a href="../../about.html#custom" style="color:#1677ff;font-weight:600;">看看能定制什么 →</a>
+            <br>🌐 <b>需要多人同时在线、手机端操作？</b>这几款软件的网络版会陆续上线，进度和方案可以直接<a href="../../about.html#contact" style="color:#1677ff;font-weight:600;">联系开发者</a>。
+        </div>
+    </div>
+
+    <!-- 四、对比 -->
+    <div class="section">
+        <h2>跟 Excel、纸质单、通用租赁系统比，差在哪</h2>
+        <p class="h2-sub">通用租赁系统管的是"收租金"，飞租通管的是"这台机这一趟发生了什么"。</p>
+        <div class="cmp-wrap">
+            <table class="cmp">
+                <thead>
+                    <tr>
+                        <th>对比项</th>
+                        <th>Excel + 纸质单</th>
+                        <th>通用租赁系统</th>
+                        <th>飞租通</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>设备档期</th>
+                        <td class="no">人工排表，容易撞车</td>
+                        <td>有，但不分设备 SN</td>
+                        <td class="self">按 SN 锁档期，冲突直接拦</td>
+                    </tr>
+                    <tr>
+                        <th>出库与验机</th>
+                        <td class="no">靠照片和口头</td>
+                        <td class="no">通常没有</td>
+                        <td class="self">基线拍照 + 模板验机 + 差异标红</td>
+                    </tr>
+                    <tr>
+                        <th>电池健康</th>
+                        <td class="no">没人记</td>
+                        <td class="no">不涉及</td>
+                        <td class="self">循环次数 + 健康度 + 强制报废</td>
+                    </tr>
+                    <tr>
+                        <th>合规拦截</th>
+                        <td class="no">凭经验</td>
+                        <td class="no">多数不做</td>
+                        <td class="self">资质 / 保险 / 执照不达标不放过</td>
+                    </tr>
+                    <tr>
+                        <th>维保成本</th>
+                        <td class="no">混在总账里</td>
+                        <td>部分支持</td>
+                        <td class="self">按工单归集到设备 SN</td>
+                    </tr>
+                    <tr>
+                        <th>押金结算</th>
+                        <td class="no">退多少靠估</td>
+                        <td>支持</td>
+                        <td class="self">五类抵扣 + 结算单九项</td>
+                    </tr>
+                    <tr>
+                        <th>数据在哪</th>
+                        <td>纸本 / 电脑</td>
+                        <td class="no">厂商服务器</td>
+                        <td class="self">自己电脑，可备份可销毁</td>
+                    </tr>
+                    <tr>
+                        <th>费用</th>
+                        <td>便宜</td>
+                        <td class="no">按年订阅</td>
+                        <td class="self">一次买断</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 五、安装与激活 -->
+    <div class="section">
+        <h2>安装与激活：装好就能开单</h2>
+        <p>Windows 桌面程序，双击安装或解压即用。首次启动读取本机机器码，在授权页粘贴授权码完成离线验签，之后不再需要联网。</p>
+        <div class="center">
+            <a class="btn btn-download" href="【替换成飞租通的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 版</a>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="num">1</div>
+                <p>下载安装或解压，双击运行</p>
+            </div>
+            <div class="step">
+                <div class="num">2</div>
+                <p>进「授权激活」页，复制本机机器码（带横杠，别改格式）</p>
+            </div>
+            <div class="step">
+                <div class="num">3</div>
+                <p>把机器码发出来，换取授权码</p>
+            </div>
+            <div class="step">
+                <div class="num">4</div>
+                <p>粘贴授权码点激活，验签通过后全部功能解锁</p>
+            </div>
+        </div>
+        <p style="color:#94a3b8; font-size:13.5px; margin-top:14px;">激活全程离线，不联网、不上报机器码。未激活时只能查看界面，新增、修改、保存、结算、打印、导出这些功能要激活后才开放。</p>
+    </div>
+
+    <!-- 六、购买 -->
+    <div class="section">
+        <h2>购买授权：一次付费，永久使用</h2>
+        <p>买断制永久授权，一机一码，绑定本机机器码，不设到期时间、不按年收费。换电脑需要重新取机器码申请授权，数据用备份文件迁移。</p>
+        <div class="center">
+            <a class="btn btn-buy" href="【替换成飞租通的购买链接】" target="_blank">💰 前往购买授权</a>
+        </div>
+        <p class="center" style="color:#6b7280; font-size:14px; margin-top:6px;">付款后按机器码发放授权码 · 离线验签，不联网校验</p>
+        <p class="center" style="color:#94a3b8; font-size:13.5px; margin-top:10px;">具体价格与活动以下单页面为准；换机流程：旧机备份 → 新机装机取机器码 → 重新签发授权 → 新机恢复数据。</p>
+    </div>
+
+    <!-- 七、FAQ -->
+    <div class="section">
+        <h2>常见问题</h2>
+        <div class="faq-item">
+            <strong>Q：同一台设备能被两个客户订到同一天吗？</strong>
+            <p>A：不会。下单时系统按设备 SN 校验档期，租期重叠会直接拦住。维修、保养、保险过期的设备也会自动锁定，租不出去。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：客户把机器磕了，怎么证明是这次弄的？</strong>
+            <p>A：出库时拍一遍基线照片，归还时按验机模板逐项检查并拍照，系统把归还照片和基线照片对比，新增损伤标红。必拍项没拍完，验机提交不了——证据是流程逼出来的，不靠人自觉。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：电池怎么管？</strong>
+            <p>A：每块电池独立编号，记循环次数和健康度。低于 80% 进告警（要主管审批才能出库），低于 60% 强制报废；鼓包、漏液、触点异常的电池直接锁定，出不了库。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：没激活能用吗？</strong>
+            <p>A：能打开软件、查看界面，但新增、修改、保存、结算、打印、导出都不可用，正式使用前需要完成激活。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：押金抵扣会不会算不清？</strong>
+            <p>A：抵扣分五类：超时费、清洁费、损伤赔偿、丢失赔偿、配件缺失赔偿，每一笔都能追到验机结论或维保工单。结算单把租金、超时、赔偿、维修、保险、押金抵扣、应收合计、已收、未收九项全部列出来。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：客户资质过期了还能下单吗？</strong>
+            <p>A：不能。客户资质过期、操控员执照缺失、设备保险过期这三种情况都会在下单或出库时被拦住，并告诉你缺哪一项。黑名单客户需要特殊审批才能下单。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：几个店员能一起用吗？</strong>
+            <p>A：同一台电脑可以，按角色分权限：业务员开单、出库、收机、登记收款；维保人员处理报修和复验；价格、结算、授权、备份留给管理员。多台电脑同时用同一个数据库不支持。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：电脑坏了数据会丢吗？</strong>
+            <p>A：取决于有没有备份。系统设置里可以一键备份 SQLite 数据库到自选路径，恢复要二次确认。建议定期备份并异地存一份——单机版的数据安全，最终靠这个动作。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：操作记录能查多久？</strong>
+            <p>A：操作日志留 24 个月，只读、不可编辑。可以按模块、操作员、时间、业务单号查询并导出，还能通过订单号、设备 SN、客户三种线索串起整条业务链路。</p>
+        </div>
+        <div class="faq-item">
+            <strong>Q：换电脑了怎么办？</strong>
+            <p>A：授权绑定机器码，换机要重新申请。步骤：旧机备份 → 备份文件拷到新机 → 新机装软件取新机器码 → 重新签发授权 → 激活后恢复数据。</p>
+        </div>
+    </div>
+
+    <!-- 八、结尾 CTA -->
+    <div class="final-cta">
+        <h2>设备管得住，押金才收得回</h2>
+        <p>把手里十几台机和最近几单录进去，走一遍出库、验机、结算，看看能不能替你把扯皮的事挡在前面——半天就能判断。</p>
+        <a class="btn btn-download" href="【替换成飞租通的网盘/直链exe下载地址】" target="_blank">📥 下载 Windows 版</a>
+        <a class="btn btn-buy" href="【替换成飞租通的购买链接】" target="_blank">💰 购买买断授权</a>
+        <div class="small">Windows 10 / 11（64 位）｜ 单机版，无需服务器 ｜ 一次买断，永久使用 ｜ 支持定制修改开发</div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="container">
+        <img class="footer-logo" src="../../assets/img/linzi-logo-horizontal.png" alt="林子软件" width="134" height="46">
+        <p class="footer-afdian">林子软件已入驻爱发电：<a href="https://ifdian.net/a/lin1030" target="_blank" rel="noopener noreferrer">https://ifdian.net/a/lin1030</a></p>
+        <p>© 2026 林子软件工具库 ｜ 单机工具均为买断授权模式 ｜ <a href="../../about.html">售后与授权说明</a></p>
+        <p style="font-size:13px; margin-top:6px; color:#9ca3af;">站内截图为软件真实界面，演示数据仅作示例。</p>
+    </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+    <span class="close" id="lbClose">&times;</span>
+    <img src="" alt="放大查看" id="lbImg">
+</div>
+
+<script>
+    (function () {
+        var lb = document.getElementById('lightbox');
+        var lbImg = document.getElementById('lbImg');
+        var closeBtn = document.getElementById('lbClose');
+
+        document.querySelectorAll('.shot img').forEach(function (img) {
+            img.addEventListener('click', function () {
+                lbImg.src = img.currentSrc || img.src;
+                lbImg.alt = img.alt || '软件界面放大查看';
+                lb.classList.add('on');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLb() {
+            lb.classList.remove('on');
+            lbImg.src = '';
+            document.body.style.overflow = '';
+        }
+        lb.addEventListener('click', closeLb);
+        closeBtn.addEventListener('click', closeLb);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lb.classList.contains('on')) closeLb();
+        });
+    })();
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->

@@ -1,0 +1,42 @@
+== preview_stock_002.5.png mean=60.1
+   top      : mean= 38.0 bright%= 2.52 std= 41.8
+   card     : mean= 54.2 bright%= 0.22 std= 44.5
+   below    : mean= 49.4 bright%= 0.00 std= 50.7
+   subtitle : mean= 91.1 bright%= 2.14 std= 63.4
+   footer   : mean= 83.0 bright%= 0.00 std= 60.0
+== preview_stock_008.5.png mean=70.6
+   top      : mean= 35.3 bright%= 2.32 std= 39.7
+   card     : mean= 67.6 bright%= 0.24 std= 51.8
+   below    : mean= 83.0 bright%= 0.00 std= 57.2
+   subtitle : mean= 89.7 bright%= 0.04 std= 59.1
+   footer   : mean= 84.5 bright%= 0.00 std= 60.0
+== preview_stock_013.0.png mean=92.7
+   top      : mean= 47.8 bright%= 3.70 std= 41.2
+   card     : mean=184.5 bright%=66.33 std= 97.7
+   below    : mean= 32.9 bright%= 0.00 std= 21.2
+   subtitle : mean= 31.8 bright%= 0.00 std= 25.6
+   footer   : mean= 20.1 bright%= 0.00 std=  1.4
+== preview_stock_026.0.png mean=72.9
+   top      : mean= 47.4 bright%= 3.30 std= 39.4
+   card     : mean=133.1 bright%=27.42 std= 83.6
+   below    : mean= 32.1 bright%= 0.00 std= 19.2
+   subtitle : mean= 33.5 bright%= 1.30 std= 33.8
+   footer   : mean= 20.1 bright%= 0.00 std=  1.4
+== preview_stock_044.0.png mean=69.3
+   top      : mean= 63.3 bright%= 2.35 std= 34.0
+   card     : mean= 73.6 bright%= 1.52 std= 24.1
+   below    : mean= 66.1 bright%= 0.00 std=  1.8
+   subtitle : mean= 71.8 bright%= 0.67 std= 26.6
+   footer   : mean= 65.9 bright%= 0.00 std=  1.9
+== preview_stock_050.0.png mean=62.8
+   top      : mean= 63.0 bright%= 2.16 std= 33.0
+   card     : mean= 59.6 bright%= 0.48 std= 20.5
+   below    : mean= 59.1 bright%= 0.34 std= 28.3
+   subtitle : mean= 72.5 bright%= 3.14 std= 30.3
+   footer   : mean= 65.9 bright%= 0.00 std=  1.9
+== preview_stock_058.5.png mean=36.9
+   top      : mean= 33.9 bright%= 1.58 std= 30.6
+   card     : mean= 43.2 bright%= 5.47 std= 51.0
+   below    : mean= 37.9 bright%= 4.46 std= 47.3
+   subtitle : mean= 33.9 bright%= 3.62 std= 43.6
+   footer   : mean= 24.0 bright%= 0.00 std=  0.0

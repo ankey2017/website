@@ -1,0 +1,6 @@
+@+18% speech(s1+s2+s3)=54.46s budget=53.20s
+target rate=+20%
+@+20% speech=53.52s
+retry @+24% speech=51.82s
+total=60.87s
+wav E:\vscode\zhouji\webHome\_video\master_stock.wav

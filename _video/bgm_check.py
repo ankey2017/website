@@ -5,7 +5,7 @@ import numpy as np
 
 VID = r"E:\vscode\zhouji\webHome\_video"
 lines = []
-for name in ("master_ad.wav", "master_asset.wav"):
+for name in ("master_estate.wav", "master_asset.wav", "master_livesell.wav", "master_stock.wav", "master_code.wav"):
     p = os.path.join(VID, name)
     if not os.path.exists(p):
         lines.append(f"{name} 不存在")

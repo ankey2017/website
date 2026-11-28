@@ -1,2 +1,5 @@
-master_ad.wav: rms=0.0894 主峰=494Hz 392Hz 261Hz 261Hz 谱心=3298Hz
+master_estate.wav: rms=0.1071 主峰=494Hz 261Hz 261Hz 392Hz 谱心=3350Hz
 master_asset.wav: rms=0.0823 主峰=391Hz 392Hz 466Hz 587Hz 谱心=3306Hz
+master_livesell.wav: rms=0.0872 主峰=523Hz 524Hz 349Hz 349Hz 谱心=3332Hz
+master_stock.wav: rms=0.0849 主峰=349Hz 349Hz 233Hz 467Hz 谱心=3311Hz
+master_code.wav: rms=0.0842 主峰=370Hz 370Hz 588Hz 293Hz 谱心=3351Hz
